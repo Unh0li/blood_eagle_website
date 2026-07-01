@@ -2,6 +2,15 @@
 export const events = [
 
     {
+  id: "berzerk-2026",
+  title: "BERZERK",
+  date: "11 JULY 2026",
+  venue: "PUBLIKA BARKLUB, LJUBLJANA",
+  photos:[],
+  ticketUrl: "https://www.entrio.si/en/event/blood-eagle-berzerk-33006",
+},
+
+    {
         id: "reactor4-2026",
         title: "REACTOR4",
         date: "17 APRIL 2026",
@@ -9,7 +18,9 @@ export const events = [
         photos:[
             "/images/reactor4/img1.jpg",
             "/images/reactor4/img2.png",
-     ]
+     ],
+       ticketUrl: "",
+
     },
 
     {
@@ -19,7 +30,9 @@ export const events = [
         venue: "PUBLIKA BARKLUB, LJUBLJANA",
         photos:[
             "/gallery/naglfar/01.jpg",
-        ]
+        ],
+        ticketUrl: "",
+
     },
 
       {
@@ -29,7 +42,8 @@ export const events = [
         venue: "PUBLIKA BARKLUB, LJUBLJANA",
         photos:[
             "/gallery/myrkrun/01.jpg",
-        ]
+        ],
+        ticketUrl: "",
     },
 
     {
@@ -43,7 +57,9 @@ export const events = [
         "/gallery/valhalla/03.jpg",
         "/gallery/valhalla/04.jpg",
         "/gallery/valhalla/05.jpg",
-        ]
+        ],
+          ticketUrl: "",
+
     },
 
     {
@@ -59,6 +75,8 @@ export const events = [
         "/gallery/berzerk/05.jpg",
         "/gallery/berzerk/06.jpg",
         "/gallery/berzerk/07.jpg",
-        ]
-    },
+        ],
+          ticketUrl: "",
+
+    }
 ];
