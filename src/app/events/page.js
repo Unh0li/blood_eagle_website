@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { events } from "@/data/events";
 import Countdown from "@/components/home/Countdown";
+import Image from "next/image";
 
 function parseDate(dateStr) {
   return new Date(dateStr.replace(/(\d+)\s+(\w+)\s+(\d+)/, "$2 $1 $3"));
@@ -19,6 +20,21 @@ export default function Events() {
         <div className="glow-silver" />
       </div>
       <div className="site-shell__grid" />
+
+      <div className="fixed top-24 left-1/2 -translate-x-1/2 pointer-events-none select-none z-0 w-full max-w-5xl px-6 pt-35 flex items-center justify-center">
+
+
+        <div className="opacity-5 mix-blend-screen scale-[1.6] md:scale-[2.2] w-full h-full flex items-center justify-center">
+          <Image
+            src="/images/logo/logo_white.png"
+            alt="Blood Eagle Fixed Background Watermark"
+            width={1000}
+            height={1000}
+            className="object-contain w-full h-auto max-h-[55vh] filter blur-[0.5px]"
+            priority
+          />
+        </div>
+      </div>
 
       {/* header */}
       <section className="relative z-20 pt-32 text-center px-6">
@@ -65,7 +81,7 @@ export default function Events() {
                       <p className="mt-3 font-mono text-[11px] text-silver uppercase tracking-[0.25em]">
                         {ev.venue}
                       </p>
-                                <Countdown targetDate="2026-07-11T20:00:00" />
+                      <Countdown targetDate="2026-07-11T20:00:00" />
 
                       {ev.lineup && (
                         <p className="mt-2 font-mono text-[11px] text-blood uppercase tracking-[0.2em]">

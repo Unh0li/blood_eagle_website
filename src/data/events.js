@@ -12,7 +12,7 @@ export const events = [
 
     {
         id: "reactor4-2026",
-        title: "REACTOR4",
+        title: "REACTOR 4",
         date: "17 APRIL 2026",
         venue: "PUBLIKA BARKLUB, LJUBLJANA",
         photos:[

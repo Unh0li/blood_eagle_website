@@ -4,6 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import { events } from "@/data/events";
 import Lightbox from "@/components/gallery/Lightbox";
+import Image from "next/image";
 
 export default function Gallery() {
   const [activeEvent, setActiveEvent] = useState(null);
@@ -67,13 +68,13 @@ export default function Gallery() {
           </div>
         </section>
         {lightboxIndex !== null && (
-            <Lightbox
-                photos={ev.photos}
-                index={lightboxIndex}
-                onClose={closeLightbox}
-                onNext={nextPhoto}
-                onPrev={prevPhoto}
-            />  
+          <Lightbox
+            photos={ev.photos}
+            index={lightboxIndex}
+            onClose={closeLightbox}
+            onNext={nextPhoto}
+            onPrev={prevPhoto}
+          />
         )}
       </main>
     );
@@ -86,6 +87,21 @@ export default function Gallery() {
         <div className="glow-silver" />
       </div>
       <div className="site-shell__grid" />
+
+      <div className="fixed top-24 left-1/2 -translate-x-1/2 pointer-events-none select-none z-0 w-full max-w-5xl px-6 pt-35 flex items-center justify-center">
+
+
+        <div className="opacity-5 mix-blend-screen scale-[1.6] md:scale-[2.2] w-full h-full flex items-center justify-center">
+          <Image
+            src="/images/logo/logo_white.png"
+            alt="Blood Eagle Fixed Background Watermark"
+            width={1000}
+            height={1000}
+            className="object-contain w-full h-auto max-h-[55vh] filter blur-[0.5px]"
+            priority
+          />
+        </div>
+      </div>
 
       <section className="relative z-20 pt-32 text-center px-6">
         <h1
@@ -135,9 +151,8 @@ export default function Gallery() {
                     <img
                       src={src}
                       alt={`${ev.title} photo ${i + 1}`}
-                      className={`w-full h-full object-cover grayscale contrast-125 brightness-90 transition-transform duration-700 group-hover:scale-110 ${
-                        isLast ? "brightness-50" : "group-hover:grayscale-0"
-                      }`}
+                      className={`w-full h-full object-cover grayscale contrast-125 brightness-90 transition-transform duration-700 group-hover:scale-110 ${isLast ? "brightness-50" : "group-hover:grayscale-0"
+                        }`}
                     />
                     {!isLast && (
                       <div className="absolute inset-0 bg-gradient-to-t from-void/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />

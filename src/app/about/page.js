@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { residents } from "@/data/residents";
+import Image from "next/image";
 
 export default function AboutPage() {
   const [index, setIndex] = useState(0);
@@ -40,6 +41,21 @@ export default function AboutPage() {
         <div className="glow-silver" />
       </div>
       <div className="site-shell__grid" />
+
+      <div className="fixed top-24 left-1/2 -translate-x-1/2 pointer-events-none select-none z-0 w-full max-w-5xl px-6 pt-35 flex items-center justify-center">
+
+
+        <div className="opacity-5 mix-blend-screen scale-[1.6] md:scale-[2.2] w-full h-full flex items-center justify-center">
+          <Image
+            src="/images/logo/logo_white.png"
+            alt="Blood Eagle Fixed Background Watermark"
+            width={1000}
+            height={1000}
+            className="object-contain w-full h-auto max-h-[55vh] filter blur-[0.5px]"
+            priority
+          />
+        </div>
+      </div>
 
       <section className="relative z-20 pt-32 text-center px-6">
         <div className="overflow-hidden">
@@ -93,9 +109,8 @@ export default function AboutPage() {
                   className="absolute inset-0 flex items-center justify-center [backface-visibility:hidden]"
                   style={{ transform: `rotateY(${i * 120}deg) translateZ(340px)` }}
                 >
-                  <div className={`group relative w-full h-full border transition-all duration-700 overflow-hidden bg-panel ${
-                    isActive ? "border-blood scale-[1.02] shadow-[0_0_60px_-10px_rgba(200,30,30,0.25)]" : "border-silver/15 scale-[0.88] opacity-25 blur-[2px] pointer-events-none"
-                  }`}>
+                  <div className={`group relative w-full h-full border transition-all duration-700 overflow-hidden bg-panel ${isActive ? "border-blood scale-[1.02] shadow-[0_0_60px_-10px_rgba(200,30,30,0.25)]" : "border-silver/15 scale-[0.88] opacity-25 blur-[2px] pointer-events-none"
+                    }`}>
                     <div className="corner-ticks">
                       <span style={{ top: 0, left: 0, borderTopWidth: 1, borderLeftWidth: 1 }} />
                       <span style={{ top: 0, right: 0, borderTopWidth: 1, borderRightWidth: 1 }} />

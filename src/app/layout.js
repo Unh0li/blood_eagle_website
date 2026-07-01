@@ -19,17 +19,17 @@ const jetbrainsMono = JetBrains_Mono({
   variable: "--font-mono",
 });
 
-// 2. Definiraj svoj preneseni horror font
+
 const horrorFont = localFont({
-  src: "fonts/MidnightLegacy.otf", // Prilagodi pot in ime datoteke (npr. v app/fonts/)
+  src: "fonts/MidnightLegacy.otf", 
   variable: "--font-horror",
 });
 
 export default function RootLayout({ children }) {
   return (
-    // 3. Dodaj horrorFont.variable med ostale spremenljivke
-    <html 
-      lang="en" 
+
+    <html
+      lang="en"
       className={`${archivoBlack.variable} ${jetbrainsMono.variable} ${horrorFont.variable}`}
     >
       <body>
