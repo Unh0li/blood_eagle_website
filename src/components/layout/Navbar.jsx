@@ -18,7 +18,7 @@ export default function Navbar() {
           <Link href="/about" className="hover:text-[#e8e8e8] hover:line-through transition-colors duration-300">About</Link>
           <Link href="/events" className="hover:text-[#e8e8e8] hover:line-through transition-colors duration-300">Events</Link>
           
-          <Link href="/" className="text-[#e8e8e8] text-[13px] font-bold tracking-[0.25em] border-b border-[#c81e1e]/60 pb-0.5 transition-all duration-300 hover:tracking-[0.4em] hover:text-[#c81e1e]">
+          <Link href="/" className="text-[#e8e8e8] text-[15px] font-bold tracking-[0.25em] border-b border-[#c81e1e]/60 pb-0.5 transition-all duration-300 hover:tracking-[0.4em] hover:text-[#c81e1e]">
             HOME
           </Link>
           
@@ -28,7 +28,7 @@ export default function Navbar() {
 
         {/* desna stran */}
         <span className="text-[9px] opacity-80 sm:block hidden">
-          SIGNAL_STRENGTH: NOMINAL
+          INDUSTRIAL | RAW | BOCHKA
         </span>
 
       </div>

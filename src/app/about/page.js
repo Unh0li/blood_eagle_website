@@ -41,7 +41,7 @@ export default function AboutPage() {
       </div>
       <div className="site-shell__grid" />
 
-      <section className="relative z-20 pt-32 text-center px-6">
+      <section className="relative z-20 pt-20 text-center px-6">
         <div className="overflow-hidden">
           <h1
             className="font-[var(--font-display)] uppercase text-[14vw] md:text-[7.5vw] leading-[0.82] tracking-[-0.02em] text-[#e8e8e8] animate-[riseIn_0.9s_cubic-bezier(0.16,1,0.3,1)_both]"
@@ -49,6 +49,7 @@ export default function AboutPage() {
           >
             ABOUT
           </h1>
+          <br />
         </div>
         <p className="mt-6 max-w-xl mx-auto text-[#8a8a8a] font-mono text-xs md:text-sm tracking-[0.15em] uppercase animate-[fadeUp_0.9s_ease_0.2s_both]">
           Industrial techno collective <span className="text-[#c81e1e]">/</span> based in Ljubljana
@@ -184,9 +185,6 @@ export default function AboutPage() {
 
       <section className="relative z-40 mt-12 text-center max-w-xl mx-auto px-6 pb-24 min-h-[220px]">
         <div key={index} className="animate-[fadeUp_0.6s_ease_both]">
-          <p className="text-[#8a8a8a] leading-7 font-mono text-sm tracking-wide">
-            {r.description}
-          </p>
 
           <div className="mt-8 flex items-center justify-center gap-3 pointer-events-none">
             <span className="h-px w-10 bg-[#8a8a8a]/20" />
