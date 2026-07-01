@@ -41,7 +41,7 @@ export default function AboutPage() {
       </div>
       <div className="site-shell__grid" />
 
-      <section className="relative z-20 pt-20 text-center px-6">
+      <section className="relative z-20 pt-32 text-center px-6">
         <div className="overflow-hidden">
           <h1
             className="font-[var(--font-display)] uppercase text-[14vw] md:text-[7.5vw] leading-[0.82] tracking-[-0.02em] text-[#e8e8e8] animate-[riseIn_0.9s_cubic-bezier(0.16,1,0.3,1)_both]"

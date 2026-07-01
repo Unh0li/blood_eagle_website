@@ -2,7 +2,7 @@ import { Archivo_Black, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 import Navbar from "@/components/layout/Navbar";
 
-export const metadata ={
+export const metadata = {
   title: "Blood Eagle",
   description: "Blood Eagle is a Industrial techno collective based in Ljubljana, Slovenia.",
 };
@@ -17,18 +17,12 @@ const jetbrainsMono = JetBrains_Mono({
   variable: "--font-mono",
 });
 
-
 export default function RootLayout({ children }) {
   return (
-    <html
-      lang="en"
-      className={`${archivoBlack.variable} ${jetbrainsMono.variable}`}
-    >
-      <body className="bg-black text-white">
+    <html lang="en" className={`${archivoBlack.variable} ${jetbrainsMono.variable}`}>
+      <body>
         <Navbar />
-        <main className=" ">
-          {children}
-        </main>
+        {children}
       </body>
     </html>
   );

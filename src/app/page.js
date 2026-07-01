@@ -27,12 +27,8 @@ export default function Home() {
 
           <div className="mx-auto mt-10 h-px w-28 bg-[#c81e1e] opacity-80" />
 
-          <p className="mt-10 font-mono text-xs md:text-sm text-[#8a8a8a] uppercase tracking-[0.3em] leading-8 animate-[fadeUp_0.9s_ease_0.2s_both]">
-            Industrial Techno
-            <br />
-            Horror Industrial
-            <br />
-            Heavy Bochka
+          <p className="mt-15 font-mono text-xs md:text-sm text-[#8a8a8a] uppercase tracking-[0.3em] leading-8 animate-[fadeUp_0.9s_ease_0.2s_both]">
+            WELCOME TO VALHALLA
           </p>
 
           <div className="mt-14 animate-[fadeUp_0.9s_ease_0.4s_both]">
@@ -101,7 +97,7 @@ export default function Home() {
           <p className="mt-6 font-mono text-xs md:text-sm text-[#8a8a8a] uppercase tracking-[0.25em] leading-7">
             11 JULIJ 2026
             <br />
-            <span className="text-[#e8e8e8]/80">PUBLIKA, LJUBLJANA</span>
+            <span className="text-[#e8e8e8]/80">PUBLIKA BARKLUB, LJUBLJANA</span>
           </p>
 
           <a
