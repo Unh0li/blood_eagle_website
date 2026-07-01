@@ -34,7 +34,7 @@ export default function AboutPage() {
   const r = residents[index];
 
   return (
-    <main className="site-shell selection:bg-[#c81e1e] selection:text-black">
+    <main className="site-shell selection:bg-blood selection:text-black">
       <div className="site-shell__ambient">
         <div className="glow-red" />
         <div className="glow-silver" />
@@ -44,15 +44,15 @@ export default function AboutPage() {
       <section className="relative z-20 pt-32 text-center px-6">
         <div className="overflow-hidden">
           <h1
-            className="font-[var(--font-display)] uppercase text-[14vw] md:text-[7.5vw] leading-[0.82] tracking-[-0.02em] text-[#e8e8e8] animate-[riseIn_0.9s_cubic-bezier(0.16,1,0.3,1)_both]"
+            className="font-[var(--font-display)] uppercase text-[14vw] md:text-[7.5vw] leading-[0.82] tracking-[-0.02em] text-bone animate-[riseIn_0.9s_cubic-bezier(0.16,1,0.3,1)_both]"
             style={{ WebkitTextStroke: "1px rgba(232,232,232,0.15)" }}
           >
             ABOUT
           </h1>
           <br />
         </div>
-        <p className="mt-6 max-w-xl mx-auto text-[#8a8a8a] font-mono text-xs md:text-sm tracking-[0.15em] uppercase animate-[fadeUp_0.9s_ease_0.2s_both]">
-          Industrial techno collective <span className="text-[#c81e1e]">/</span> based in Ljubljana
+        <p className="mt-6 max-w-xl mx-auto text-silver font-mono text-xs md:text-sm tracking-[0.15em] uppercase animate-[fadeUp_0.9s_ease_0.2s_both]">
+          Industrial techno collective <span className="text-blood">/</span> based in Ljubljana
         </p>
       </section>
 
@@ -65,14 +65,14 @@ export default function AboutPage() {
       </section>
 
       <section className="relative z-30 max-w-5xl mx-auto px-4 mt-12 md:mt-16 flex items-center justify-center min-h-[460px] md:min-h-[520px]">
-        <button onClick={prev} aria-label="Previous resident" className="group absolute left-4 md:left-8 z-50 w-12 h-12 flex items-center justify-center bg-[#070707]/50 backdrop-blur-sm">
-          <span className="absolute inset-0 border border-[#8a8a8a]/20 group-hover:border-[#c81e1e] transition-colors duration-300" />
-          <span className="relative text-2xl text-[#8a8a8a] group-hover:text-[#c81e1e] group-hover:-translate-x-1 transition-all duration-300">&lsaquo;</span>
+        <button onClick={prev} aria-label="Previous resident" className="group absolute left-4 md:left-8 z-50 w-12 h-12 flex items-center justify-center bg-void/50 backdrop-blur-sm">
+          <span className="absolute inset-0 border border-silver/20 group-hover:border-blood transition-colors duration-300" />
+          <span className="relative text-2xl text-silver group-hover:text-blood group-hover:-translate-x-1 transition-all duration-300">&lsaquo;</span>
         </button>
 
-        <button onClick={next} aria-label="Next resident" className="group absolute right-4 md:right-8 z-50 w-12 h-12 flex items-center justify-center bg-[#070707]/50 backdrop-blur-sm">
-          <span className="absolute inset-0 border border-[#8a8a8a]/20 group-hover:border-[#c81e1e] transition-colors duration-300" />
-          <span className="relative text-2xl text-[#8a8a8a] group-hover:text-[#c81e1e] group-hover:translate-x-1 transition-all duration-300">&rsaquo;</span>
+        <button onClick={next} aria-label="Next resident" className="group absolute right-4 md:right-8 z-50 w-12 h-12 flex items-center justify-center bg-void/50 backdrop-blur-sm">
+          <span className="absolute inset-0 border border-silver/20 group-hover:border-blood transition-colors duration-300" />
+          <span className="relative text-2xl text-silver group-hover:text-blood group-hover:translate-x-1 transition-all duration-300">&rsaquo;</span>
         </button>
 
         <div className="relative w-[290px] h-[400px] md:w-[340px] md:h-[470px] [perspective:1400px] z-20">
@@ -93,8 +93,8 @@ export default function AboutPage() {
                   className="absolute inset-0 flex items-center justify-center [backface-visibility:hidden]"
                   style={{ transform: `rotateY(${i * 120}deg) translateZ(340px)` }}
                 >
-                  <div className={`group relative w-full h-full border transition-all duration-700 overflow-hidden bg-[#0c0c0c] ${
-                    isActive ? "border-[#c81e1e] scale-[1.02] shadow-[0_0_60px_-10px_rgba(200,30,30,0.25)]" : "border-[#8a8a8a]/15 scale-[0.88] opacity-25 blur-[2px] pointer-events-none"
+                  <div className={`group relative w-full h-full border transition-all duration-700 overflow-hidden bg-panel ${
+                    isActive ? "border-blood scale-[1.02] shadow-[0_0_60px_-10px_rgba(200,30,30,0.25)]" : "border-silver/15 scale-[0.88] opacity-25 blur-[2px] pointer-events-none"
                   }`}>
                     <div className="corner-ticks">
                       <span style={{ top: 0, left: 0, borderTopWidth: 1, borderLeftWidth: 1 }} />
@@ -103,10 +103,10 @@ export default function AboutPage() {
                       <span style={{ bottom: 0, right: 0, borderBottomWidth: 1, borderRightWidth: 1 }} />
                     </div>
 
-                    <div className="relative z-30 flex items-center justify-between px-3 py-2 border-b border-[#8a8a8a]/15 font-mono text-[9px] tracking-[0.2em] text-[#8a8a8a]">
+                    <div className="relative z-30 flex items-center justify-between px-3 py-2 border-b border-silver/15 font-mono text-[9px] tracking-[0.2em] text-silver">
                       <span>SUBJECT_{tag}</span>
-                      <span className={`flex items-center gap-1 ${isActive ? "text-[#c81e1e]" : ""}`}>
-                        <span className={`w-1 h-1 rounded-full ${isActive ? "bg-[#c81e1e] animate-pulse" : "bg-[#8a8a8a]/40"}`} />
+                      <span className={`flex items-center gap-1 ${isActive ? "text-blood" : ""}`}>
+                        <span className={`w-1 h-1 rounded-full ${isActive ? "bg-blood animate-pulse" : "bg-silver/40"}`} />
                         {isActive ? "ACTIVE" : "STANDBY"}
                       </span>
                     </div>
@@ -117,11 +117,11 @@ export default function AboutPage() {
                         alt={res.name}
                         className={`w-full h-full object-cover contrast-125 brightness-90 transition-transform duration-[1.2s] ${isActive ? "scale-100 group-hover:scale-110" : "scale-105"}`}
                       />
-                      <div className="absolute inset-0 bg-gradient-to-t from-[#c81e1e]/20 via-transparent to-transparent mix-blend-multiply" />
+                      <div className="absolute inset-0 bg-gradient-to-t from-blood/20 via-transparent to-transparent mix-blend-multiply" />
 
                       {isActive && (
                         <div className="absolute inset-0 overflow-hidden pointer-events-none">
-                          <div className="absolute left-0 right-0 h-10 bg-gradient-to-b from-transparent via-[#e8e8e8]/10 to-transparent animate-[scanSweep_3.5s_linear_infinite]" />
+                          <div className="absolute left-0 right-0 h-10 bg-gradient-to-b from-transparent via-bone/10 to-transparent animate-[scanSweep_3.5s_linear_infinite]" />
                         </div>
                       )}
 
@@ -149,18 +149,18 @@ export default function AboutPage() {
                       )}
                     </div>
 
-                    <h3 className={`relative z-30 text-center mt-4 px-2 font-[var(--font-display)] uppercase tracking-[0.12em] text-lg md:text-xl ${isActive ? "text-[#e8e8e8]" : "text-[#8a8a8a]"}`}>
+                    <h3 className={`relative z-30 text-center mt-4 px-2 font-[var(--font-display)] uppercase tracking-[0.12em] text-lg md:text-xl ${isActive ? "text-bone" : "text-silver"}`}>
                       {res.name}
                     </h3>
 
                     {isActive && (
-                      <p className="relative z-30 mt-2 px-4 text-center font-mono text-[10px] leading-relaxed text-[#8a8a8a] line-clamp-3">
+                      <p className="relative z-30 mt-2 px-4 text-center font-mono text-[10px] leading-relaxed text-silver line-clamp-3">
                         {res.description}
                       </p>
                     )}
 
-                    <div className="relative z-30 mt-4 mx-auto w-8 h-px bg-[#c81e1e]" />
-                    {isActive && <div className="absolute -bottom-10 left-1/2 -translate-x-1/2 w-40 h-20 bg-[#c81e1e]/25 blur-3xl pointer-events-none" />}
+                    <div className="relative z-30 mt-4 mx-auto w-8 h-px bg-blood" />
+                    {isActive && <div className="absolute -bottom-10 left-1/2 -translate-x-1/2 w-40 h-20 bg-blood/25 blur-3xl pointer-events-none" />}
                   </div>
                 </div>
               );
@@ -178,7 +178,7 @@ export default function AboutPage() {
             className="relative h-1 transition-all duration-500"
             style={{ width: i === index ? "28px" : "8px" }}
           >
-            <span className={`absolute inset-0 transition-colors duration-500 ${i === index ? "bg-[#c81e1e]" : "bg-[#8a8a8a]/30"}`} />
+            <span className={`absolute inset-0 transition-colors duration-500 ${i === index ? "bg-blood" : "bg-silver/30"}`} />
           </button>
         ))}
       </div>
@@ -187,9 +187,9 @@ export default function AboutPage() {
         <div key={index} className="animate-[fadeUp_0.6s_ease_both]">
 
           <div className="mt-8 flex items-center justify-center gap-3 pointer-events-none">
-            <span className="h-px w-10 bg-[#8a8a8a]/20" />
-            <span className="font-mono text-[10px] tracking-[0.3em] text-[#8a8a8a]/50">LINKS</span>
-            <span className="h-px w-10 bg-[#8a8a8a]/20" />
+            <span className="h-px w-10 bg-silver/20" />
+            <span className="font-mono text-[10px] tracking-[0.3em] text-silver/50">LINKS</span>
+            <span className="h-px w-10 bg-silver/20" />
           </div>
 
           <div className="mt-6 flex justify-center gap-10 uppercase tracking-[0.25em] text-xs font-mono">
@@ -199,10 +199,10 @@ export default function AboutPage() {
                 href={platform === "SoundCloud" ? r.soundcloud : r.instagram}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="relative text-[#c81e1e] hover:text-[#e8e8e8] transition-colors duration-300 group py-1"
+                className="relative text-blood hover:text-bone transition-colors duration-300 group py-1"
               >
                 {platform}
-                <span className="absolute bottom-0 left-0 w-0 h-px bg-[#e8e8e8] group-hover:w-full transition-all duration-300" />
+                <span className="absolute bottom-0 left-0 w-0 h-px bg-bone group-hover:w-full transition-all duration-300" />
               </a>
             ))}
           </div>

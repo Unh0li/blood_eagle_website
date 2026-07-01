@@ -8,6 +8,7 @@ export const events = [
         venue: "PUBLIKA BARKLUB, LJUBLJANA",
         photos:[
             "/images/reactor4/img1.jpg",
+            "/images/reactor4/img2.png",
      ]
     },
 

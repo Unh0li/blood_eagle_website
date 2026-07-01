@@ -24,6 +24,9 @@
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
   --font-display: var(--font-display);
+  
+  /* DODAJ TO VRSTICO: */
+  --font-horror: var(--font-horror); 
 }
 
 html {
@@ -158,7 +161,7 @@ body {
   to {
     opacity: 1;
     transform: translateY(0);
-    letter-spacing: -0.02em;
+    letter-spacing: 0.08em;  /* ujema se s tracking-[0.08em] */
   }
 }
 
@@ -199,5 +202,52 @@ body {
   }
   50% {
     transform: translate(-4%, -5%) scale(1.08);
+  }
+
+  
+  
+}
+.title-3d {
+  color: #1a0202;
+  -webkit-text-stroke: 1.5px #c81e1e;
+  text-stroke: 1.5px #c81e1e;
+  
+  text-shadow:
+    0 0 30px rgba(200, 30, 30, 0.12),
+    2px 2px 0px #7a0a0a,
+    4px 4px 0px #550707,
+    6px 6px 0px #380404,
+    8px 10px 16px rgba(0, 0, 0, 0.97);
+
+  animation: 
+    riseIn 1.5s cubic-bezier(0.16, 1, 0.3, 1) both,
+    titleBreath 6s ease-in-out 0.9s infinite;
+}
+
+@keyframes titleBreath {
+  0%, 100% {
+    color: #1a0202;
+    -webkit-text-stroke: 1.5px #c81e1e;
+    text-shadow:
+      0 0 30px rgba(200, 30, 30, 0.12),
+      2px 2px 0px #7a0a0a,
+      4px 4px 0px #550707,
+      6px 6px 0px #380404,
+      8px 10px 16px rgba(0, 0, 0, 0.97);
+    transform: scale(1);
+    filter: brightness(1);
+  }
+  50% {
+    color: #2a0303;
+    -webkit-text-stroke: 2px #e82222;
+    text-shadow:
+      0 0 60px rgba(200, 30, 30, 0.35),
+      0 0 100px rgba(200, 30, 30, 0.1),
+      2px 2px 0px #8a0d0d,
+      4px 4px 0px #650a0a,
+      6px 6px 0px #440707,
+      8px 10px 16px rgba(0, 0, 0, 0.97);
+    transform: scale(1.012);
+    filter: brightness(1.15);
   }
 }
