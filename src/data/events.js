@@ -1,82 +1,91 @@
-// data/events.js
 export const events = [
-
     {
-  id: "berzerk-2026",
-  title: "BERZERK",
-  date: "11 JULY 2026",
-  venue: "PUBLIKA BARKLUB, LJUBLJANA",
-  photos:[],
-  ticketUrl: "https://www.entrio.si/en/event/blood-eagle-berzerk-33006",
-},
+        id: "berzerk-2026",
+        title: "BERZERK",
+        date: "11 JULY 2026",
+        venue: "PUBLIKA BARKLUB, LJUBLJANA",
+        genre: "Bochka",
+        lineup: ["FOGG", "PLAZ", "ZVITA", "LINDEX B2B TERROR"],
+        timetable: [{
+            act: "Doors",
+            time: "20:00"
+        }
 
+        ],
+        photos: [],
+        ticketUrl: "https://www.entrio.si/en/event/blood-eagle-berzerk-33006",
+    },
     {
         id: "reactor4-2026",
         title: "REACTOR 4",
         date: "17 APRIL 2026",
         venue: "PUBLIKA BARKLUB, LJUBLJANA",
-        photos:[
-            "/images/reactor4/img1.jpg",
-            "/images/reactor4/img2.png",
-     ],
-       ticketUrl: "",
-
+        genre: "Industrial Techno",
+        lineup: ["Resident A", "Resident B"],
+        timetable: [
+            { time: "22:00", act: "Doors" },
+            { time: "23:00", act: "Resident A" },
+            { time: "01:00", act: "Resident B" },
+        ],
+        photos: ["/images/reactor4/img1.jpg", "/images/reactor4/img2.png"],
+        ticketUrl: "",
     },
-
     {
         id: "naglfar-2026",
         title: "NAGLFAR",
         date: "31 JANUARY 2026",
         venue: "PUBLIKA BARKLUB, LJUBLJANA",
-        photos:[
-            "/gallery/naglfar/01.jpg",
-        ],
+        genre: "Industrial / Raw Techno",
+        lineup: ["Resident A"],
+        timetable: [],
+        photos: ["/gallery/naglfar/01.jpg"],
         ticketUrl: "",
-
     },
-
-      {
+    {
         id: "myrkrun-2025",
         title: "MYRKRÚN",
         date: "29 NOVEMBER 2025",
         venue: "PUBLIKA BARKLUB, LJUBLJANA",
-        photos:[
-            "/gallery/myrkrun/01.jpg",
-        ],
+        genre: "Industrial Techno",
+        lineup: ["Resident B"],
+        timetable: [],
+        photos: ["/gallery/myrkrun/01.jpg"],
         ticketUrl: "",
     },
-
     {
         id: "slaughterhouse-2025",
         title: "SLAUGHTERHOUSE",
         date: "6 SEPTEMBER 2025",
         venue: "PUBLIKA BARKLUB, LJUBLJANA",
+        genre: "Industrial / Hard Techno",
+        lineup: ["Resident A", "Resident B"],
+        timetable: [],
         photos: [
-        "/gallery/valhalla/01.jpg",
-        "/gallery/valhalla/02.jpg",
-        "/gallery/valhalla/03.jpg",
-        "/gallery/valhalla/04.jpg",
-        "/gallery/valhalla/05.jpg",
+            "/gallery/slaughterhouse/01.jpg",
+            "/gallery/slaughterhouse/02.jpg",
+            "/gallery/slaughterhouse/03.jpg",
+            "/gallery/slaughterhouse/04.jpg",
+            "/gallery/slaughterhouse/05.jpg",
         ],
-          ticketUrl: "",
-
+        ticketUrl: "",
     },
-
     {
         id: "first-flight-2024",
         title: "FIRST FLIGHT",
         date: "13 DECEMBER 2024",
         venue: "KOČA PRI KORITU",
+        genre: "Industrial Techno",
+        lineup: ["Resident A", "Resident B"],
+        timetable: [],
         photos: [
-        "/gallery/berzerk/01.jpg",
-        "/gallery/berzerk/02.jpg",
-        "/gallery/berzerk/03.jpg",
-        "/gallery/berzerk/04.jpg",
-        "/gallery/berzerk/05.jpg",
-        "/gallery/berzerk/06.jpg",
-        "/gallery/berzerk/07.jpg",
+            "/gallery/first-flight/01.jpg",
+            "/gallery/first-flight/02.jpg",
+            "/gallery/first-flight/03.jpg",
+            "/gallery/first-flight/04.jpg",
+            "/gallery/first-flight/05.jpg",
+            "/gallery/first-flight/06.jpg",
+            "/gallery/first-flight/07.jpg",
         ],
-          ticketUrl: "",
-
-    }
+        ticketUrl: "",
+    },
 ];

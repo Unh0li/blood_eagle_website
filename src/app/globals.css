@@ -260,3 +260,21 @@ body {
     filter: brightness(1.15);
   }
 }
+.ekg-line polyline {
+  stroke-dasharray: 140;
+  stroke-dashoffset: 140;
+  opacity: 0.35;
+  animation: ekgDraw 4.5s linear infinite;
+}
+
+@keyframes ekgDraw {
+  0% {
+    stroke-dashoffset: 140;
+  }
+  70% {
+    stroke-dashoffset: 0;
+  }
+  100% {
+    stroke-dashoffset: -140;
+  }
+}

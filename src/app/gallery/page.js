@@ -1,14 +1,24 @@
 "use client";
 
-import { useState } from "react";
+import { Suspense, useState, useEffect } from "react";
+import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { events } from "@/data/events";
 import Lightbox from "@/components/gallery/Lightbox";
 import Image from "next/image";
 
-export default function Gallery() {
+function GalleryInner() {
+  const searchParams = useSearchParams();
   const [activeEvent, setActiveEvent] = useState(null);
   const [lightboxIndex, setLightboxIndex] = useState(null);
+
+  useEffect(() => {
+    const eventId = searchParams.get("event");
+    if (eventId && events.some((e) => e.id === eventId)) {
+      setActiveEvent(eventId);
+    }
+  }, [searchParams]);
+
   if (activeEvent) {
     const ev = events.find((e) => e.id === activeEvent);
 
@@ -28,44 +38,56 @@ export default function Gallery() {
         <section className="relative z-20 pt-32 px-6 max-w-6xl mx-auto pb-32">
           <button
             onClick={() => setActiveEvent(null)}
-            className="group flex items-center gap-2 font-mono text-[11px] uppercase tracking-[0.3em] text-silver hover:text-blood transition-colors duration-300 mb-12"
+            className="group flex items-center gap-2 font-mono text-[11px] uppercase tracking-[0.3em] text-silver hover:text-blood transition-colors duration-300 mb-12 animate-[fadeUp_0.9s_ease_both]"
           >
             <span className="group-hover:-translate-x-1 transition-transform duration-300">&lsaquo;</span>
             Back to gallery
           </button>
 
-          <div className="text-center mb-16">
-            <p className="eyebrow">{ev.date}</p>
+          <div className="text-center mb-16 overflow-hidden">
+            <p className="eyebrow animate-[fadeUp_0.9s_ease_0.1s_both]">{ev.date}</p>
             <h1
-              className="mt-4 font-[var(--font-display)] uppercase text-[10vw] md:text-[5vw] leading-[0.9] tracking-[-0.01em] text-bone"
+              className="mt-4 font-[var(--font-display)] uppercase text-[10vw] md:text-[5vw] leading-[0.9] tracking-[-0.01em] text-bone animate-[riseIn_0.9s_cubic-bezier(0.16,1,0.3,1)_0.15s_both]"
               style={{ WebkitTextStroke: "1px rgba(232,232,232,0.12)" }}
             >
               {ev.title}
             </h1>
-            <p className="mt-4 font-mono text-xs text-silver uppercase tracking-[0.25em]">
+            <p className="mt-4 font-mono text-xs text-silver uppercase tracking-[0.25em] animate-[fadeUp_0.9s_ease_0.3s_both]">
               {ev.venue} <span className="text-blood mx-2">/</span> {ev.photos.length} photos
             </p>
           </div>
 
-          <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
-            {ev.photos.map((src, i) => (
-              <div
-                key={i}
-                onClick={() => openLightbox(i)}
-                className="group relative aspect-square overflow-hidden border border-silver/15 bg-panel cursor-pointer"
-              >
-                <img
-                  src={src}
-                  alt={`${ev.title} photo ${i + 1}`}
-                  className="w-full h-full object-cover grayscale contrast-125 brightness-90 transition-transform duration-700 group-hover:scale-110 group-hover:grayscale-0"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-void/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-                <span className="absolute bottom-2 left-2 font-mono text-[9px] tracking-[0.2em] text-bone opacity-0 group-hover:opacity-100 transition-opacity duration-500">
-                  {String(i + 1).padStart(3, "0")}
-                </span>
-              </div>
-            ))}
-          </div>
+          {ev.photos.length > 0 ? (
+            <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
+              {ev.photos.map((src, i) => (
+                <div
+                  key={i}
+                  onClick={() => openLightbox(i)}
+                  className="group relative aspect-square overflow-hidden border border-silver/15 bg-panel cursor-pointer"
+                >
+                  <img
+                    src={src}
+                    alt={`${ev.title} photo ${i + 1}`}
+                    className="w-full h-full object-cover grayscale contrast-125 brightness-90 transition-transform duration-700 group-hover:scale-110 group-hover:grayscale-0"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-void/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                  <span className="absolute bottom-2 left-2 font-mono text-[9px] tracking-[0.2em] text-bone opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+                    {String(i + 1).padStart(3, "0")}
+                  </span>
+                </div>
+              ))}
+            </div>
+          ) : (
+            <div className="flex flex-col items-center justify-center py-24 border border-silver/10 bg-panel/30">
+              <p className="eyebrow text-[10px] mb-4">Archive</p>
+              <p className="font-[var(--font-display)] uppercase text-3xl md:text-4xl tracking-[0.08em] text-silver/40">
+                Coming soon
+              </p>
+              <p className="mt-4 font-mono text-[11px] text-silver/40 uppercase tracking-[0.2em] text-center max-w-sm">
+                Footage from this event hasn't dropped yet
+              </p>
+            </div>
+          )}
         </section>
         {lightboxIndex !== null && (
           <Lightbox
@@ -89,8 +111,6 @@ export default function Gallery() {
       <div className="site-shell__grid" />
 
       <div className="fixed top-24 left-1/2 -translate-x-1/2 pointer-events-none select-none z-0 w-full max-w-5xl px-6 pt-35 flex items-center justify-center">
-
-
         <div className="opacity-5 mix-blend-screen scale-[1.6] md:scale-[2.2] w-full h-full flex items-center justify-center">
           <Image
             src="/images/logo/logo_white.png"
@@ -129,45 +149,55 @@ export default function Gallery() {
                 </p>
               </div>
 
-              <button
-                onClick={() => setActiveEvent(ev.id)}
-                className="font-mono text-[10px] uppercase tracking-[0.25em] text-blood hover:text-bone transition-colors duration-300 border-b border-blood/40 pb-1"
-              >
-                View all {ev.photos.length}
-              </button>
+              {ev.photos.length > 0 && (
+                <button
+                  onClick={() => setActiveEvent(ev.id)}
+                  className="font-mono text-[10px] uppercase tracking-[0.25em] text-blood hover:text-bone transition-colors duration-300 border-b border-blood/40 pb-1"
+                >
+                  View all {ev.photos.length}
+                </button>
+              )}
             </div>
 
-            <div
-              onClick={() => setActiveEvent(ev.id)}
-              className="grid grid-cols-2 md:grid-cols-5 gap-3 cursor-pointer"
-            >
-              {ev.photos.slice(0, 5).map((src, i) => {
-                const isLast = i === 4 && ev.photos.length > 5;
-                return (
-                  <div
-                    key={i}
-                    className="group relative aspect-square overflow-hidden border border-silver/15 bg-panel"
-                  >
-                    <img
-                      src={src}
-                      alt={`${ev.title} photo ${i + 1}`}
-                      className={`w-full h-full object-cover grayscale contrast-125 brightness-90 transition-transform duration-700 group-hover:scale-110 ${isLast ? "brightness-50" : "group-hover:grayscale-0"
-                        }`}
-                    />
-                    {!isLast && (
-                      <div className="absolute inset-0 bg-gradient-to-t from-void/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-                    )}
-                    {isLast && (
-                      <div className="absolute inset-0 flex items-center justify-center">
-                        <span className="font-mono text-sm md:text-base text-bone tracking-[0.1em]">
-                          +{ev.photos.length - 5}
-                        </span>
-                      </div>
-                    )}
-                  </div>
-                );
-              })}
-            </div>
+            {ev.photos.length > 0 ? (
+              <div className="grid grid-cols-2 md:grid-cols-3 gap-3 animate-[fadeUp_0.9s_ease_0.4s_both]">
+                {ev.photos.slice(0, 5).map((src, i) => {
+                  const isLast = i === 4 && ev.photos.length > 5;
+                  return (
+                    <div
+                      key={i}
+                      className="group relative aspect-square overflow-hidden border border-silver/15 bg-panel"
+                    >
+                      <img
+                        src={src}
+                        alt={`${ev.title} photo ${i + 1}`}
+                        className={`w-full h-full object-cover grayscale contrast-125 brightness-90 transition-transform duration-700 group-hover:scale-110 ${isLast ? "brightness-50" : "group-hover:grayscale-0"
+                          }`}
+                      />
+                      {!isLast && (
+                        <div className="absolute inset-0 bg-gradient-to-t from-void/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                      )}
+                      {isLast && (
+                        <div className="absolute inset-0 flex items-center justify-center">
+                          <span className="font-mono text-sm md:text-base text-bone tracking-[0.1em]">
+                            +{ev.photos.length - 5}
+                          </span>
+                        </div>
+                      )}
+                    </div>
+                  );
+                })}
+              </div>
+            ) : (
+              <div className="flex flex-col items-center justify-center py-24 border border-silver/10 bg-panel/30 animate-[fadeUp_0.9s_ease_0.4s_both]">
+                <p className="font-[var(--font-display)] uppercase text-2xl tracking-[0.08em] text-silver/40">
+                  Coming soon
+                </p>
+                <p className="mt-2 font-mono text-[10px] text-silver/30 uppercase tracking-[0.2em]">
+                  No footage yet
+                </p>
+              </div>
+            )}
 
             {idx < events.length - 1 && (
               <div className="mt-20 flex items-center justify-center gap-4 max-w-md mx-auto">
@@ -183,5 +213,13 @@ export default function Gallery() {
         ))}
       </section>
     </main>
+  );
+}
+
+export default function Gallery() {
+  return (
+    <Suspense fallback={null}>
+      <GalleryInner />
+    </Suspense>
   );
 }
