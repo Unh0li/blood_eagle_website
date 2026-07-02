@@ -27,13 +27,5 @@ export const residents = [
     instagram: "https://www.instagram.com/13.rnt/",
   },
   
-    {
-    id: 4,
-    name: "HOLIBOS",
-    image: "/images/residents/holibos.jpg",
-    description:
-      "Holibos je najbolsi producer na svetu",
-    soundcloud: "https://soundcloud.com/rnt13",
-    instagram: "https://www.instagram.com/13.rnt/",
-  },
+
 ];

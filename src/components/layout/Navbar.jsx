@@ -1,18 +1,51 @@
 "use client";
 
 import Link from "next/link";
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import { useAudio } from "@/context/AudioContext";
+
+function formatTime(ms) {
+  const totalSec = Math.floor(ms / 1000);
+  const min = Math.floor(totalSec / 60);
+  const sec = totalSec % 60;
+  return `${min}:${String(sec).padStart(2, "0")}`;
+}
 
 export default function Navbar() {
   const [logoSrc, setLogoSrc] = useState("/images/logo/chrome_static.png");
-  const { playing, toggle, volume, changeVolume } = useAudio();
+  const [pickerOpen, setPickerOpen] = useState(false);
+  const pickerRef = useRef(null);
+
+ const {
+    playing,
+    toggle,
+    pending,
+    volume,
+    changeVolume,
+    seekTo,
+    progress,
+    duration,
+    tracks,
+    trackIndex,
+    currentTrack,
+    selectTrack,
+    ready,
+  } = useAudio();
+
+  useEffect(() => {
+    const handler = (e) => {
+      if (pickerRef.current && !pickerRef.current.contains(e.target)) {
+        setPickerOpen(false);
+      }
+    };
+    window.addEventListener("mousedown", handler);
+    return () => window.removeEventListener("mousedown", handler);
+  }, []);
 
   return (
     <nav className="fixed top-0 left-0 w-full z-[100] bg-void/80 backdrop-blur-md border-b border-silver/15 text-silver font-mono text-[10px] tracking-[0.3em] uppercase">
       <div className="w-full px-6 py-5 flex items-center justify-between relative">
 
-        {/* leva stran */}
         <Link
           href="/"
           className="flex items-center gap-3 text-bone font-bold tracking-[0.3em] hover:text-blood transition-colors duration-300 group"
@@ -29,7 +62,6 @@ export default function Navbar() {
           <span className="hidden sm:inline">BLOOD EAGLE // INC</span>
         </Link>
 
-        {/* sredina */}
         <div className="hidden md:flex absolute left-1/2 -translate-x-1/2 items-center gap-8 text-[11px] tracking-[0.2em]">
           <Link href="/about" className="hover:text-bone hover:line-through transition-colors duration-300">About</Link>
           <Link href="/events" className="hover:text-bone hover:line-through transition-colors duration-300">Events</Link>
@@ -40,10 +72,8 @@ export default function Navbar() {
           <Link href="/contact" className="hover:text-bone hover:line-through transition-colors duration-300">Contact</Link>
         </div>
 
-        {/* desna stran - audio */}
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-3" ref={pickerRef}>
 
-          {/* volume slider */}
           <div className={`items-center gap-2 transition-all duration-500 ${playing ? "flex" : "hidden"}`}>
             <svg width="10" height="10" viewBox="0 0 10 10" className="text-silver/40 shrink-0">
               <polygon points="1,3 4,3 7,1 7,9 4,7 1,7" fill="currentColor" />
@@ -63,15 +93,57 @@ export default function Navbar() {
             </svg>
           </div>
 
-          {/* play/pause gumb */}
-          <button
+          <div className="relative">
+            <button
+              onClick={() => setPickerOpen((p) => !p)}
+              className="group relative flex items-center gap-2 border border-silver/15 hover:border-blood/50 px-3 py-1.5 transition-all duration-300 bg-void/40 backdrop-blur-sm overflow-hidden"
+              aria-label="Select track"
+            >
+              <span className="absolute inset-0 bg-blood/10 scale-x-0 group-hover:scale-x-100 origin-left transition-transform duration-300" />
+              <span className="relative text-[9px] tracking-[0.2em] text-silver max-w-[100px] truncate">
+                {currentTrack.title}
+              </span>
+              <span className={`relative text-[8px] transition-transform duration-300 ${pickerOpen ? "rotate-180" : ""}`}>
+                &#9662;
+              </span>
+            </button>
+
+            {pickerOpen && (
+              <div className="absolute right-0 top-full mt-2 w-64 border border-silver/15 bg-void/95 backdrop-blur-md z-[200] shadow-[0_10px_30px_rgba(0,0,0,0.6)]">
+                <div className="corner-ticks">
+                  <span style={{ top: 0, left: 0, borderTopWidth: 1, borderLeftWidth: 1 }} />
+                  <span style={{ bottom: 0, right: 0, borderBottomWidth: 1, borderRightWidth: 1 }} />
+                </div>
+                <p className="eyebrow text-[9px] px-4 pt-4 pb-2">Tracklist</p>
+                <div className="flex flex-col">
+                  {tracks.map((t, i) => (
+                    <button
+                      key={t.url}
+                      onClick={() => {
+                        selectTrack(i);
+                        setPickerOpen(false);
+                      }}
+                      className={`text-left px-4 py-3 border-t border-silver/10 hover:bg-blood/10 transition-colors duration-200 ${
+                        i === trackIndex ? "text-blood" : "text-silver hover:text-bone"
+                      }`}
+                    >
+                      <span className="block text-[10px] tracking-[0.15em] normal-case">{t.title}</span>
+                      <span className="block text-[9px] tracking-[0.2em] text-silver/50 mt-1">{t.artist}</span>
+                    </button>
+                  ))}
+                </div>
+              </div>
+            )}
+          </div>
+
+         <button
             onClick={toggle}
-            className="group relative flex items-center gap-2 border border-silver/15 hover:border-blood/50 px-3 py-1.5 transition-all duration-300 bg-void/40 backdrop-blur-sm overflow-hidden"
+            disabled={!ready || pending}
+            className="group relative flex items-center gap-2 border border-silver/15 hover:border-blood/50 px-3 py-1.5 transition-all duration-300 bg-void/40 backdrop-blur-sm overflow-hidden disabled:opacity-40 disabled:pointer-events-none"
             aria-label={playing ? "Pause" : "Play"}
           >
             <span className="absolute inset-0 bg-blood/10 scale-x-0 group-hover:scale-x-100 origin-left transition-transform duration-300" />
 
-            {/* EKG / flatline */}
             <svg width="28" height="12" className="relative shrink-0">
               {playing ? (
                 <polyline
@@ -98,6 +170,26 @@ export default function Navbar() {
 
         </div>
 
+      </div>
+
+      <div
+        className={`w-full px-6 overflow-hidden transition-all duration-300 ${
+          playing && duration > 0 ? "h-8 opacity-100 pb-2" : "h-0 opacity-0 pb-0"
+        }`}
+      >
+        <div className="flex items-center gap-3">
+          <span className="text-[9px] text-silver/40 shrink-0 w-8">{formatTime(progress)}</span>
+          <input
+            type="range"
+            min="0"
+            max={duration || 1}
+            step="1000"
+            value={progress}
+            onChange={(e) => seekTo(parseFloat(e.target.value))}
+            className="flex-1 h-px cursor-pointer accent-blood opacity-50 hover:opacity-100 transition-opacity duration-300"
+          />
+          <span className="text-[9px] text-silver/40 shrink-0 w-8 text-right">{formatTime(duration)}</span>
+        </div>
       </div>
     </nav>
   );

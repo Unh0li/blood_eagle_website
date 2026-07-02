@@ -1,11 +1,9 @@
 import { Archivo_Black, JetBrains_Mono } from "next/font/google";
 import localFont from "next/font/local";
+import Script from "next/script";
 import "./globals.css";
 import Navbar from "@/components/layout/Navbar";
 import { AudioProvider } from "@/context/AudioContext";
-
-
-
 
 export const metadata = {
   title: "Blood Eagle",
@@ -23,7 +21,6 @@ const jetbrainsMono = JetBrains_Mono({
   variable: "--font-mono",
 });
 
-
 const horrorFont = localFont({
   src: "fonts/MidnightLegacy.otf",
   variable: "--font-horror",
@@ -31,18 +28,16 @@ const horrorFont = localFont({
 
 export default function RootLayout({ children }) {
   return (
-
     <html
       lang="en"
       className={`${archivoBlack.variable} ${jetbrainsMono.variable} ${horrorFont.variable}`}
     >
       <body>
+        <Script src="https://w.soundcloud.com/player/api.js" strategy="afterInteractive" />
         <AudioProvider>
-
           <Navbar />
           {children}
         </AudioProvider>
-
       </body>
     </html>
   );
