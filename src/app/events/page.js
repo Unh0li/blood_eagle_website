@@ -2,6 +2,7 @@ import Link from "next/link";
 import { events } from "@/data/events";
 import Countdown from "@/components/home/Countdown";
 import Image from "next/image";
+import BloodDrips from "@/components/BloodDrips";
 
 function parseDate(dateStr) {
   return new Date(dateStr.replace(/(\d+)\s+(\w+)\s+(\d+)/, "$2 $1 $3"));
@@ -18,8 +19,13 @@ export default function Events() {
       <div className="site-shell__ambient">
         <div className="glow-red" />
         <div className="glow-silver" />
+        <div className="glow-accent" />
       </div>
       <div className="site-shell__grid" />
+      <div className="site-shell__slash" />
+      <div className="site-shell__vignette" />
+      <BloodDrips />
+
 
       <div className="fixed top-24 left-1/2 -translate-x-1/2 pointer-events-none select-none z-0 w-full max-w-5xl px-6 pt-35 flex items-center justify-center">
         <div className="opacity-5 mix-blend-screen scale-[1.6] md:scale-[2.2] w-full h-full flex items-center justify-center">

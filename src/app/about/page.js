@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import { residents } from "@/data/residents";
 import Image from "next/image";
+import BloodDrips from "@/components/BloodDrips";
 
 export default function AboutPage() {
   const [index, setIndex] = useState(0);
@@ -39,8 +40,14 @@ export default function AboutPage() {
       <div className="site-shell__ambient">
         <div className="glow-red" />
         <div className="glow-silver" />
+        <div className="glow-accent" />
       </div>
       <div className="site-shell__grid" />
+      <div className="site-shell__slash" />
+      <div className="site-shell__vignette" />
+      <BloodDrips />
+
+
 
       <div className="fixed top-24 left-1/2 -translate-x-1/2 pointer-events-none select-none z-0 w-full max-w-5xl px-6 pt-35 flex items-center justify-center">
 

@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { events } from "@/data/events";
 import Image from "next/image";
+import BloodDrips from "@/components/BloodDrips";
 
 export default function EventDetail({ params }) {
     const router = useRouter();
@@ -21,11 +22,16 @@ export default function EventDetail({ params }) {
 
     return (
         <main className="site-shell selection:bg-blood selection:text-black">
-            <div className="site-shell__ambient">
-                <div className="glow-red" />
-                <div className="glow-silver" />
-            </div>
-            <div className="site-shell__grid" />
+      <div className="site-shell__ambient">
+        <div className="glow-red" />
+        <div className="glow-silver" />
+        <div className="glow-accent" />
+      </div>
+      <div className="site-shell__grid" />
+      <div className="site-shell__slash" />
+      <div className="site-shell__vignette" />
+      <BloodDrips />
+
 
             <div className="fixed top-24 left-1/2 -translate-x-1/2 pointer-events-none select-none z-0 w-full max-w-5xl px-6 pt-35 flex items-center justify-center">
                 <div className="opacity-5 mix-blend-screen scale-[1.6] md:scale-[2.2] w-full h-full flex items-center justify-center">
@@ -52,8 +58,11 @@ export default function EventDetail({ params }) {
                 <div className="text-center mb-16 overflow-hidden">
                     <p className="eyebrow animate-[fadeUp_0.9s_ease_0.1s_both]">{ev.date}</p>
                     <h1
-                        className="mt-4 font-[var(--font-display)] uppercase text-[12vw] md:text-[6vw] leading-[0.85] tracking-[-0.01em] text-bone animate-[riseIn_0.9s_cubic-bezier(0.16,1,0.3,1)_0.15s_both]"
-                        style={{ WebkitTextStroke: "1px rgba(232,232,232,0.15)" }}
+                        className="mt-4 px-4 font-[var(--font-display)] uppercase leading-[0.85] tracking-[-0.01em] text-bone animate-[riseIn_0.9s_cubic-bezier(0.16,1,0.3,1)_0.15s_both] whitespace-nowrap"
+                        style={{
+                            WebkitTextStroke: "1px rgba(232,232,232,0.15)",
+                            fontSize: `clamp(1.5rem, ${9.0 - ev.title.length * 0.32}vw, 7rem)`,
+                        }}
                     >
                         {ev.title}
                     </h1>

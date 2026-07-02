@@ -1,14 +1,16 @@
 "use client";
 
 import { Suspense, useState, useEffect } from "react";
-import { useSearchParams } from "next/navigation";
+import { useSearchParams, useRouter } from "next/navigation";
 import Link from "next/link";
 import { events } from "@/data/events";
 import Lightbox from "@/components/gallery/Lightbox";
 import Image from "next/image";
+import BloodDrips from "@/components/BloodDrips";
 
 function GalleryInner() {
   const searchParams = useSearchParams();
+  const router = useRouter();
   const [activeEvent, setActiveEvent] = useState(null);
   const [lightboxIndex, setLightboxIndex] = useState(null);
 
@@ -16,11 +18,22 @@ function GalleryInner() {
     const eventId = searchParams.get("event");
     if (eventId && events.some((e) => e.id === eventId)) {
       setActiveEvent(eventId);
+    } else {
+      setActiveEvent(null);
     }
   }, [searchParams]);
 
+  const openEvent = (id) => {
+    router.push(`/gallery?event=${id}`, { scroll: false });
+  };
+
+  const closeEvent = () => {
+    router.push(`/gallery`, { scroll: false });
+  };
+
   if (activeEvent) {
     const ev = events.find((e) => e.id === activeEvent);
+    if (!ev) return null;
 
     const openLightbox = (i) => setLightboxIndex(i);
     const closeLightbox = () => setLightboxIndex(null);
@@ -32,27 +45,48 @@ function GalleryInner() {
         <div className="site-shell__ambient">
           <div className="glow-red" />
           <div className="glow-silver" />
+          <div className="glow-accent" />
         </div>
         <div className="site-shell__grid" />
+        <div className="site-shell__slash" />
+        <div className="site-shell__vignette" />
+        <BloodDrips />
+
+        <div className="fixed top-24 left-1/2 -translate-x-1/2 pointer-events-none select-none z-0 w-full max-w-5xl px-6 pt-35 flex items-center justify-center">
+          <div className="opacity-5 mix-blend-screen scale-[1.6] md:scale-[2.2] w-full h-full flex items-center justify-center">
+            <Image
+              src="/images/logo/logo_white.png"
+              alt="Blood Eagle Fixed Background Watermark"
+              width={1000}
+              height={1000}
+              className="object-contain w-full h-auto max-h-[55vh] filter blur-[0.5px]"
+              priority
+            />
+          </div>
+        </div>
 
         <section className="relative z-20 pt-32 px-6 max-w-6xl mx-auto pb-32">
           <button
-            onClick={() => setActiveEvent(null)}
+            onClick={closeEvent}
             className="group flex items-center gap-2 font-mono text-[11px] uppercase tracking-[0.3em] text-silver hover:text-blood transition-colors duration-300 mb-12 animate-[fadeUp_0.9s_ease_both]"
           >
             <span className="group-hover:-translate-x-1 transition-transform duration-300">&lsaquo;</span>
             Back to gallery
           </button>
 
-          <div className="text-center mb-16 overflow-hidden">
-            <p className="eyebrow animate-[fadeUp_0.9s_ease_0.1s_both]">{ev.date}</p>
+          <div className="text-center mb-24 flex flex-col items-center gap-y-12">
+            <p className="eyebrow animate-[fadeUp_0.9s_ease_0.1s_both]">
+              {ev.date}
+            </p>
+
             <h1
-              className="mt-4 font-[var(--font-display)] uppercase text-[10vw] md:text-[5vw] leading-[0.9] tracking-[-0.01em] text-bone animate-[riseIn_0.9s_cubic-bezier(0.16,1,0.3,1)_0.15s_both]"
+              className="w-full px-6 font-[var(--font-display)] uppercase text-[8.5vw] md:text-[5.5vw] leading-[0.9] tracking-[-0.01em] text-bone animate-[riseIn_0.9s_cubic-bezier(0.16,1,0.3,1)_0.15s_both] whitespace-nowrap"
               style={{ WebkitTextStroke: "1px rgba(232,232,232,0.12)" }}
             >
               {ev.title}
             </h1>
-            <p className="mt-4 font-mono text-xs text-silver uppercase tracking-[0.25em] animate-[fadeUp_0.9s_ease_0.3s_both]">
+
+            <p className="font-mono text-xs text-silver uppercase tracking-[0.25em] animate-[fadeUp_0.9s_ease_0.3s_both]">
               {ev.venue} <span className="text-blood mx-2">/</span> {ev.photos.length} photos
             </p>
           </div>
@@ -63,15 +97,15 @@ function GalleryInner() {
                 <div
                   key={i}
                   onClick={() => openLightbox(i)}
-                  className="group relative aspect-square overflow-hidden border border-silver/15 bg-panel cursor-pointer"
+                  className="group relative aspect-square overflow-hidden border border-silver/15 bg-panel cursor-pointer z-10"
                 >
                   <img
                     src={src}
                     alt={`${ev.title} photo ${i + 1}`}
-                    className="w-full h-full object-cover grayscale contrast-125 brightness-90 transition-transform duration-700 group-hover:scale-110 group-hover:grayscale-0"
+                    className="w-full h-full object-cover grayscale contrast-125 brightness-90 transition-transform duration-700 group-hover:scale-110 group-hover:grayscale-0 pointer-events-none"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-void/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-                  <span className="absolute bottom-2 left-2 font-mono text-[9px] tracking-[0.2em] text-bone opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+                  <div className="absolute inset-0 bg-gradient-to-t from-void/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
+                  <span className="absolute bottom-2 left-2 font-mono text-[9px] tracking-[0.2em] text-bone opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none">
                     {String(i + 1).padStart(3, "0")}
                   </span>
                 </div>
@@ -109,6 +143,7 @@ function GalleryInner() {
         <div className="glow-silver" />
       </div>
       <div className="site-shell__grid" />
+      <BloodDrips />
 
       <div className="fixed top-24 left-1/2 -translate-x-1/2 pointer-events-none select-none z-0 w-full max-w-5xl px-6 pt-35 flex items-center justify-center">
         <div className="opacity-5 mix-blend-screen scale-[1.6] md:scale-[2.2] w-full h-full flex items-center justify-center">
@@ -139,20 +174,22 @@ function GalleryInner() {
         {events.map((ev, idx) => (
           <div key={ev.id}>
             <div className="flex items-center justify-between mb-6 flex-wrap gap-4">
-              <div>
+              
+              {/* popravek */}
+              <div className="flex flex-col gap-y-4">
                 <p className="eyebrow text-[10px]">{ev.date}</p>
-                <h2 className="mt-2 font-[var(--font-display)] uppercase text-3xl md:text-4xl tracking-[0.08em] text-bone">
+                <h2 className="font-[var(--font-display)] uppercase text-3xl md:text-4xl tracking-[0.08em] text-bone leading-none m-0 p-0">
                   {ev.title}
                 </h2>
-                <p className="mt-1 font-mono text-[10px] text-silver uppercase tracking-[0.2em]">
+                <p className="font-mono text-[10px] text-silver uppercase tracking-[0.2em] m-0 p-0">
                   {ev.venue} <span className="text-blood mx-1">/</span> {ev.photos.length} photos
                 </p>
               </div>
 
               {ev.photos.length > 0 && (
                 <button
-                  onClick={() => setActiveEvent(ev.id)}
-                  className="font-mono text-[10px] uppercase tracking-[0.25em] text-blood hover:text-bone transition-colors duration-300 border-b border-blood/40 pb-1"
+                  onClick={() => openEvent(ev.id)}
+                  className="font-mono text-[10px] uppercase tracking-[0.25em] text-blood hover:text-bone transition-colors duration-300 border-b border-blood/40 pb-1 relative z-10 cursor-pointer"
                 >
                   View all {ev.photos.length}
                 </button>
@@ -166,19 +203,20 @@ function GalleryInner() {
                   return (
                     <div
                       key={i}
-                      className="group relative aspect-square overflow-hidden border border-silver/15 bg-panel"
+                      onClick={() => openEvent(ev.id)}
+                      className="group relative aspect-square overflow-hidden border border-silver/15 bg-panel cursor-pointer z-10"
                     >
                       <img
                         src={src}
                         alt={`${ev.title} photo ${i + 1}`}
-                        className={`w-full h-full object-cover grayscale contrast-125 brightness-90 transition-transform duration-700 group-hover:scale-110 ${isLast ? "brightness-50" : "group-hover:grayscale-0"
+                        className={`w-full h-full object-cover grayscale contrast-125 brightness-90 transition-transform duration-700 group-hover:scale-110 pointer-events-none ${isLast ? "brightness-50" : "group-hover:grayscale-0"
                           }`}
                       />
                       {!isLast && (
-                        <div className="absolute inset-0 bg-gradient-to-t from-void/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                        <div className="absolute inset-0 bg-gradient-to-t from-void/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
                       )}
                       {isLast && (
-                        <div className="absolute inset-0 flex items-center justify-center">
+                        <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
                           <span className="font-mono text-sm md:text-base text-bone tracking-[0.1em]">
                             +{ev.photos.length - 5}
                           </span>

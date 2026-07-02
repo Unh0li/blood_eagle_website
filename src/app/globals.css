@@ -1,12 +1,11 @@
 @import "tailwindcss";
 
 :root {
-  --color-void: #070707;
-  --color-panel: #0c0c0c;
+  --color-void: #020202;
+  --color-panel: #080808;
   --color-bone: #e8e8e8;
   --color-silver: #8a8a8a;
   --color-blood: #c81e1e;
-
   --background: var(--color-void);
   --foreground: var(--color-bone);
 }
@@ -14,22 +13,21 @@
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-
   --color-void: var(--color-void);
   --color-panel: var(--color-panel);
   --color-bone: var(--color-bone);
   --color-silver: var(--color-silver);
   --color-blood: var(--color-blood);
-
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
   --font-display: var(--font-display);
-
   --font-horror: var(--font-horror);
 }
 
 html {
   background: var(--color-void);
+    scrollbar-gutter: stable;
+
 }
 
 body {
@@ -45,6 +43,10 @@ body {
   color: #000000;
 }
 
+/* =====================
+   SITE SHELL
+===================== */
+
 .site-shell {
   position: relative;
   min-height: 100vh;
@@ -52,32 +54,36 @@ body {
   color: var(--color-bone);
 }
 
-.site-shell::before,
+/* heavy grain */
+.site-shell::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 60;
+  opacity: 0.13;
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* scanlines */
 .site-shell::after {
   content: "";
   position: fixed;
   inset: 0;
   pointer-events: none;
-}
-
-/* grain */
-.site-shell::before {
-  z-index: 60;
-  opacity: 0.045;
-  mix-blend-mode: overlay;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-}
-
-/* scanlines */
-.site-shell::after {
   z-index: 55;
-  opacity: 0.06;
+  opacity: 0.15;
   background-image: repeating-linear-gradient(to bottom,
       transparent 0px,
       transparent 2px,
-      #ffffff 3px,
+      rgba(0, 0, 0, 1) 3px,
       transparent 4px);
 }
+
+/* =====================
+   AMBIENT
+===================== */
 
 .site-shell__ambient {
   position: fixed;
@@ -88,37 +94,327 @@ body {
 
 .site-shell__ambient .glow-red {
   position: absolute;
-  top: -33%;
+  bottom: -40%;
   left: 50%;
   transform: translateX(-50%);
-  width: 140vw;
-  height: 140vw;
+  width: 180vw;
+  height: 100vw;
   border-radius: 9999px;
-  background: radial-gradient(circle, rgba(200, 30, 30, 0.1) 0%, transparent 60%);
-  animation: drift 22s ease-in-out infinite;
+  background: radial-gradient(ellipse at center,
+      rgba(160, 10, 10, 0.28) 0%,
+      rgba(100, 5, 5, 0.12) 40%,
+      transparent 68%);
+  animation: drift 28s ease-in-out infinite;
 }
 
 .site-shell__ambient .glow-silver {
   position: absolute;
-  top: 50%;
-  right: -33%;
-  width: 100vw;
-  height: 100vw;
+  top: -20%;
+  left: -10%;
+  width: 70vw;
+  height: 70vw;
   border-radius: 9999px;
-  background: radial-gradient(circle, rgba(138, 138, 138, 0.06) 0%, transparent 60%);
-  animation: drift2 28s ease-in-out infinite;
+  background: radial-gradient(circle,
+      rgba(140, 8, 8, 0.08) 0%,
+      transparent 60%);
+  animation: drift2 32s ease-in-out infinite;
 }
+
+.site-shell__ambient .glow-accent {
+  position: absolute;
+  top: -10%;
+  right: -10%;
+  width: 50vw;
+  height: 50vw;
+  border-radius: 9999px;
+  background: radial-gradient(circle,
+      rgba(80, 0, 0, 0.12) 0%,
+      transparent 60%);
+  animation: drift2 20s ease-in-out 5s infinite;
+}
+
+/* =====================
+   GRID
+===================== */
 
 .site-shell__grid {
   position: fixed;
   inset: 0;
   z-index: 0;
   pointer-events: none;
-  opacity: 0.35;
-  background-image: linear-gradient(to right, rgba(232, 232, 232, 0.04) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(232, 232, 232, 0.04) 1px, transparent 1px);
-  background-size: 64px 64px;
 }
+
+.site-shell__grid::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(to right, rgba(180, 20, 20, 0.06) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(180, 20, 20, 0.06) 1px, transparent 1px);
+  background-size: 44px 44px;
+  animation: gridFlicker 8s ease-in-out infinite;
+}
+
+.site-shell__grid::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(to right, rgba(220, 220, 220, 0.04) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(220, 220, 220, 0.04) 1px, transparent 1px);
+  background-size: 220px 220px;
+  animation: gridFlicker 8s ease-in-out 4s infinite;
+}
+
+@keyframes gridFlicker {
+
+  0%,
+  100% {
+    opacity: 0.6;
+  }
+
+  48% {
+    opacity: 0.6;
+  }
+
+  50% {
+    opacity: 0.1;
+  }
+
+  52% {
+    opacity: 0.6;
+  }
+
+  78% {
+    opacity: 0.7;
+  }
+
+  80% {
+    opacity: 0.05;
+  }
+
+  82% {
+    opacity: 0.7;
+  }
+}
+
+/* =====================
+   VIGNETTE
+===================== */
+
+.site-shell__vignette {
+  position: fixed;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+  background: radial-gradient(ellipse at center,
+      transparent 58%,
+      rgba(0, 0, 0, .20) 82%,
+      rgba(0, 0, 0, .50) 100%);
+}
+
+/* =====================
+   SLASH DIAGONAL
+===================== */
+
+.site-shell__slash {
+  position: fixed;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  opacity: 0.018;
+  background-image: repeating-linear-gradient(-55deg,
+      transparent,
+      transparent 50px,
+      rgba(200, 30, 30, 1) 50px,
+      rgba(200, 30, 30, 1) 51px);
+}
+
+/* =====================
+   BLOOD DRIPS
+===================== */
+
+.site-shell__drip {
+  position: fixed;
+  inset: 0;
+  top: 56px;
+  /* pod navbarom */
+  z-index: 98;
+  /* pod navbarom ki ima z-index 100 */
+  pointer-events: none;
+  overflow: visible;
+}
+
+.drip {
+  position: absolute;
+
+  height: 0;
+
+  border-radius: 999px;
+
+  background: linear-gradient(to bottom,
+      rgba(180, 20, 20, 0) 0%,
+      rgba(170, 18, 18, .22) 12%,
+      rgba(190, 28, 28, .72) 48%,
+      rgba(145, 12, 12, .82) 72%,
+      rgba(95, 6, 6, .35) 94%,
+      transparent 100%);
+
+  filter: blur(.25px);
+
+  mix-blend-mode: screen;
+
+  animation: dripFall linear infinite;
+}
+
+/* odblesk ob strani kapljice */
+.drip::before {
+  content: "";
+
+  position: absolute;
+
+  top: 12%;
+  left: -0.5px;
+
+  width: 1px;
+  height: 35%;
+
+  border-radius: 999px;
+
+  background: linear-gradient(to bottom,
+      transparent,
+      rgba(255, 120, 120, .35),
+      transparent);
+
+  opacity: .7;
+}
+
+/* kapljica na dnu */
+.drip::after {
+  content: "";
+
+  position: absolute;
+
+  left: 50%;
+  bottom: -3px;
+
+  transform: translateX(-50%);
+
+  width: 0;
+  height: 0;
+
+  border-radius: 50%;
+
+  background: radial-gradient(circle,
+      rgba(220, 60, 60, .85),
+      rgba(120, 10, 10, .25),
+      transparent);
+
+  filter: blur(.4px);
+
+  opacity: 0;
+
+  animation-name: dropSwell;
+  animation-duration: inherit;
+  animation-delay: inherit;
+  animation-iteration-count: inherit;
+  animation-timing-function: ease-in;
+}
+
+.drip--rain {
+  animation-name: bloodRainFall;
+  animation-timing-function: cubic-bezier(0.4, 0, 0.7, 1);
+  animation-iteration-count: infinite;
+}
+
+@keyframes bloodRainFall {
+  0% {
+    height: calc(var(--drip-length) * 0.4);
+    transform: translateY(-80px);
+    opacity: 0;
+  }
+  12% {
+    opacity: 0.5;
+  }
+  30% {
+    height: var(--drip-length);
+  }
+  80% {
+    opacity: 0.25;
+  }
+  100% {
+    height: var(--drip-length);
+    transform: translateY(100vh);
+    opacity: 0;
+  }
+}
+@keyframes dripFall {
+
+  0% {
+    height: 0;
+    opacity: 0;
+  }
+
+  8% {
+    opacity: .22;
+  }
+
+  30% {
+    height: calc(var(--drip-length) * .25);
+    opacity: .20;
+  }
+
+  55% {
+    height: calc(var(--drip-length) * .55);
+    opacity: .17;
+  }
+
+  80% {
+    height: calc(var(--drip-length) * .85);
+    opacity: .10;
+  }
+
+  100% {
+    height: var(--drip-length);
+    opacity: 0;
+  }
+}
+
+@keyframes dropSwell {
+
+  0%,
+  40% {
+    width: 0;
+    height: 0;
+    opacity: 0;
+  }
+
+  55% {
+    width: 3px;
+    height: 3px;
+    opacity: .55;
+  }
+
+  75% {
+    width: 5px;
+    height: 6px;
+    opacity: .6;
+  }
+
+  90% {
+    width: 6px;
+    height: 7px;
+    opacity: .35;
+  }
+
+  100% {
+    width: 0;
+    height: 0;
+    opacity: 0;
+  }
+}
+
+/*utility*/
 
 .eyebrow {
   color: var(--color-blood);
@@ -149,6 +445,8 @@ body {
   z-index: 30;
 }
 
+/*animacije*/
+
 @keyframes riseIn {
   from {
     opacity: 0;
@@ -160,7 +458,6 @@ body {
     opacity: 1;
     transform: translateY(0);
     letter-spacing: 0.12em;
-    /* ujema se s tracking-[0.08em] */
   }
 }
 
@@ -176,16 +473,6 @@ body {
   }
 }
 
-@keyframes scanSweep {
-  0% {
-    top: -10%;
-  }
-
-  100% {
-    top: 110%;
-  }
-}
-
 @keyframes drift {
 
   0%,
@@ -194,7 +481,7 @@ body {
   }
 
   50% {
-    transform: translate(-50%, 6%) scale(1.1);
+    transform: translate(-50%, 4%) scale(1.06);
   }
 }
 
@@ -206,28 +493,37 @@ body {
   }
 
   50% {
-    transform: translate(-4%, -5%) scale(1.08);
+    transform: translate(-2%, -3%) scale(1.04);
   }
-
-
-
 }
 
+@keyframes scanSweep {
+  0% {
+    top: -10%;
+  }
+
+  100% {
+    top: 110%;
+  }
+}
+
+/*3d title*/
+
 .title-3d {
+  text-align: center;
+  display:inline-block;
   color: #1a0202;
   -webkit-text-stroke: 1.5px #c81e1e;
   text-stroke: 1.5px #c81e1e;
-
   text-shadow:
     0 0 30px rgba(200, 30, 30, 0.12),
     2px 2px 0px #7a0a0a,
     4px 4px 0px #550707,
     6px 6px 0px #380404,
     8px 10px 16px rgba(0, 0, 0, 0.97);
-
   animation:
     riseIn 1.5s cubic-bezier(0.16, 1, 0.3, 1) both,
-    titleBreath 6s ease-in-out 0.9s infinite;
+    titleBreath 6s ease-in-out 1.5s infinite;
 }
 
 @keyframes titleBreath {
@@ -260,6 +556,9 @@ body {
     filter: brightness(1.15);
   }
 }
+
+/*ekg bullshit*/
+
 .ekg-line polyline {
   stroke-dasharray: 140;
   stroke-dashoffset: 140;
@@ -271,9 +570,11 @@ body {
   0% {
     stroke-dashoffset: 140;
   }
+
   70% {
     stroke-dashoffset: 0;
   }
+
   100% {
     stroke-dashoffset: -140;
   }

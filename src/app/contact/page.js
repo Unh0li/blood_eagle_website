@@ -1,14 +1,20 @@
+import BloodDrips from "@/components/BloodDrips";
 import Image from "next/image";
 import Link from "next/link";
 
 export default function Contact() {
     return (
         <main className="site-shell selection:bg-blood selection:text-black">
-            <div className="site-shell__ambient">
-                <div className="glow-red" />
-                <div className="glow-silver" />
-            </div>
-            <div className="site-shell__grid" />
+      <div className="site-shell__ambient">
+        <div className="glow-red" />
+        <div className="glow-silver" />
+        <div className="glow-accent" />
+      </div>
+      <div className="site-shell__grid" />
+      <div className="site-shell__slash" />
+      <div className="site-shell__vignette" />
+      <BloodDrips />
+
 
             <div className="fixed top-24 left-1/2 -translate-x-1/2 pointer-events-none select-none z-0 w-full max-w-5xl px-6 pt-35 flex items-center justify-center">
 
@@ -55,10 +61,10 @@ export default function Contact() {
         <span style={{ bottom: 0, right: 0, borderBottomWidth: 1, borderRightWidth: 1 }} />
     </div>
 
-    {/* Vertikalni container za kontakte */}
+    {/* za kontakt */}
     <div className="flex flex-col gap-y-12">
         
-        {/* Splošni kontakt */}
+        {/* splošni kontakt */}
         <div className="flex flex-col items-center">
             <p className="eyebrow text-[10px] mb-3 tracking-[0.3em] text-silver/50 uppercase">General Questions</p>
             <a
@@ -69,10 +75,10 @@ export default function Contact() {
             </a>
         </div>
 
-        {/* Minimalistična vmesna linija med maili */}
+        {/* line med maili */}
         <div className="mx-auto h-px w-12 bg-blood/30" />
 
-        {/* Booking agent */}
+        {/* booking agent */}
         <div className="flex flex-col items-center">
             <p className="eyebrow text-[10px] mb-3 tracking-[0.3em] text-silver/50 uppercase">Booking Agent</p>
             <a
@@ -83,10 +89,10 @@ export default function Contact() {
             </a>
         </div>
 
-        {/* Ločilna linija pred lokacijo */}
+        {/* locilna linija*/}
         <div className="mx-auto h-px w-full max-w-[240px] bg-gradient-to-r from-transparent via-silver/20 to-transparent my-2" />
 
-        {/* Location */}
+        {/* lokacija */}
         <div className="flex flex-col items-center">
             <p className="eyebrow text-[10px] mb-3 tracking-[0.3em] text-silver/50 uppercase">Location</p>
             <p className="font-mono text-sm text-silver uppercase tracking-[0.2em] leading-7">
