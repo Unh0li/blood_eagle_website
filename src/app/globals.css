@@ -580,3 +580,8 @@ body {
   }
 }
 
+.ekg-line-nav {
+  stroke-dasharray: 60;
+  stroke-dashoffset: 60;
+  animation: ekgDraw 2.5s linear infinite;
+}

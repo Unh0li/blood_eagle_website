@@ -1,7 +1,10 @@
 import { Archivo_Black, JetBrains_Mono } from "next/font/google";
-import localFont from "next/font/local"; // 1. Uvozi localFont
+import localFont from "next/font/local";
 import "./globals.css";
 import Navbar from "@/components/layout/Navbar";
+import { AudioProvider } from "@/context/AudioContext";
+
+
 
 
 export const metadata = {
@@ -34,8 +37,12 @@ export default function RootLayout({ children }) {
       className={`${archivoBlack.variable} ${jetbrainsMono.variable} ${horrorFont.variable}`}
     >
       <body>
-        <Navbar />
-        {children}
+        <AudioProvider>
+
+          <Navbar />
+          {children}
+        </AudioProvider>
+
       </body>
     </html>
   );
