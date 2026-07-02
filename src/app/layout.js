@@ -3,6 +3,7 @@ import localFont from "next/font/local"; // 1. Uvozi localFont
 import "./globals.css";
 import Navbar from "@/components/layout/Navbar";
 
+
 export const metadata = {
   title: "Blood Eagle",
   description: "Blood Eagle is a Industrial techno collective based in Ljubljana, Slovenia.",
@@ -21,7 +22,7 @@ const jetbrainsMono = JetBrains_Mono({
 
 
 const horrorFont = localFont({
-  src: "fonts/MidnightLegacy.otf", 
+  src: "fonts/MidnightLegacy.otf",
   variable: "--font-horror",
 });
 
