@@ -64,6 +64,46 @@ body {
 }
 
 
+/* drsnik */
+
+html {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(200, 30, 30, 0.55) transparent;
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: #050505;
+  border-left: 1px solid rgba(138, 138, 138, 0.08);
+}
+
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(
+    to bottom,
+    rgba(200, 30, 30, 0.75),
+    rgba(120, 12, 12, 0.75)
+  );
+  border: 2px solid #050505;
+  border-radius: 999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(
+    to bottom,
+    rgba(230, 40, 40, 0.95),
+    rgba(150, 16, 16, 0.95)
+  );
+}
+
+::-webkit-scrollbar-corner {
+  background: #050505;
+}
+
+
 /* ovoj strani */
 
 .site-shell {
@@ -117,11 +157,17 @@ body {
 
 /* ambient */
 
+/* translateZ(0) potisne plast v svoj sloj kompozitorja
+   brez tega mobilni brskalnik med hitrim drsenjem odlozi izris fiksne plasti
+   in preliv za hip utripne, nato izgine */
 .site-shell__ambient {
   position: fixed;
   inset: 0;
   z-index: 0;
   pointer-events: none;
+
+  transform: translateZ(0);
+  backface-visibility: hidden;
 }
 
 .site-shell__ambient .glow-red {
@@ -181,6 +227,30 @@ body {
   );
 
   animation: drift2 20s ease-in-out 5s infinite;
+}
+
+/* na telefonu preliv ostane, a se ne premika
+   animiranje fiksne plasti jo sili v ponovno rasterizacijo med drsenjem,
+   rdeci preliv je bil pri 741x412 tudi vecji od samega zaslona */
+@media (max-width: 767px) {
+  .site-shell__ambient .glow-red,
+  .site-shell__ambient .glow-silver,
+  .site-shell__ambient .glow-accent {
+    animation: none;
+  }
+
+  /* visina v vh, ne vw
+     na ozkem visokem zaslonu je vw dal prenizek preliv, ki ga je bottom
+     potisnil povsem pod rob, zato na telefonu sploh ni bil viden */
+  .site-shell__ambient .glow-red {
+    width: 170vw;
+    height: 55vh;
+    bottom: -16vh;
+  }
+
+  .site-shell__ambient .glow-accent {
+    display: none;
+  }
 }
 
 

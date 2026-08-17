@@ -97,7 +97,9 @@ export default function Contact() {
                     />
                 </div>
 
-                <div className="flex flex-wrap justify-center gap-x-12 gap-y-4 uppercase tracking-[0.25em] text-xs font-mono">
+                {/* manjsi razmik na telefonu, da gredo vse tri v eno vrstico
+                    negativni desni rob pobere presledek, ki ga doda tracking */}
+                <div className="flex flex-wrap justify-center gap-x-6 sm:gap-x-12 gap-y-4 -mr-[0.25em] uppercase tracking-[0.25em] text-xs font-mono">
                     {[
                         { name: "Instagram", url: "https://www.instagram.com/blood.eagle.inc/" },
                         { name: "SoundCloud", url: "https://soundcloud.com/blood-eagle24" },

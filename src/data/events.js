@@ -18,10 +18,11 @@ export const events = [
         venue: "PUBLIKA BARKLUB, LJUBLJANA",
         genre: "Bochka",
         lineup: ["FOGG", "PLAZ", "ZVITA", "LINDEX B2B TERROR"],
-        timetable: [{
-            act: "Doors",
-            time: "20:00"
-        }
+        timetable: [{ time: "20:00 - 22:00", act: "DOORS    " },
+            { time: "22:00 - 00:00", act: "ZVITA" },
+            { time: "00:00 - 02:00", act: "LINDEX B2B TERROR" },
+            { time: "02:00 - 03:30", act: "PLAZ" },
+            { time: "03:30 - 05:00", act: "FOGG" },
 
         ],
         photos: berzerkPhotos,

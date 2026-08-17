@@ -462,7 +462,8 @@ export default function Home() {
         <section className="relative z-20 flex flex-col items-center py-24 text-center">
           <Divider label="Follow Blood Eagle" className="mb-10 w-full max-w-xs" />
 
-          <div className="flex flex-wrap items-center justify-center gap-x-10 gap-y-4 font-mono text-xs uppercase tracking-[0.25em]">
+          {/* enako kot na kontaktu, manjsi razmik na telefonu in popravek za tracking */}
+          <div className="flex flex-wrap items-center justify-center gap-x-6 sm:gap-x-10 gap-y-4 -mr-[0.25em] font-mono text-xs uppercase tracking-[0.25em]">
             {SOCIAL_LINKS.map(({ name, url }) => (
              <a 
                 key={name}

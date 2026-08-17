@@ -154,7 +154,7 @@ export default async function Events() {
                       </Link>
                     ) : (
                       <span className="font-mono text-[10px] uppercase tracking-[0.25em] text-silver/60">
-                        Coming soon
+                        Photos coming soon
                       </span>
                     )}
                   </div>

@@ -13,7 +13,7 @@ export const residents = [
     name: "TERRØR",
     image: "/images/residents/terror.jpg",
     description:
-      "TERROR is a DJ from Slovenia who has been making waves in the underground scene. His sets are known for their aggressive energy and unique blend of genres.",
+      "TERRØR is a 26 year old DJ based in Ljubljana, Slovenia. He got into music at the start of high school, when he started playing guitar and slowly started learning metal, mostly deathcore vocals. His sound is orianted towards dark melodies and a tight, heavy groove, shaped by years of his passion for metal music. Coming from a style of music that's already heavy hitting and rapid, he combines those aggressive elements with eerie melodies and war chants to craft an ominous industrial atmosphere.",
     soundcloud: "https://soundcloud.com/terror-rhythm",
     instagram: "https://www.instagram.com/terror_rhythm/",
   },
