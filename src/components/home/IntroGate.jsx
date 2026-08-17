@@ -46,6 +46,14 @@ const seamVariants = {
   },
 };
 
+// Two short glowing segments rather than one continuous line. The clear gap
+// spans 32-74%, which brackets the content block (measured at 37-68% of the
+// viewport: logo from 37%, button ending at 68%) with margin on both sides.
+const EDGE_LINE = {
+  background:
+    "linear-gradient(to bottom, transparent 0%, rgba(200,30,30,0.45) 14%, transparent 32%, transparent 74%, rgba(200,30,30,0.45) 88%, transparent 100%)",
+};
+
 // Content leaves slightly ahead of the doors so it reads as receding behind them.
 const contentVariants = {
   visible: { opacity: 1, scale: 1 },
@@ -105,9 +113,12 @@ export default function IntroGate({ onEnter, onDone }) {
             className="absolute inset-y-0 left-0 w-1/2 bg-void pointer-events-auto"
             aria-hidden="true"
           >
-            {/* lit inner edge */}
-            <span className="absolute inset-y-0 right-0 w-px bg-gradient-to-b from-transparent via-blood/60 to-transparent" />
-            <span className="absolute inset-y-0 right-0 w-16 bg-gradient-to-l from-blood/[0.07] to-transparent" />
+            {/* Lit inner edge. The glow is deliberately absent through the
+                middle third: a full-height line cut straight across the logo
+                and the button, which is what made the seam look drawn on
+                rather than like light between two doors. */}
+            <span className="absolute inset-y-0 right-0 w-px" style={EDGE_LINE} />
+            <span className="absolute inset-y-0 right-0 w-10 bg-gradient-to-l from-blood/[0.05] to-transparent" />
           </motion.div>
 
           {/* RIGHT DOOR */}
@@ -117,8 +128,8 @@ export default function IntroGate({ onEnter, onDone }) {
             className="absolute inset-y-0 right-0 w-1/2 bg-void pointer-events-auto"
             aria-hidden="true"
           >
-            <span className="absolute inset-y-0 left-0 w-px bg-gradient-to-b from-transparent via-blood/60 to-transparent" />
-            <span className="absolute inset-y-0 left-0 w-16 bg-gradient-to-r from-blood/[0.07] to-transparent" />
+            <span className="absolute inset-y-0 left-0 w-px" style={EDGE_LINE} />
+            <span className="absolute inset-y-0 left-0 w-10 bg-gradient-to-r from-blood/[0.05] to-transparent" />
           </motion.div>
 
           {/* FRONT UI LAYER — above the doors */}

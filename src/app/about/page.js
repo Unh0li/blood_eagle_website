@@ -316,10 +316,10 @@ export default function AboutPage() {
               </div>
 
               <div className="mt-8 pt-6 border-t border-silver/8 animate-[fadeUp_0.35s_ease_0.2s_both]">
-                <span className="font-mono text-[8px] tracking-[0.2em] text-silver/25 uppercase hidden sm:inline">
+                <span className="font-mono text-[8px] tracking-[0.2em] text-silver/55 uppercase hidden sm:inline">
                   Use arrow keys to navigate
                 </span>
-                <span className="font-mono text-[8px] tracking-[0.2em] text-silver/25 uppercase sm:hidden">
+                <span className="font-mono text-[8px] tracking-[0.2em] text-silver/55 uppercase sm:hidden">
                   Swipe to navigate
                 </span>
               </div>

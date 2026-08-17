@@ -176,7 +176,7 @@ function LatestCard({ event }) {
               {event.photos.length > 1 && (
                 <div className="absolute bottom-3 left-3 flex items-center gap-2 border border-silver/15 bg-void/70 px-2.5 py-1 backdrop-blur-sm">
                   <span className="h-1 w-1 rounded-full bg-silver/40" />
-                  <span className="font-mono text-[8px] uppercase tracking-[0.18em] text-silver/50">
+                  <span className="font-mono text-[8px] uppercase tracking-[0.18em] text-silver/80">
                     {event.photos.length} photos
                   </span>
                 </div>
@@ -196,7 +196,7 @@ function LatestCard({ event }) {
                       />
                       {i === 2 && event.photos.length > 4 && (
                         <div className="absolute inset-0 flex items-center justify-center bg-void/60">
-                          <span className="font-mono text-[8px] text-silver/40">
+                          <span className="font-mono text-[8px] text-silver/75">
                             +{event.photos.length - 4}
                           </span>
                         </div>
@@ -210,7 +210,7 @@ function LatestCard({ event }) {
         ) : (
           <div className="flex h-48 shrink-0 flex-col items-center justify-center gap-2 border-b border-silver/8 bg-panel/40 md:h-auto md:w-[45%] md:border-b-0 md:border-r">
             <span className="font-horror text-4xl text-silver/8" aria-hidden="true">ᚠ</span>
-            <span className="font-mono text-[8px] uppercase tracking-[0.3em] text-silver/20">No Photos</span>
+            <span className="font-mono text-[8px] uppercase tracking-[0.3em] text-silver/55">No Photos</span>
           </div>
         )}
 
@@ -219,44 +219,47 @@ function LatestCard({ event }) {
           <div>
             {/* No "Archive" tag here — the section divider above already reads
                 "Last Event" and the link below reads "Event Archive". */}
-            <p className="eyebrow mb-2 text-[9px]" style={{ color: "rgba(138,138,138,0.4)" }}>
+            {/* This card is meant to read as "archived" and sit quieter than the
+                upcoming one, but the old 22-45% opacities were unreadable on a
+                phone outdoors. Still muted, now above the legibility floor. */}
+            <p className="eyebrow mb-2 text-[9px]" style={{ color: "rgba(138,138,138,0.85)" }}>
               {event.date}
             </p>
 
-            <h3 className="font-display text-2xl uppercase leading-none tracking-[0.06em] text-bone/45 transition-colors duration-700 group-hover:text-bone/70 md:text-3xl">
+            <h3 className="font-display text-2xl uppercase leading-none tracking-[0.06em] text-bone/85 transition-colors duration-700 group-hover:text-bone md:text-3xl">
               {event.title}
             </h3>
 
-            <p className="mt-2 font-mono text-[10px] uppercase tracking-[0.18em] text-silver/28">
+            <p className="mt-2 font-mono text-[10px] uppercase tracking-[0.18em] text-silver">
               {event.venue}
             </p>
 
             {event.lineup?.length > 0 && (
-              <p className="mt-1.5 font-mono text-[9px] uppercase tracking-[0.15em] text-blood/25">
+              <p className="mt-1.5 font-mono text-[9px] uppercase tracking-[0.15em] text-blood/90">
                 {event.lineup.join(" / ")}
               </p>
             )}
           </div>
 
-          <div className="mt-8 flex items-center justify-between border-t border-silver/8 pt-5">
+          <div className="mt-8 flex items-center justify-between border-t border-silver/20 pt-5">
             <Link
               href="/events"
-              className="group/link relative py-1 font-mono text-[9px] uppercase tracking-[0.22em] text-silver/22 transition-colors duration-300 hover:text-silver/55"
+              className="group/link relative py-1 font-mono text-[9px] uppercase tracking-[0.22em] text-silver/80 transition-colors duration-300 hover:text-bone"
             >
               Event Archive
-              <span className="absolute bottom-0 left-0 h-px w-0 bg-silver/25 transition-all duration-300 group-hover/link:w-full" />
+              <span className="absolute bottom-0 left-0 h-px w-0 bg-silver/60 transition-all duration-300 group-hover/link:w-full" />
             </Link>
 
             {event.photos?.length > 0 && (
               <Link
                 href="/gallery"
-                className="group/link flex items-center gap-1.5 font-mono text-[9px] uppercase tracking-[0.22em] text-silver/28 transition-colors duration-300 hover:text-silver/55"
+                className="group/link flex items-center gap-1.5 font-mono text-[9px] uppercase tracking-[0.22em] text-silver/80 transition-colors duration-300 hover:text-bone"
               >
                 <span className="relative py-1">
                   View Gallery
-                  <span className="absolute bottom-0 left-0 h-px w-0 bg-silver/25 transition-all duration-300 group-hover/link:w-full" />
+                  <span className="absolute bottom-0 left-0 h-px w-0 bg-silver/60 transition-all duration-300 group-hover/link:w-full" />
                 </span>
-                <span className="text-silver/18 transition-colors duration-300 group-hover/link:text-silver/40">→</span>
+                <span className="text-silver/60 transition-colors duration-300 group-hover/link:text-bone">→</span>
               </Link>
             )}
           </div>

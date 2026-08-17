@@ -128,7 +128,7 @@ export default async function Events() {
                 <div className="group flex flex-col md:flex-row md:items-center justify-between gap-4 py-7 transition-all duration-300 hover:px-4">
 
                   <Link href={`/events/${ev.id}`} className="flex items-center gap-6 md:gap-10">
-                    <span className="font-mono text-[11px] text-silver/30 tracking-[0.2em] shrink-0 w-8 text-right">
+                    <span className="font-mono text-[11px] text-silver/60 tracking-[0.2em] shrink-0 w-8 text-right">
                       {String(idx + 1).padStart(2, "0")}
                     </span>
 
@@ -155,7 +155,7 @@ export default async function Events() {
                         Photos
                       </Link>
                     ) : (
-                      <span className="font-mono text-[10px] uppercase tracking-[0.25em] text-silver/30">
+                      <span className="font-mono text-[10px] uppercase tracking-[0.25em] text-silver/60">
                         Coming soon
                       </span>
                     )}

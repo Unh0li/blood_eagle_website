@@ -1,8 +1,14 @@
 "use client";
 
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState, useCallback } from "react";
 import { useAudio } from "@/context/AudioContext";
+
+// /events must stay lit on /events/berzerk-2026 too, but "/" would prefix-match
+// every route, so the root is the one that has to match exactly.
+const isActiveRoute = (pathname, href) =>
+  href === "/" ? pathname === "/" : pathname.startsWith(href);
 
 const NAV_ITEMS = [
   { label: "About", href: "/about" },
@@ -22,6 +28,7 @@ function formatTime(ms) {
 }
 
 export default function Navbar() {
+  const pathname = usePathname();
   const [logoSrc, setLogoSrc] = useState(LOGO_STATIC);
   const [pickerOpen, setPickerOpen] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -103,15 +110,20 @@ export default function Navbar() {
         {/* ── DESKTOP NAV — 5 enakih stolpcev, HOME vedno centriran ── */}
         <div className="hidden lg:grid absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 grid-cols-5 w-[520px] xl:w-[560px] h-10 border border-silver/10 bg-black/20">
           {NAV_ITEMS.map((item, i) => {
+            // isHome is purely the centre column's visual weight; isActive is
+            // which page you are actually on. These used to be the same flag,
+            // so HOME looked selected on every route.
             const isHome = i === 2;
+            const isActive = isActiveRoute(pathname, item.href);
             return (
               <Link
                 key={item.href}
                 href={item.href}
+                aria-current={isActive ? "page" : undefined}
                 className={[
                   "group relative flex items-center justify-center overflow-hidden transition-all duration-300",
                   i < NAV_ITEMS.length - 1 ? "border-r border-silver/10" : "",
-                  isHome ? "bg-blood/[0.025]" : "hover:bg-blood/[0.035]",
+                  isActive ? "bg-blood/[0.06]" : "hover:bg-blood/[0.035]",
                 ].join(" ")}
               >
                 <span
@@ -122,8 +134,11 @@ export default function Navbar() {
                   className={[
                     "relative z-10 transition-all duration-300",
                     isHome
-                      ? "text-[12px] font-bold tracking-[0.32em] text-bone group-hover:text-blood group-hover:tracking-[0.42em]"
-                      : "text-[9px] tracking-[0.26em] text-silver/65 group-hover:text-bone group-hover:tracking-[0.32em]",
+                      ? "text-[12px] font-bold tracking-[0.32em]"
+                      : "text-[9px] tracking-[0.26em]",
+                    isActive
+                      ? "text-blood"
+                      : "text-silver/65 group-hover:text-bone group-hover:tracking-[0.32em]",
                   ].join(" ")}
                   // letter-spacing doda trailing space ki vizualno premakne tekst levo.
                   // marginRight: -0.32em "odstrani" to trailing space iz layout-a → videz centriran
@@ -134,8 +149,8 @@ export default function Navbar() {
                 <span
                   className={[
                     "absolute bottom-0 left-1/2 -translate-x-1/2 h-px bg-blood transition-all duration-300",
-                    isHome
-                      ? "w-10 shadow-[0_0_10px_rgba(200,30,30,0.6)] group-hover:w-full"
+                    isActive
+                      ? "w-full shadow-[0_0_10px_rgba(200,30,30,0.6)]"
                       : "w-0 group-hover:w-1/2",
                   ].join(" ")}
                   aria-hidden="true"
@@ -189,7 +204,10 @@ export default function Navbar() {
               <div
                 role="listbox"
                 aria-label="Tracklist"
-                className="absolute right-0 top-full mt-2 w-[calc(100vw-2rem)] sm:w-72 max-w-72 border border-silver/10 bg-[#050505]/95 backdrop-blur-xl shadow-[0_20px_60px_rgba(0,0,0,0.8)] overflow-hidden z-50"
+                // On phones this is pinned to the viewport, not to the button:
+                // the button sits mid-cluster (play and menu are to its right),
+                // so right-0 pushed the 288px panel 35px off the left edge.
+                className="fixed left-4 right-4 top-[calc(var(--nav-h)+0.5rem)] w-auto max-w-none sm:absolute sm:left-auto sm:right-0 sm:top-full sm:mt-2 sm:w-72 sm:max-w-72 border border-silver/10 bg-[#050505]/95 backdrop-blur-xl shadow-[0_20px_60px_rgba(0,0,0,0.8)] overflow-hidden z-50"
               >
                 <div className="flex items-center justify-between px-4 py-3 border-b border-silver/10">
                   <span className="text-[8px] tracking-[0.35em] text-blood">TRACKLIST</span>
@@ -282,17 +300,29 @@ export default function Navbar() {
           <div className="grid grid-cols-1 gap-px border border-silver/10 bg-silver/5">
             {NAV_ITEMS.map((item, i) => {
               const isHome = i === 2;
+              const isActive = isActiveRoute(pathname, item.href);
               return (
                 <Link
                   key={item.href}
                   href={item.href}
                   onClick={closeMobile}
-                  className={`group relative flex items-center justify-between min-h-[48px] px-4 bg-[#050505] transition-all duration-300 hover:bg-blood/[0.04] ${isHome ? "text-bone" : "text-silver/70"}`}
+                  aria-current={isActive ? "page" : undefined}
+                  className={`group relative flex items-center justify-between min-h-[48px] px-4 transition-all duration-300 hover:bg-blood/[0.04] ${
+                    isActive ? "bg-blood/[0.07] text-blood" : "bg-[#050505] text-bone/85"
+                  }`}
                 >
-                  <span className={`text-[9px] tracking-[0.3em] transition-all duration-300 group-hover:text-bone group-hover:tracking-[0.38em] ${isHome ? "font-bold text-[11px]" : ""}`}>
+                  {/* Solid bar on the leading edge — colour alone is easy to miss
+                      on a phone in daylight. */}
+                  <span
+                    className={`absolute left-0 top-0 bottom-0 w-[3px] transition-colors duration-300 ${
+                      isActive ? "bg-blood" : "bg-transparent"
+                    }`}
+                    aria-hidden="true"
+                  />
+                  <span className={`text-[9px] tracking-[0.3em] transition-all duration-300 group-hover:tracking-[0.38em] ${isHome ? "font-bold text-[11px]" : ""}`}>
                     {item.label}
                   </span>
-                  <span className="text-blood/40 text-[8px] transition-transform duration-300 group-hover:translate-x-1" aria-hidden="true">→</span>
+                  <span className="text-blood/60 text-[8px] transition-transform duration-300 group-hover:translate-x-1" aria-hidden="true">→</span>
                   <span className="absolute bottom-0 left-0 h-px w-0 bg-blood group-hover:w-full transition-all duration-500" aria-hidden="true" />
                 </Link>
               );
