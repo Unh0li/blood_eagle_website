@@ -1,39 +1,20 @@
-import BloodDrips from "@/components/BloodDrips";
-import Image from "next/image";
+import SiteBackdrop from "@/components/SiteBackdrop";
 import Link from "next/link";
+
+// Set this to the real address once info@bloodeagle.si can actually receive
+// mail (mailbox or forwarding at the registrar). While it is null the whole
+// "General Questions" block is hidden — a mailto: pointing at a mailbox that
+// does not exist looks like it works, but silently swallows what visitors send.
+const GENERAL_EMAIL = null;
 
 export default function Contact() {
     return (
         <main className="site-shell selection:bg-blood selection:text-black">
-      <div className="site-shell__ambient">
-        <div className="glow-red" />
-        <div className="glow-silver" />
-        <div className="glow-accent" />
-      </div>
-      <div className="site-shell__grid" />
-      <div className="site-shell__slash" />
-      <div className="site-shell__vignette" />
-      <BloodDrips />
-
-
-            <div className="fixed top-24 left-1/2 -translate-x-1/2 pointer-events-none select-none z-0 w-full max-w-5xl px-6 pt-35 flex items-center justify-center">
-
-
-                <div className="opacity-5 mix-blend-screen scale-[1.6] md:scale-[2.2] w-full h-full flex items-center justify-center">
-                    <Image
-                        src="/images/logo/logo_white.png"
-                        alt="Blood Eagle Fixed Background Watermark"
-                        width={1000}
-                        height={1000}
-                        className="object-contain w-full h-auto max-h-[55vh] filter blur-[0.5px]"
-                        priority
-                    />
-                </div>
-            </div>
+            <SiteBackdrop />
 
             <section className="relative z-20 pt-32 text-center px-6">
                 <h1
-                    className="font-[var(--font-display)] uppercase text-[14vw] md:text-[7.5vw] leading-[0.82] tracking-[-0.02em] text-bone animate-[riseIn_0.9s_cubic-bezier(0.16,1,0.3,1)_both]"
+                    className="font-display uppercase text-[14vw] md:text-[7.5vw] leading-[0.82] tracking-[-0.02em] text-bone animate-[riseIn_0.9s_cubic-bezier(0.16,1,0.3,1)_both]"
                     style={{ WebkitTextStroke: "1px rgba(232,232,232,0.15)" }}
                 >
                     CONTACT
@@ -63,27 +44,31 @@ export default function Contact() {
 
     {/* za kontakt */}
     <div className="flex flex-col gap-y-12">
-        
-        {/* splošni kontakt */}
-        <div className="flex flex-col items-center">
-            <p className="eyebrow text-[10px] mb-3 tracking-[0.3em] text-silver/50 uppercase">General Questions</p>
-            <a
-                href="mailto:info@bloodeagle.si"
-                className="font-[var(--font-display)] uppercase text-2xl md:text-3xl tracking-[0.06em] text-bone hover:text-blood transition-colors duration-300"
-            >
-                info@bloodeagle.si
-            </a>
-        </div>
 
-        {/* line med maili */}
-        <div className="mx-auto h-px w-12 bg-blood/30" />
+        {/* splošni kontakt — skrit, dokler naslov ne obstaja. Glej GENERAL_EMAIL zgoraj. */}
+        {GENERAL_EMAIL && (
+            <>
+                <div className="flex flex-col items-center">
+                    <p className="eyebrow text-[10px] mb-3 tracking-[0.3em] text-silver/50 uppercase">General Questions</p>
+                    <a
+                        href={`mailto:${GENERAL_EMAIL}`}
+                        className="font-display uppercase text-2xl md:text-3xl tracking-[0.06em] text-bone hover:text-blood transition-colors duration-300 break-all"
+                    >
+                        {GENERAL_EMAIL}
+                    </a>
+                </div>
+
+                {/* line med maili */}
+                <div className="mx-auto h-px w-12 bg-blood/30" />
+            </>
+        )}
 
         {/* booking agent */}
         <div className="flex flex-col items-center">
             <p className="eyebrow text-[10px] mb-3 tracking-[0.3em] text-silver/50 uppercase">Booking Agent</p>
             <a
                 href="mailto:terror.industrial29@gmail.com"
-                className="font-[var(--font-display)] uppercase text-xl sm:text-2xl md:text-3xl lg:text-3xl tracking-[0.06em] text-bone hover:text-blood transition-colors duration-300 break-all"
+                className="font-display uppercase text-xl sm:text-2xl md:text-3xl lg:text-3xl tracking-[0.06em] text-bone hover:text-blood transition-colors duration-300 break-all"
             >
                 terror.industrial29@gmail.com
             </a>

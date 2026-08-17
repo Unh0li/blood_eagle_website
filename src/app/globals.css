@@ -1,39 +1,65 @@
 @import "tailwindcss";
 
+/* =========================================================
+   ROOT / THEME
+   ========================================================= */
+
 :root {
   --color-void: #020202;
   --color-panel: #080808;
   --color-bone: #e8e8e8;
   --color-silver: #8a8a8a;
   --color-blood: #c81e1e;
+
   --background: var(--color-void);
   --foreground: var(--color-bone);
+
+  /* Navbar height. Must track Navbar.jsx's h-16 / sm:h-[72px], which the
+     fixed rune and drip layers offset themselves against. */
+  --nav-h: 64px;
+
+  color-scheme: dark;
+}
+
+@media (min-width: 640px) {
+  :root {
+    --nav-h: 72px;
+  }
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
+
   --color-void: var(--color-void);
   --color-panel: var(--color-panel);
   --color-bone: var(--color-bone);
   --color-silver: var(--color-silver);
   --color-blood: var(--color-blood);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-  --font-display: var(--font-display);
-  --font-horror: var(--font-horror);
+
+  --font-mono: var(--font-mono-family);
+  --font-display: var(--font-display-family);
+  --font-horror: var(--font-horror-family);
 }
+
+
+/* =========================================================
+   BASE
+   ========================================================= */
 
 html {
   background: var(--color-void);
-    scrollbar-gutter: stable;
-
+  scrollbar-gutter: stable;
+  overflow-x: hidden;
 }
 
 body {
+  margin: 0;
   background: var(--color-void);
   color: var(--color-bone);
-  font-family: var(--font-sans), Arial, Helvetica, sans-serif;
+  /* No sans webfont is loaded — everything visible uses font-mono/display/horror.
+     This is only the fallback for unstyled text. */
+  font-family: Arial, Helvetica, sans-serif;
   -webkit-font-smoothing: antialiased;
   overflow-x: hidden;
 }
@@ -43,9 +69,10 @@ body {
   color: #000000;
 }
 
-/* =====================
+
+/* =========================================================
    SITE SHELL
-===================== */
+   ========================================================= */
 
 .site-shell {
   position: relative;
@@ -54,36 +81,56 @@ body {
   color: var(--color-bone);
 }
 
-/* heavy grain */
-.site-shell::before {
-  content: "";
-  position: fixed;
-  inset: 0;
-  pointer-events: none;
-  z-index: 60;
-  opacity: 0.13;
-  mix-blend-mode: overlay;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+
+/* =========================================================
+   HEAVY GRAIN
+   ========================================================= */
+
+/* A fixed, full-viewport mix-blend-mode layer has to be recomposited against
+   everything beneath it on every scroll. Barely visible on a phone, so it is
+   desktop-only. Same reasoning for the slash and grid layers below. */
+@media (min-width: 768px) {
+  .site-shell::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 60;
+
+    opacity: 0.13;
+    mix-blend-mode: overlay;
+
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
 }
 
-/* scanlines */
+
+/* =========================================================
+   SCANLINES
+   ========================================================= */
+
 .site-shell::after {
   content: "";
   position: fixed;
   inset: 0;
   pointer-events: none;
   z-index: 55;
+
   opacity: 0.15;
-  background-image: repeating-linear-gradient(to bottom,
-      transparent 0px,
-      transparent 2px,
-      rgba(0, 0, 0, 1) 3px,
-      transparent 4px);
+
+  background-image: repeating-linear-gradient(
+    to bottom,
+    transparent 0px,
+    transparent 2px,
+    rgba(0, 0, 0, 1) 3px,
+    transparent 4px
+  );
 }
 
-/* =====================
+
+/* =========================================================
    AMBIENT
-===================== */
+   ========================================================= */
 
 .site-shell__ambient {
   position: fixed;
@@ -96,14 +143,20 @@ body {
   position: absolute;
   bottom: -40%;
   left: 50%;
-  transform: translateX(-50%);
+
   width: 180vw;
   height: 100vw;
+
+  transform: translateX(-50%);
   border-radius: 9999px;
-  background: radial-gradient(ellipse at center,
-      rgba(160, 10, 10, 0.28) 0%,
-      rgba(100, 5, 5, 0.12) 40%,
-      transparent 68%);
+
+  background: radial-gradient(
+    ellipse at center,
+    rgba(160, 10, 10, 0.28) 0%,
+    rgba(100, 5, 5, 0.12) 40%,
+    transparent 68%
+  );
+
   animation: drift 28s ease-in-out infinite;
 }
 
@@ -111,12 +164,18 @@ body {
   position: absolute;
   top: -20%;
   left: -10%;
+
   width: 70vw;
   height: 70vw;
+
   border-radius: 9999px;
-  background: radial-gradient(circle,
-      rgba(140, 8, 8, 0.08) 0%,
-      transparent 60%);
+
+  background: radial-gradient(
+    circle,
+    rgba(140, 8, 8, 0.08) 0%,
+    transparent 60%
+  );
+
   animation: drift2 32s ease-in-out infinite;
 }
 
@@ -124,34 +183,60 @@ body {
   position: absolute;
   top: -10%;
   right: -10%;
+
   width: 50vw;
   height: 50vw;
+
   border-radius: 9999px;
-  background: radial-gradient(circle,
-      rgba(80, 0, 0, 0.12) 0%,
-      transparent 60%);
+
+  background: radial-gradient(
+    circle,
+    rgba(80, 0, 0, 0.12) 0%,
+    transparent 60%
+  );
+
   animation: drift2 20s ease-in-out 5s infinite;
 }
 
-/* =====================
+
+/* =========================================================
    GRID
-===================== */
+   ========================================================= */
 
 .site-shell__grid {
+  display: none;
+
   position: fixed;
   inset: 0;
   z-index: 0;
   pointer-events: none;
 }
 
+@media (min-width: 768px) {
+  .site-shell__grid {
+    display: block;
+  }
+}
+
 .site-shell__grid::before {
   content: "";
   position: absolute;
   inset: 0;
+
   background-image:
-    linear-gradient(to right, rgba(180, 20, 20, 0.06) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(180, 20, 20, 0.06) 1px, transparent 1px);
+    linear-gradient(
+      to right,
+      rgba(180, 20, 20, 0.06) 1px,
+      transparent 1px
+    ),
+    linear-gradient(
+      to bottom,
+      rgba(180, 20, 20, 0.06) 1px,
+      transparent 1px
+    );
+
   background-size: 44px 44px;
+
   animation: gridFlicker 8s ease-in-out infinite;
 }
 
@@ -159,15 +244,27 @@ body {
   content: "";
   position: absolute;
   inset: 0;
+
   background-image:
-    linear-gradient(to right, rgba(220, 220, 220, 0.04) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(220, 220, 220, 0.04) 1px, transparent 1px);
+    linear-gradient(
+      to right,
+      rgba(220, 220, 220, 0.04) 1px,
+      transparent 1px
+    ),
+    linear-gradient(
+      to bottom,
+      rgba(220, 220, 220, 0.04) 1px,
+      transparent 1px
+    );
+
   background-size: 220px 220px;
+
   animation: gridFlicker 8s ease-in-out 4s infinite;
 }
 
+/* Opacity is compositable, so this is cheap in isolation — but it repaints the
+   full viewport behind the navbar's backdrop-blur. Kept, at a slower cadence. */
 @keyframes gridFlicker {
-
   0%,
   100% {
     opacity: 0.6;
@@ -184,63 +281,69 @@ body {
   52% {
     opacity: 0.6;
   }
-
-  78% {
-    opacity: 0.7;
-  }
-
-  80% {
-    opacity: 0.05;
-  }
-
-  82% {
-    opacity: 0.7;
-  }
 }
 
-/* =====================
+
+/* =========================================================
    VIGNETTE
-===================== */
+   ========================================================= */
 
 .site-shell__vignette {
   position: fixed;
   inset: 0;
   z-index: 2;
   pointer-events: none;
-  background: radial-gradient(ellipse at center,
-      transparent 58%,
-      rgba(0, 0, 0, .20) 82%,
-      rgba(0, 0, 0, .50) 100%);
+
+  background: radial-gradient(
+    ellipse at center,
+    transparent 58%,
+    rgba(0, 0, 0, 0.2) 82%,
+    rgba(0, 0, 0, 0.5) 100%
+  );
 }
 
-/* =====================
-   SLASH DIAGONAL
-===================== */
+
+/* =========================================================
+   SLASH / DIAGONAL
+   ========================================================= */
 
 .site-shell__slash {
+  display: none;
+
   position: fixed;
   inset: 0;
   z-index: 1;
   pointer-events: none;
+
   opacity: 0.018;
-  background-image: repeating-linear-gradient(-55deg,
-      transparent,
-      transparent 50px,
-      rgba(200, 30, 30, 1) 50px,
-      rgba(200, 30, 30, 1) 51px);
+
+  background-image: repeating-linear-gradient(
+    -55deg,
+    transparent,
+    transparent 50px,
+    rgba(200, 30, 30, 1) 50px,
+    rgba(200, 30, 30, 1) 51px
+  );
 }
 
-/* =====================
+@media (min-width: 768px) {
+  .site-shell__slash {
+    display: block;
+  }
+}
+
+
+/* =========================================================
    BLOOD DRIPS
-===================== */
+   ========================================================= */
 
 .site-shell__drip {
   position: fixed;
   inset: 0;
-  top: 56px;
-  /* pod navbarom */
+  top: var(--nav-h);
+
   z-index: 98;
-  /* pod navbarom ki ima z-index 100 */
+
   pointer-events: none;
   overflow: visible;
 }
@@ -252,27 +355,26 @@ body {
 
   border-radius: 999px;
 
-  background: linear-gradient(to bottom,
-      rgba(180, 20, 20, 0) 0%,
-      rgba(170, 18, 18, .22) 12%,
-      rgba(190, 28, 28, .72) 48%,
-      rgba(145, 12, 12, .82) 72%,
-      rgba(95, 6, 6, .35) 94%,
-      transparent 100%);
+  background: linear-gradient(
+    to bottom,
+    rgba(180, 20, 20, 0) 0%,
+    rgba(170, 18, 18, 0.22) 12%,
+    rgba(190, 28, 28, 0.72) 48%,
+    rgba(145, 12, 12, 0.82) 72%,
+    rgba(95, 6, 6, 0.35) 94%,
+    transparent 100%
+  );
 
-  filter: blur(.25px);
-
-  mix-blend-mode: screen;
-
-  animation: dripFall linear infinite;
+  /* mix-blend-mode here forced the whole fixed drip layer out of the
+     compositor on every frame; the gradient already reads as translucent. */
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
 }
 
-/* odblesk ob strani kapljice */
 .drip::before {
   content: "";
 
   position: absolute;
-
   top: 12%;
   left: -0.5px;
 
@@ -281,36 +383,38 @@ body {
 
   border-radius: 999px;
 
-  background: linear-gradient(to bottom,
-      transparent,
-      rgba(255, 120, 120, .35),
-      transparent);
+  background: linear-gradient(
+    to bottom,
+    transparent,
+    rgba(255, 120, 120, 0.35),
+    transparent
+  );
 
-  opacity: .7;
+  opacity: 0.7;
 }
 
-/* kapljica na dnu */
 .drip::after {
   content: "";
 
   position: absolute;
-
   left: 50%;
   bottom: -3px;
-
-  transform: translateX(-50%);
 
   width: 0;
   height: 0;
 
+  transform: translateX(-50%);
+
   border-radius: 50%;
 
-  background: radial-gradient(circle,
-      rgba(220, 60, 60, .85),
-      rgba(120, 10, 10, .25),
-      transparent);
+  background: radial-gradient(
+    circle,
+    rgba(220, 60, 60, 0.85),
+    rgba(120, 10, 10, 0.25),
+    transparent
+  );
 
-  filter: blur(.4px);
+  filter: blur(0.4px);
 
   opacity: 0;
 
@@ -333,55 +437,27 @@ body {
     transform: translateY(-80px);
     opacity: 0;
   }
+
   12% {
     opacity: 0.5;
   }
+
   30% {
     height: var(--drip-length);
   }
+
   80% {
     opacity: 0.25;
   }
+
   100% {
     height: var(--drip-length);
     transform: translateY(100vh);
     opacity: 0;
   }
 }
-@keyframes dripFall {
-
-  0% {
-    height: 0;
-    opacity: 0;
-  }
-
-  8% {
-    opacity: .22;
-  }
-
-  30% {
-    height: calc(var(--drip-length) * .25);
-    opacity: .20;
-  }
-
-  55% {
-    height: calc(var(--drip-length) * .55);
-    opacity: .17;
-  }
-
-  80% {
-    height: calc(var(--drip-length) * .85);
-    opacity: .10;
-  }
-
-  100% {
-    height: var(--drip-length);
-    opacity: 0;
-  }
-}
 
 @keyframes dropSwell {
-
   0%,
   40% {
     width: 0;
@@ -392,19 +468,19 @@ body {
   55% {
     width: 3px;
     height: 3px;
-    opacity: .55;
+    opacity: 0.55;
   }
 
   75% {
     width: 5px;
     height: 6px;
-    opacity: .6;
+    opacity: 0.6;
   }
 
   90% {
     width: 6px;
     height: 7px;
-    opacity: .35;
+    opacity: 0.35;
   }
 
   100% {
@@ -414,21 +490,32 @@ body {
   }
 }
 
-/*utility*/
+
+/* =========================================================
+   UTILITY
+   ========================================================= */
 
 .eyebrow {
   color: var(--color-blood);
+
   text-transform: uppercase;
   letter-spacing: 0.5em;
-  font-family: var(--font-mono);
+
+  font-family: var(--font-mono-family);
   font-size: 0.75rem;
+
   white-space: nowrap;
 }
 
 .divider-line {
   flex: 1;
   height: 1px;
-  background: linear-gradient(to right, transparent, rgba(138, 138, 138, 0.4));
+
+  background: linear-gradient(
+    to right,
+    transparent,
+    rgba(138, 138, 138, 0.4)
+  );
 }
 
 .corner-ticks {
@@ -439,13 +526,19 @@ body {
 
 .corner-ticks span {
   position: absolute;
+
   width: 12px;
   height: 12px;
+
   border-color: rgba(138, 138, 138, 0.4);
+
   z-index: 30;
 }
 
-/*animacije*/
+
+/* =========================================================
+   GENERAL ANIMATIONS
+   ========================================================= */
 
 @keyframes riseIn {
   from {
@@ -474,7 +567,6 @@ body {
 }
 
 @keyframes drift {
-
   0%,
   100% {
     transform: translate(-50%, 0) scale(1);
@@ -486,7 +578,6 @@ body {
 }
 
 @keyframes drift2 {
-
   0%,
   100% {
     transform: translate(0, 0) scale(1);
@@ -507,62 +598,60 @@ body {
   }
 }
 
-/*3d title*/
+
+/* =========================================================
+   3D TITLE
+   ========================================================= */
 
 .title-3d {
+  display: inline-block;
+
   text-align: center;
-  display:inline-block;
+
   color: #1a0202;
+
   -webkit-text-stroke: 1.5px #c81e1e;
   text-stroke: 1.5px #c81e1e;
+
   text-shadow:
     0 0 30px rgba(200, 30, 30, 0.12),
-    2px 2px 0px #7a0a0a,
-    4px 4px 0px #550707,
-    6px 6px 0px #380404,
+    2px 2px 0 #7a0a0a,
+    4px 4px 0 #550707,
+    6px 6px 0 #380404,
     8px 10px 16px rgba(0, 0, 0, 0.97);
+
   animation:
     riseIn 1.5s cubic-bezier(0.16, 1, 0.3, 1) both,
     titleBreath 6s ease-in-out 1.5s infinite;
 }
 
+/* Was animating text-shadow, -webkit-text-stroke and color together, which
+   forces a text re-layout and repaint every frame on a 10vw heading. Only
+   transform and filter remain — both composite without touching layout. */
 @keyframes titleBreath {
-
   0%,
   100% {
-    color: #1a0202;
-    -webkit-text-stroke: 1.5px #c81e1e;
-    text-shadow:
-      0 0 30px rgba(200, 30, 30, 0.12),
-      2px 2px 0px #7a0a0a,
-      4px 4px 0px #550707,
-      6px 6px 0px #380404,
-      8px 10px 16px rgba(0, 0, 0, 0.97);
     transform: scale(1);
     filter: brightness(1);
   }
 
   50% {
-    color: #2a0303;
-    -webkit-text-stroke: 2px #e82222;
-    text-shadow:
-      0 0 60px rgba(200, 30, 30, 0.35),
-      0 0 100px rgba(200, 30, 30, 0.1),
-      2px 2px 0px #8a0d0d,
-      4px 4px 0px #650a0a,
-      6px 6px 0px #440707,
-      8px 10px 16px rgba(0, 0, 0, 0.97);
     transform: scale(1.012);
-    filter: brightness(1.15);
+    filter: brightness(1.2) saturate(1.15);
   }
 }
 
-/*ekg bullshit*/
+
+/* =========================================================
+   EKG
+   ========================================================= */
 
 .ekg-line polyline {
   stroke-dasharray: 140;
   stroke-dashoffset: 140;
+
   opacity: 0.35;
+
   animation: ekgDraw 4.5s linear infinite;
 }
 
@@ -583,5 +672,313 @@ body {
 .ekg-line-nav {
   stroke-dasharray: 60;
   stroke-dashoffset: 60;
+
   animation: ekgDraw 2.5s linear infinite;
+}
+
+@keyframes gatePulse {
+  0%,
+  100% {
+    transform: scale(1);
+    opacity: 0.8;
+  }
+
+  50% {
+    transform: scale(1.06);
+    opacity: 1;
+  }
+}
+
+
+/* =========================================================
+   RUNE COLUMNS
+   ========================================================= */
+
+/* Hidden below lg: two 48px columns ate a quarter of a 390px phone screen and
+   sat directly under the content and its tap targets. */
+.rune-col {
+  display: none;
+
+  position: fixed;
+
+  top: var(--nav-h);
+  bottom: 0;
+
+  width: 48px;
+
+  overflow: hidden;
+  pointer-events: none;
+
+  z-index: 15;
+
+  background:
+    radial-gradient(
+      circle at 30% 20%,
+      rgba(255, 255, 255, 0.01),
+      transparent 28%
+    ),
+    radial-gradient(
+      circle at 70% 65%,
+      rgba(255, 255, 255, 0.008),
+      transparent 35%
+    ),
+    linear-gradient(
+      to right,
+      rgba(255, 255, 255, 0.015),
+      #020202 15%,
+      #000 50%,
+      #020202 85%,
+      rgba(255, 255, 255, 0.015)
+    );
+
+  box-shadow:
+    inset 8px 0 18px rgba(255, 255, 255, 0.02),
+    inset -8px 0 18px rgba(255, 255, 255, 0.02);
+
+  -webkit-mask-image: linear-gradient(
+    to bottom,
+    transparent,
+    black 5%,
+    black 95%,
+    transparent
+  );
+
+  mask-image: linear-gradient(
+    to bottom,
+    transparent,
+    black 5%,
+    black 95%,
+    transparent
+  );
+}
+
+@media (min-width: 1024px) {
+  .rune-col {
+    display: block;
+  }
+}
+
+.rune-col--left {
+  left: 0;
+}
+
+.rune-col--right {
+  right: 0;
+}
+
+.rune-col::after {
+  content: "";
+
+  position: absolute;
+  inset: 0;
+
+  background: radial-gradient(
+    ellipse at center,
+    rgba(200, 30, 30, 0.06),
+    transparent 70%
+  );
+
+  filter: blur(12px);
+
+  opacity: 0.45;
+
+  pointer-events: none;
+}
+
+.rune-col__track {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  will-change: transform;
+}
+
+.rune-col__track--down {
+  animation: runeDown 34s linear infinite;
+}
+
+.rune-col__track--up {
+  animation: runeUp 34s linear infinite;
+}
+
+/* The glow used to be an infinite animation on text-shadow + filter, per glyph.
+   Neither property can be composited, so every glyph repainted every frame —
+   measured at 14fps on a throttled phone. It is now a static shadow; the only
+   thing still moving is the track's transform, which is GPU-cheap. */
+.rune-glyph {
+  display: block;
+
+  font-size: 26px;
+  line-height: 1;
+
+  padding: 10px 0;
+
+  color: rgba(255, 255, 255, 0.78);
+
+  font-family: serif;
+
+  user-select: none;
+
+  text-shadow:
+    0 0 10px rgba(255, 255, 255, 0.3),
+    0 0 24px rgba(255, 255, 255, 0.14);
+}
+
+/* Static variation, so the column still reads as irregular rather than uniform. */
+.rune-glyph:nth-child(5n) {
+  color: #fff;
+}
+
+.rune-glyph:nth-child(9n) {
+  opacity: 0.9;
+}
+
+.rune-glyph:nth-child(11n) {
+  transform: scale(1.08);
+}
+
+/* Breathing, on a minority of glyphs and via opacity only. Opacity composites,
+   so this stays off the paint path; the old runeFlicker animated filter and
+   text-shadow on all of them, which is what cost 4x the frame budget. Three
+   offset periods keep it from reading as a synchronised pulse. */
+.rune-glyph:nth-child(4n) {
+  animation: runeBreathe 6.5s ease-in-out infinite;
+}
+
+.rune-glyph:nth-child(7n) {
+  opacity: 0.45;
+  animation: runeBreathe 8.5s ease-in-out -2.4s infinite;
+}
+
+.rune-glyph:nth-child(13n) {
+  animation: runeBreathe 5.5s ease-in-out -4.1s infinite;
+}
+
+@keyframes runeBreathe {
+  0%,
+  100% {
+    opacity: 0.4;
+  }
+
+  50% {
+    opacity: 1;
+  }
+}
+
+/* Travelling highlight — a single translating gradient per column. */
+.rune-col__sweep {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+
+  height: 38%;
+
+  pointer-events: none;
+
+  background: linear-gradient(
+    to bottom,
+    transparent,
+    rgba(255, 255, 255, 0.04) 30%,
+    rgba(255, 150, 150, 0.11) 50%,
+    rgba(255, 255, 255, 0.04) 70%,
+    transparent
+  );
+
+  will-change: transform;
+
+  animation: runeSweep 9s linear infinite;
+}
+
+.rune-col__sweep--up {
+  animation-name: runeSweepUp;
+  animation-duration: 11s;
+  animation-delay: -3s;
+}
+
+@keyframes runeSweep {
+  from {
+    transform: translateY(-110%);
+  }
+
+  to {
+    transform: translateY(300%);
+  }
+}
+
+@keyframes runeSweepUp {
+  from {
+    transform: translateY(300%);
+  }
+
+  to {
+    transform: translateY(-110%);
+  }
+}
+
+/* Slow drifting haze behind the glyphs. A soft gradient translating, rather
+   than the blur(35px) layer this replaces — same softness, no filter pass. */
+.rune-col::before {
+  content: "";
+
+  position: absolute;
+  inset: -25% 0;
+
+  pointer-events: none;
+
+  background: radial-gradient(
+    ellipse 70% 26% at 50% 50%,
+    rgba(255, 255, 255, 0.05),
+    transparent 70%
+  );
+
+  will-change: transform;
+
+  animation: runeHaze 19s ease-in-out infinite;
+}
+
+@keyframes runeHaze {
+  0%,
+  100% {
+    transform: translateY(-14%);
+  }
+
+  50% {
+    transform: translateY(14%);
+  }
+}
+
+@keyframes runeDown {
+  from {
+    transform: translateY(0);
+  }
+
+  to {
+    transform: translateY(-50%);
+  }
+}
+
+@keyframes runeUp {
+  from {
+    transform: translateY(-50%);
+  }
+
+  to {
+    transform: translateY(0);
+  }
+}
+
+/* =========================================================
+   ACCESSIBILITY / REDUCED MOTION
+   ========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
 }

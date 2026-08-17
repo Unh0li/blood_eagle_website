@@ -1,8 +1,22 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
+import Image from "next/image";
 
 export default function Lightbox({ photos, index, onClose, onNext, onPrev }) {
+  const touchStart = useRef(null);
+
+  const handleTouchStart = (e) => {
+    touchStart.current = e.touches[0].clientX;
+  };
+
+  const handleTouchEnd = (e) => {
+    if (touchStart.current === null) return;
+    const delta = touchStart.current - e.changedTouches[0].clientX;
+    if (Math.abs(delta) > 50) (delta > 0 ? onNext : onPrev)();
+    touchStart.current = null;
+  };
+
   useEffect(() => {
     const handler = (e) => {
       if (e.key === "Escape") onClose();
@@ -21,6 +35,8 @@ export default function Lightbox({ photos, index, onClose, onNext, onPrev }) {
     <div
       className="fixed inset-0 z-[200] bg-[#070707]/97 backdrop-blur-sm flex items-center justify-center"
       onClick={onClose}
+      onTouchStart={handleTouchStart}
+      onTouchEnd={handleTouchEnd}
     >
       <button
         onClick={onClose}
@@ -62,13 +78,20 @@ export default function Lightbox({ photos, index, onClose, onNext, onPrev }) {
         </span>
       </button>
 
-      <img
+      <div
         key={index}
-        src={photos[index]}
-        alt={`Photo ${index + 1}`}
         onClick={(e) => e.stopPropagation()}
-        className="max-w-[90vw] max-h-[85vh] object-contain animate-[fadeUp_0.3s_ease_both]"
-      />
+        className="relative w-[90vw] h-[85vh] animate-[fadeUp_0.3s_ease_both]"
+      >
+        <Image
+          src={photos[index]}
+          alt={`Photo ${index + 1}`}
+          fill
+          sizes="90vw"
+          priority
+          className="object-contain"
+        />
+      </div>
     </div>
   );
 }

@@ -1,48 +1,26 @@
 import Link from "next/link";
-import { events } from "@/data/events";
+import { connection } from "next/server";
+import { events, parseEventDate } from "@/data/events";
 import Countdown from "@/components/home/Countdown";
-import Image from "next/image";
-import BloodDrips from "@/components/BloodDrips";
+import SiteBackdrop from "@/components/SiteBackdrop";
 
-function parseDate(dateStr) {
-  return new Date(dateStr.replace(/(\d+)\s+(\w+)\s+(\d+)/, "$2 $1 $3"));
-}
-
-export default function Events() {
+export default async function Events() {
+  // Without this the upcoming/past split is evaluated once during the build and
+  // then frozen into the prerendered shell, so a finished event never moves to
+  // "past". connection() defers this render to request time.
+  await connection();
   const now = new Date();
 
-  const upcoming = events.filter((e) => parseDate(e.date) >= now);
-  const past = events.filter((e) => parseDate(e.date) < now);
+  const upcoming = events.filter((e) => parseEventDate(e.date) >= now);
+  const past = events.filter((e) => parseEventDate(e.date) < now);
 
   return (
     <main className="site-shell selection:bg-blood selection:text-black">
-      <div className="site-shell__ambient">
-        <div className="glow-red" />
-        <div className="glow-silver" />
-        <div className="glow-accent" />
-      </div>
-      <div className="site-shell__grid" />
-      <div className="site-shell__slash" />
-      <div className="site-shell__vignette" />
-      <BloodDrips />
-
-
-      <div className="fixed top-24 left-1/2 -translate-x-1/2 pointer-events-none select-none z-0 w-full max-w-5xl px-6 pt-35 flex items-center justify-center">
-        <div className="opacity-5 mix-blend-screen scale-[1.6] md:scale-[2.2] w-full h-full flex items-center justify-center">
-          <Image
-            src="/images/logo/logo_white.png"
-            alt="Blood Eagle Fixed Background Watermark"
-            width={1000}
-            height={1000}
-            className="object-contain w-full h-auto max-h-[55vh] filter blur-[0.5px]"
-            priority
-          />
-        </div>
-      </div>
+      <SiteBackdrop />
 
       <section className="relative z-20 pt-32 text-center px-6">
         <h1
-          className="font-[var(--font-display)] uppercase text-[14vw] md:text-[7.5vw] leading-[0.82] tracking-[-0.02em] text-bone animate-[riseIn_0.9s_cubic-bezier(0.16,1,0.3,1)_both]"
+          className="font-display uppercase text-[14vw] md:text-[7.5vw] leading-[0.82] tracking-[-0.02em] text-bone animate-[riseIn_0.9s_cubic-bezier(0.16,1,0.3,1)_both]"
           style={{ WebkitTextStroke: "1px rgba(232,232,232,0.15)" }}
         >
           EVENTS
@@ -58,7 +36,7 @@ export default function Events() {
           <div className="mb-24">
             <div className="flex items-center gap-4 mb-12">
               <span className="divider-line" />
-              <p className="eyebrow whitespace-nowrap">Upcoming events</p>
+              <p className="eyebrow whitespace-nowrap">Upcoming</p>
               <span className="divider-line" style={{ background: "linear-gradient(to left, transparent, rgba(138,138,138,0.4))" }} />
             </div>
 
@@ -79,7 +57,7 @@ export default function Events() {
                     <Link href={`/events/${ev.id}`} className="flex-1 min-w-0">
                       <p className="eyebrow text-[10px] mb-4">{ev.date}</p>
 
-                      <h2 className="font-[var(--font-display)] uppercase text-4xl md:text-6xl tracking-[0.05em] text-bone leading-[0.95] group-hover:text-blood transition-colors duration-500">
+                      <h2 className="font-display uppercase text-4xl md:text-6xl tracking-[0.05em] text-bone leading-[0.95] group-hover:text-blood transition-colors duration-500">
                         {ev.title}
                       </h2>
 
@@ -90,16 +68,20 @@ export default function Events() {
                         </p>
                       </div>
 
-                      {ev.lineup && (
+                      {/* length check, not just truthiness — an empty array is
+                          truthy and would render a blank spaced-out paragraph. */}
+                      {ev.lineup?.length > 0 && (
                         <p className="mt-5 font-mono text-[11px] text-blood/80 uppercase tracking-[0.2em]">
                           {ev.lineup.join("  /  ")}
                         </p>
                       )}
                     </Link>
 
-                    <div className="shrink-0 lg:pl-10 lg:border-l lg:border-silver/10">
-                      <Countdown targetDate="2026-07-11T20:00:00" />
-                    </div>
+                    {ev.countdownDate && (
+                      <div className="shrink-0 lg:pl-10 lg:border-l lg:border-silver/10">
+                        <Countdown targetDate={ev.countdownDate} />
+                      </div>
+                    )}
                   </div>
 
                   <div className="relative mt-10 pt-8 border-t border-silver/10 flex items-center justify-between">
@@ -134,7 +116,7 @@ export default function Events() {
         {upcoming.length > 0 && past.length > 0 && (
           <div className="flex items-center gap-4 mb-12">
             <span className="divider-line" />
-            <p className="eyebrow whitespace-nowrap">Past Events</p>
+            <p className="eyebrow whitespace-nowrap">Past</p>
             <span className="divider-line" style={{ background: "linear-gradient(to left, transparent, rgba(138,138,138,0.4))" }} />
           </div>
         )}
@@ -151,7 +133,7 @@ export default function Events() {
                     </span>
 
                     <div>
-                      <h2 className="font-[var(--font-display)] uppercase text-xl md:text-2xl tracking-[0.08em] text-bone/70 group-hover:text-bone transition-colors duration-300">
+                      <h2 className="font-display uppercase text-xl md:text-2xl tracking-[0.08em] text-bone/70 group-hover:text-bone transition-colors duration-300">
                         {ev.title}
                       </h2>
                       <p className="mt-1 font-mono text-[10px] text-silver/50 uppercase tracking-[0.2em]">

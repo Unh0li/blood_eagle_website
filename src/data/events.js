@@ -1,8 +1,21 @@
+const berzerkPhotos = Array.from(
+  { length: 92 },
+  (_, i) => `/images/berzerk/b-${i + 1}.webp`
+);
+
+// Event dates are authored as "11 JULY 2026"; Date can't parse that order.
+export function parseEventDate(str) {
+  return new Date(str.replace(/(\d+)\s+(\w+)\s+(\d+)/, "$2 $1 $3"));
+}
+
 export const events = [
     {
         id: "berzerk-2026",
         title: "BERZERK",
         date: "11 JULY 2026",
+        // Doors time, edited by hand per event. Drives the countdown on both
+        // the home page and /events. Omit it and no countdown is shown.
+        countdownDate: "2026-07-11T20:00:00",
         venue: "PUBLIKA BARKLUB, LJUBLJANA",
         genre: "Bochka",
         lineup: ["FOGG", "PLAZ", "ZVITA", "LINDEX B2B TERROR"],
@@ -12,7 +25,7 @@ export const events = [
         }
 
         ],
-        photos: [],
+        photos: berzerkPhotos,
         ticketUrl: "https://www.entrio.si/en/event/blood-eagle-berzerk-33006",
     },
     {
@@ -21,13 +34,16 @@ export const events = [
         date: "17 APRIL 2026",
         venue: "PUBLIKA BARKLUB, LJUBLJANA",
         genre: "Industrial Techno",
-        lineup: ["Resident A", "Resident B"],
+        lineup: ["SCAPEGHXST", "TERROR", "SBTMX", "LINDEX", "PLAZ"],
         timetable: [
-            { time: "22:00", act: "Doors" },
-            { time: "23:00", act: "Resident A" },
-            { time: "01:00", act: "Resident B" },
+            { time: "22:00 - 23:30", act: "TERROR" },
+            { time: "23:30 - 01:00", act: "SBTMX" },
+            { time: "01:00 - 02:30", act: "LINDEX" },
+            { time: "02:30 - 04:00", act: "SCAPEGHXST" },
+            { time: "04:00 - END", act: "PLAZ" },
+
         ],
-        photos: ["/images/reactor4/img1.jpg", "/images/reactor4/img2.png"],
+        photos: [],
         ticketUrl: "",
     },
     {
@@ -36,9 +52,9 @@ export const events = [
         date: "31 JANUARY 2026",
         venue: "PUBLIKA BARKLUB, LJUBLJANA",
         genre: "Industrial / Raw Techno",
-        lineup: ["Resident A"],
+        lineup: [],
         timetable: [],
-        photos: ["/gallery/naglfar/01.jpg"],
+        photos: [],
         ticketUrl: "",
     },
     {
@@ -47,9 +63,9 @@ export const events = [
         date: "29 NOVEMBER 2025",
         venue: "PUBLIKA BARKLUB, LJUBLJANA",
         genre: "Industrial Techno",
-        lineup: ["Resident B"],
+        lineup: [],
         timetable: [],
-        photos: ["/gallery/myrkrun/01.jpg"],
+        photos: [],
         ticketUrl: "",
     },
     {
@@ -58,14 +74,10 @@ export const events = [
         date: "6 SEPTEMBER 2025",
         venue: "PUBLIKA BARKLUB, LJUBLJANA",
         genre: "Industrial / Hard Techno",
-        lineup: ["Resident A", "Resident B"],
+        lineup: [],
         timetable: [],
         photos: [
-            "/gallery/slaughterhouse/01.jpg",
-            "/gallery/slaughterhouse/02.jpg",
-            "/gallery/slaughterhouse/03.jpg",
-            "/gallery/slaughterhouse/04.jpg",
-            "/gallery/slaughterhouse/05.jpg",
+           
         ],
         ticketUrl: "",
     },
@@ -75,16 +87,10 @@ export const events = [
         date: "13 DECEMBER 2024",
         venue: "KOČA PRI KORITU",
         genre: "Industrial Techno",
-        lineup: ["Resident A", "Resident B"],
+        lineup: [],
         timetable: [],
         photos: [
-            "/gallery/first-flight/01.jpg",
-            "/gallery/first-flight/02.jpg",
-            "/gallery/first-flight/03.jpg",
-            "/gallery/first-flight/04.jpg",
-            "/gallery/first-flight/05.jpg",
-            "/gallery/first-flight/06.jpg",
-            "/gallery/first-flight/07.jpg",
+           
         ],
         ticketUrl: "",
     },

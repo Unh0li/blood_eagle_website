@@ -51,7 +51,7 @@ export default function Countdown({ targetDate}){
             {units.map((u,i) => (
                 <div key={u.label} className="flex items-center gap-4 md:gap-8">
                     <div className="text-center">
-                        <span className="block font-[var(--font-display)] text-3xl md:text-5xl text-bone tabular-nums">
+                        <span className="block font-display text-3xl md:text-5xl text-bone tabular-nums">
                            {String(u.value).padStart(2, "0")} 
                         </span>
                         <span className="block mt-2 font-mono text-[9px] uppercase tracking-[0.3em] text-silver">

@@ -4,26 +4,52 @@ import Script from "next/script";
 import "./globals.css";
 import Navbar from "@/components/layout/Navbar";
 import { AudioProvider } from "@/context/AudioContext";
+import RuneColumns from "@/components/RuneColumns";
+import CreatorMark from "@/components/CreatorMark";
 
+
+const DESCRIPTION =
+  "Blood Eagle is an industrial techno collective based in Ljubljana, Slovenia.";
+
+// Link previews on Instagram/TikTok need an absolute URL. Until bloodeagle.si
+// is registered and attached, set NEXT_PUBLIC_SITE_URL in the Vercel project
+// to the *.vercel.app address; delete the variable once the domain is live.
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://bloodeagle.si";
+
+// icon.png and opengraph-image.png sit alongside this file; Next picks them up
+// by convention, so the link/meta tags don't need declaring here.
 export const metadata = {
+  metadataBase: new URL(SITE_URL),
   title: "Blood Eagle",
-  description: "Blood Eagle is a Industrial techno collective based in Ljubljana, Slovenia.",
+  description: DESCRIPTION,
+  openGraph: {
+    title: "Blood Eagle",
+    description: DESCRIPTION,
+    siteName: "Blood Eagle",
+    locale: "en_US",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Blood Eagle",
+    description: DESCRIPTION,
+  },
 };
 
 const archivoBlack = Archivo_Black({
   weight: "400",
   subsets: ["latin"],
-  variable: "--font-display",
+  variable: "--font-display-family",
 });
 
 const jetbrainsMono = JetBrains_Mono({
   subsets: ["latin"],
-  variable: "--font-mono",
+  variable: "--font-mono-family",
 });
 
 const horrorFont = localFont({
-  src: "fonts/MidnightLegacy.otf",
-  variable: "--font-horror",
+  src: "./fonts/MidnightLegacy.otf",
+  variable: "--font-horror-family",
 });
 
 export default function RootLayout({ children }) {
@@ -36,7 +62,9 @@ export default function RootLayout({ children }) {
         <Script src="https://w.soundcloud.com/player/api.js" strategy="afterInteractive" />
         <AudioProvider>
           <Navbar />
+          <RuneColumns />
           {children}
+          <CreatorMark />
         </AudioProvider>
       </body>
     </html>

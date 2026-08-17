@@ -4,8 +4,13 @@ import { use } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { events } from "@/data/events";
-import Image from "next/image";
-import BloodDrips from "@/components/BloodDrips";
+import SiteBackdrop from "@/components/SiteBackdrop";
+
+const PULSE_VARIANTS = [
+    "0,10 26,10 32,10 36,2 40,18 44,10 70,10",
+    "0,10 30,10 36,10 40,2 44,18 48,10 70,10",
+    "0,10 22,10 28,10 32,2 36,18 40,10 70,10",
+];
 
 export default function EventDetail({ params }) {
     const router = useRouter();
@@ -22,29 +27,7 @@ export default function EventDetail({ params }) {
 
     return (
         <main className="site-shell selection:bg-blood selection:text-black">
-      <div className="site-shell__ambient">
-        <div className="glow-red" />
-        <div className="glow-silver" />
-        <div className="glow-accent" />
-      </div>
-      <div className="site-shell__grid" />
-      <div className="site-shell__slash" />
-      <div className="site-shell__vignette" />
-      <BloodDrips />
-
-
-            <div className="fixed top-24 left-1/2 -translate-x-1/2 pointer-events-none select-none z-0 w-full max-w-5xl px-6 pt-35 flex items-center justify-center">
-                <div className="opacity-5 mix-blend-screen scale-[1.6] md:scale-[2.2] w-full h-full flex items-center justify-center">
-                    <Image
-                        src="/images/logo/logo_white.png"
-                        alt="Blood Eagle Fixed Background Watermark"
-                        width={1000}
-                        height={1000}
-                        className="object-contain w-full h-auto max-h-[55vh] filter blur-[0.5px]"
-                        priority
-                    />
-                </div>
-            </div>
+            <SiteBackdrop />
 
             <section className="relative z-20 pt-32 px-6 max-w-4xl mx-auto pb-32">
                 <button
@@ -58,11 +41,8 @@ export default function EventDetail({ params }) {
                 <div className="text-center mb-16 overflow-hidden">
                     <p className="eyebrow animate-[fadeUp_0.9s_ease_0.1s_both]">{ev.date}</p>
                     <h1
-                        className="mt-4 px-4 font-[var(--font-display)] uppercase leading-[0.85] tracking-[-0.01em] text-bone animate-[riseIn_0.9s_cubic-bezier(0.16,1,0.3,1)_0.15s_both] whitespace-nowrap"
-                        style={{
-                            WebkitTextStroke: "1px rgba(232,232,232,0.15)",
-                            fontSize: `clamp(1.5rem, ${9.0 - ev.title.length * 0.32}vw, 7rem)`,
-                        }}
+                        className="mt-4 px-4 font-display uppercase text-[clamp(1.75rem,9vw,7rem)] leading-[0.85] tracking-[-0.01em] text-bone animate-[riseIn_0.9s_cubic-bezier(0.16,1,0.3,1)_0.15s_both] text-balance break-words"
+                        style={{ WebkitTextStroke: "1px rgba(232,232,232,0.15)" }}
                     >
                         {ev.title}
                     </h1>
@@ -94,8 +74,8 @@ export default function EventDetail({ params }) {
                                         key={name}
                                         className={
                                             isHeadliner
-                                                ? "font-[var(--font-display)] uppercase text-3xl md:text-4xl tracking-[0.06em] text-blood"
-                                                : "font-[var(--font-display)] uppercase text-lg md:text-xl tracking-[0.06em] text-bone/70"
+                                                ? "font-display uppercase text-3xl md:text-4xl tracking-[0.06em] text-blood"
+                                                : "font-display uppercase text-lg md:text-xl tracking-[0.06em] text-bone/70"
                                         }
                                     >
                                         {name}
@@ -107,8 +87,8 @@ export default function EventDetail({ params }) {
                 )}
 
                 {ev.timetable?.length > 0 && (
-                    <div className="mb-16 animate-[fadeUp_0.9s_ease_0.6s_both]">
-                        <div className="flex items-center gap-4 mb-8">
+                    <div className="mb-20 animate-[fadeUp_0.9s_ease_0.6s_both]">
+                        <div className="flex items-center gap-4 mb-10">
                             <span className="divider-line" />
                             <p className="eyebrow whitespace-nowrap">Timetable</p>
                             <span
@@ -120,51 +100,68 @@ export default function EventDetail({ params }) {
                             />
                         </div>
 
-                        <div className="max-w-[340px] mx-auto">
+                        <div className="max-w-2xl mx-auto border border-silver/10 bg-panel/25 backdrop-blur-sm overflow-hidden">
                             {ev.timetable.map((slot, i) => {
-                                const pulseVariants = [
-                                    "0,10 26,10 32,10 36,2 40,18 44,10 70,10",
-                                    "0,10 30,10 36,10 40,2 44,18 48,10 70,10",
-                                    "0,10 22,10 28,10 32,2 36,18 40,10 70,10",
-                                ];
-                                const pts = pulseVariants[i % pulseVariants.length];
+                                const pts = PULSE_VARIANTS[i % PULSE_VARIANTS.length];
 
                                 return (
                                     <div
                                         key={i}
-                                        className="group flex items-center gap-3 py-4 border-b border-silver/10 last:border-b-0"
+                                        // Below md the fixed 140px side columns plus gap-8 needed 344px
+                                        // inside a 390px phone, so the time was clipped off-screen.
+                                        className="group flex items-baseline justify-between gap-4 px-5 py-5 border-b border-silver/10 last:border-b-0 hover:bg-blood/5 transition-all duration-300 md:grid md:grid-cols-[140px_1fr_140px] md:items-center md:gap-8 md:px-8 md:py-6"
                                     >
-                                        <span className="w-16 shrink-0 font-mono text-xs uppercase tracking-[0.15em] text-bone group-hover:text-white transition-colors">
+                                        <span className="font-display uppercase tracking-[0.12em] text-lg text-bone group-hover:text-blood transition-colors">
                                             {slot.act}
                                         </span>
 
-                                        <div className="flex-1 flex items-center justify-center h-6 overflow-hidden">
-                                            <svg
-                                                viewBox="0 0 70 20"
-                                                preserveAspectRatio="none"
-                                                className="w-full h-full ekg-line"
-                                                style={{ animationDelay: `${i * 0.4}s` }}
-                                            >
-                                                <defs>
-                                                    <linearGradient id={`ekgFade-${i}`} x1="0" y1="0" x2="1" y2="0">
-                                                        <stop offset="0%" stopColor="var(--color-blood)" stopOpacity="0" />
-                                                        <stop offset="20%" stopColor="var(--color-blood)" stopOpacity="1" />
-                                                        <stop offset="80%" stopColor="var(--color-blood)" stopOpacity="1" />
-                                                        <stop offset="100%" stopColor="var(--color-blood)" stopOpacity="0" />
-                                                    </linearGradient>
-                                                </defs>
-                                                <polyline
-                                                    points={pts}
-                                                    fill="none"
-                                                    stroke={`url(#ekgFade-${i})`}
-                                                    strokeWidth="1.25"
-                                                    strokeLinejoin="round"
-                                                    strokeLinecap="round"
-                                                />
-                                            </svg>
-                                        </div>
+                                        <svg
+                                            viewBox="0 0 70 20"
+                                            preserveAspectRatio="none"
+                                            className="hidden w-full h-7 ekg-line md:block"
+                                        >
+                                            <defs>
+                                                <linearGradient
+                                                    id={`ekgFade-${i}`}
+                                                    x1="0"
+                                                    y1="0"
+                                                    x2="1"
+                                                    y2="0"
+                                                >
+                                                    <stop
+                                                        offset="0%"
+                                                        stopColor="var(--color-blood)"
+                                                        stopOpacity="0"
+                                                    />
+                                                    <stop
+                                                        offset="20%"
+                                                        stopColor="var(--color-blood)"
+                                                        stopOpacity="1"
+                                                    />
+                                                    <stop
+                                                        offset="80%"
+                                                        stopColor="var(--color-blood)"
+                                                        stopOpacity="1"
+                                                    />
+                                                    <stop
+                                                        offset="100%"
+                                                        stopColor="var(--color-blood)"
+                                                        stopOpacity="0"
+                                                    />
+                                                </linearGradient>
+                                            </defs>
 
-                                        <span className="w-14 shrink-0 text-right font-mono text-xs tracking-[0.15em] text-blood group-hover:text-[#ff5555] transition-colors">
+                                            <polyline
+                                                points={pts}
+                                                fill="none"
+                                                stroke={`url(#ekgFade-${i})`}
+                                                strokeWidth="1.4"
+                                                strokeLinejoin="round"
+                                                strokeLinecap="round"
+                                            />
+                                        </svg>
+
+                                        <span className="shrink-0 text-right font-mono text-xs sm:text-sm tracking-[0.18em] sm:tracking-[0.22em] text-blood whitespace-nowrap group-hover:text-[#ff5555] transition-colors">
                                             {slot.time}
                                         </span>
                                     </div>
@@ -186,7 +183,7 @@ export default function EventDetail({ params }) {
                         </a>
                     ) : (
                         <span className="font-mono text-xs uppercase tracking-[0.3em] text-silver/50 border border-silver/20 px-10 py-4">
-                            TICKETS UNAVALIABLE
+                            TICKETS UNAVAILABLE
                         </span>
                     )}
 
