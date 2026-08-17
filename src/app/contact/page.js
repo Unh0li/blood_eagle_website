@@ -97,9 +97,10 @@ export default function Contact() {
                     />
                 </div>
 
-                {/* manjsi razmik na telefonu, da gredo vse tri v eno vrstico
-                    negativni desni rob pobere presledek, ki ga doda tracking */}
-                <div className="flex flex-wrap justify-center gap-x-6 sm:gap-x-12 gap-y-4 -mr-[0.25em] uppercase tracking-[0.25em] text-xs font-mono">
+                {/* trije enako siroki stolpci, da srednji element pade na sredino
+                    pri flex bi ga razlicni sirini imen potisnili s sredine
+                    pl pobere presledek, ki ga tracking doda za zadnjo crko */}
+                <div className="grid grid-cols-3 items-center uppercase tracking-[0.25em] text-xs font-mono">
                     {[
                         { name: "Instagram", url: "https://www.instagram.com/blood.eagle.inc/" },
                         { name: "SoundCloud", url: "https://soundcloud.com/blood-eagle24" },
@@ -110,7 +111,7 @@ export default function Contact() {
                             href={social.url}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="relative text-silver hover:text-blood transition-colors duration-300 group py-1"
+                            className="group relative mx-auto py-1 pl-[0.25em] text-silver hover:text-blood transition-colors duration-300"
                         >
                             {social.name}
                             <span className="absolute bottom-0 left-0 w-0 h-px bg-blood group-hover:w-full transition-all duration-300" />
@@ -120,10 +121,9 @@ export default function Contact() {
 
                 <Link
                     href="/"
-                    className="inline-block mt-16 border-b border-blood pb-1 font-mono text-xs uppercase tracking-[0.25em] text-blood hover:text-bone transition-colors duration-300 group relative"
+                    className="inline-block mt-16 border-b border-blood pb-1 pl-[0.25em] font-mono text-xs uppercase tracking-[0.25em] text-blood transition-colors duration-300 hover:text-bone hover:border-bone"
                 >
                     Back home
-                    <span className="absolute bottom-0 left-0 w-0 h-px bg-bone group-hover:w-full transition-all duration-300" />
                 </Link>
             </section>
         </main>

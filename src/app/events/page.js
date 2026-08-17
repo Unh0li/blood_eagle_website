@@ -148,7 +148,7 @@ export default async function Events() {
                     {ev.photos?.length > 0 ? (
                       <Link
                         href={`/gallery?event=${ev.id}`}
-                        className="font-mono text-[10px] uppercase tracking-[0.25em] text-blood/60 hover:text-blood transition-colors duration-300 border-b border-blood/20 hover:border-blood/60 pb-0.5"
+                        className="font-mono text-[10px] uppercase tracking-[0.25em] text-blood/60 hover:text-blood transition-colors duration-300 border-b border-blood/20 hover:border-blood/60 pb-0.5 pl-[0.25em]"
                       >
                         Photos
                       </Link>

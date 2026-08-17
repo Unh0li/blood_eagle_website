@@ -546,6 +546,10 @@ html {
   text-transform: uppercase;
   letter-spacing: 0.5em;
 
+  /* enak razmik na levi, sicer sledeci presledek od letter-spacing
+     potisne crke za pol tega levo od sredine */
+  padding-left: 0.5em;
+
   font-family: var(--font-mono-family);
   font-size: 0.75rem;
 

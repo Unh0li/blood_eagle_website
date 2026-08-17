@@ -189,7 +189,7 @@ export default function EventDetail({ params }) {
                     {ev.photos?.length > 0 ? (
                         <Link
                             href={`/gallery?event=${ev.id}`}
-                            className="font-mono text-[11px] uppercase tracking-[0.25em] text-blood/70 hover:text-blood transition-colors duration-300 border-b border-blood/20 hover:border-blood/60 pb-0.5"
+                            className="font-mono text-[11px] uppercase tracking-[0.25em] text-blood/70 hover:text-blood transition-colors duration-300 border-b border-blood/20 hover:border-blood/60 pb-0.5 pl-[0.25em]"
                         >
                             View {ev.photos.length} photos
                         </Link>

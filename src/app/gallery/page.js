@@ -149,7 +149,7 @@ function GalleryInner() {
               {ev.photos.length > 0 && (
                 <button
                   onClick={() => openEvent(ev.id)}
-                  className="font-mono text-[10px] uppercase tracking-[0.25em] text-blood hover:text-bone transition-colors duration-300 border-b border-blood/40 pb-1 relative z-10 cursor-pointer"
+                  className="font-mono text-[10px] uppercase tracking-[0.25em] text-blood hover:text-bone transition-colors duration-300 border-b border-blood/40 pb-1 pl-[0.25em] relative z-10 cursor-pointer"
                 >
                   View all
                 </button>

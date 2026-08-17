@@ -143,7 +143,7 @@ function TBACard() {
             href={url}
             target="_blank"
             rel="noopener noreferrer"
-            className="border-b border-silver/25 pb-0.5 font-mono text-[9px] uppercase tracking-[0.25em] text-silver/70 transition-colors duration-300 hover:border-blood hover:text-blood"
+            className="border-b border-silver/25 pb-0.5 pl-[0.25em] font-mono text-[9px] uppercase tracking-[0.25em] text-silver/70 transition-colors duration-300 hover:border-blood hover:text-blood"
           >
             {name}
           </a>
@@ -437,10 +437,9 @@ export default function Home() {
 
           <Link
             href="/about"
-            className="group relative mt-12 inline-block border-b border-blood pb-1 font-mono text-xs uppercase tracking-[0.25em] text-blood transition-colors duration-300 hover:text-bone"
+            className="mt-12 inline-block border-b border-blood pb-1 pl-[0.25em] font-mono text-xs uppercase tracking-[0.25em] text-blood transition-colors duration-300 hover:text-bone hover:border-bone"
           >
             Learn More
-            <span className="absolute bottom-0 left-0 h-px w-0 bg-bone transition-all duration-300 group-hover:w-full" />
           </Link>
         </section>
 
@@ -462,15 +461,16 @@ export default function Home() {
         <section className="relative z-20 flex flex-col items-center py-24 text-center">
           <Divider label="Follow Blood Eagle" className="mb-10 w-full max-w-xs" />
 
-          {/* enako kot na kontaktu, manjsi razmik na telefonu in popravek za tracking */}
-          <div className="flex flex-wrap items-center justify-center gap-x-6 sm:gap-x-10 gap-y-4 -mr-[0.25em] font-mono text-xs uppercase tracking-[0.25em]">
+          {/* enako kot na kontaktu, trije enako siroki stolpci
+              da srednji element pade tocno na sredino */}
+          <div className="grid w-full max-w-xl grid-cols-3 items-center px-6 font-mono text-xs uppercase tracking-[0.25em]">
             {SOCIAL_LINKS.map(({ name, url }) => (
-             <a 
+              <a
                 key={name}
                 href={url}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="group relative py-1 text-silver transition-colors duration-300 hover:text-blood"
+                className="group relative mx-auto py-1 pl-[0.25em] text-silver transition-colors duration-300 hover:text-blood"
               >
                 {name}
                 <span className="absolute bottom-0 left-0 h-px w-0 bg-blood transition-all duration-300 group-hover:w-full" />
