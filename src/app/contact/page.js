@@ -90,7 +90,7 @@ export default function Contact() {
 
                 <div className="mt-20 flex items-center justify-center gap-4 max-w-xs mx-auto mb-10">
                     <span className="divider-line" />
-                    <p className="eyebrow">Follow</p>
+                    <p className="eyebrow whitespace-nowrap">Follow Blood Eagle</p>
                     <span
                         className="divider-line"
                         style={{ background: "linear-gradient(to left, transparent, rgba(138,138,138,0.4))" }}
@@ -100,7 +100,7 @@ export default function Contact() {
                 {/* trije enako siroki stolpci, da srednji element pade na sredino
                     pri flex bi ga razlicni sirini imen potisnili s sredine
                     pl pobere presledek, ki ga tracking doda za zadnjo crko */}
-                <div className="grid grid-cols-3 items-center uppercase tracking-[0.25em] text-xs font-mono">
+                <div className="grid w-full max-w-xl mx-auto grid-cols-3 items-center px-6 font-mono text-xs uppercase tracking-[0.25em]">
                     {[
                         { name: "Instagram", url: "https://www.instagram.com/blood.eagle.inc/" },
                         { name: "SoundCloud", url: "https://soundcloud.com/blood-eagle24" },
