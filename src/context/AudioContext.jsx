@@ -12,17 +12,17 @@ const TRACKS = [
   },
   {
     title: "Deathrow",
-    artist: "Terror Rhythm",
+    artist: "Terror",
     url: "https://soundcloud.com/terror-rhythm/deathrow",
   },
   {
     title: "Black Sun Ritual",
-    artist: "Terror Rhythm",
+    artist: "Terror",
     url: "https://soundcloud.com/terror-rhythm/black-sun-ritual",
   },
   {
     title: "Against All The Evil",
-    artist: "R N T 13",
+    artist: "R|N|T 13",
     url: "https://soundcloud.com/rnt13/r-n-t-13-against-all-the-evil",
   },
 ];
