@@ -107,8 +107,7 @@ export default function EventDetail({ params }) {
                                 return (
                                     <div
                                         key={i}
-                                        // Below md the fixed 140px side columns plus gap-8 needed 344px
-                                        // inside a 390px phone, so the time was clipped off-screen.
+                                        /* pod md stolpci po 140px niso sli v 390px zaslon, ura je bila odrezana */
                                         className="group flex items-baseline justify-between gap-4 px-5 py-5 border-b border-silver/10 last:border-b-0 hover:bg-blood/5 transition-all duration-300 md:grid md:grid-cols-[140px_1fr_140px] md:items-center md:gap-8 md:px-8 md:py-6"
                                     >
                                         <span className="font-display uppercase tracking-[0.12em] text-lg text-bone group-hover:text-blood transition-colors">

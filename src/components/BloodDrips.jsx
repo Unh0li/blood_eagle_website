@@ -23,10 +23,8 @@ const onClient = () => true;
 const onServer = () => false;
 
 export default function BloodDrips() {
-  // Math.random() gives the server and the client different values, which React
-  // reports as a hydration mismatch it "won't patch up". Rendering nothing on
-  // the server means there is no server markup to disagree with. The drips are
-  // decorative, so appearing one frame late is free.
+  /* Math.random() da na strezniku druge vrednosti kot na klientu,
+     zato na strezniku ne izrisemo nicesar */
   const mounted = useSyncExternalStore(NO_SUBSCRIBE, onClient, onServer);
   const [drips] = useState(makeDrips);
 

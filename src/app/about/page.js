@@ -5,10 +5,10 @@ import Image from "next/image";
 import SiteBackdrop from "@/components/SiteBackdrop";
 import { residents } from "@/data/residents";
 
-// Konstanta izven komponente — ne ustvari novega objekta ob vsakem renderu
+/* stevilo rezidentov */
 const COUNT = residents.length;
 
-// ── SUB-KOMPONENTE ───────────────────────────────────────────────
+/* pod komponente */
 
 function Divider({ label }) {
   return (
@@ -47,13 +47,13 @@ function NavButton({ dir, onClick }) {
   );
 }
 
-// ── GLAVNA KOMPONENTA ────────────────────────────────────────────
+/* glavna komponenta */
 
 export default function AboutPage() {
   const [index,  setIndex]  = useState(0);
   const [glitch, setGlitch] = useState(false);
 
-  // useRef za timer — preprečuje memory leak ob hitrem klikanju
+  /* timer v ref, da hitro klikanje ne pusca odprtih casovnikov */
   const glitchTimer = useRef(null);
 
   const triggerGlitch = useCallback(() => {
@@ -62,10 +62,10 @@ export default function AboutPage() {
     glitchTimer.current = setTimeout(() => setGlitch(false), 220);
   }, []);
 
-  // Cleanup ob unmount
+  /* pocisti ob odklopu */
   useEffect(() => () => clearTimeout(glitchTimer.current), []);
 
-  // useCallback — stabilne reference, useEffect se ne re-registrira ob vsaki spremembi indexa
+  /* stabilne reference, da se effect ne registrira znova */
   const next = useCallback(() => {
     triggerGlitch();
     setIndex((p) => (p + 1) % COUNT);
@@ -81,8 +81,7 @@ export default function AboutPage() {
     setIndex(i);
   }, [triggerGlitch]);
 
-  // Bug fix: prej [index] — listener se je re-registriral ob vsaki spremembi indexa
-  // Zdaj [next, prev] — stabilne refs, registrira se samo enkrat
+  /* odvisnost sta next in prev, ne index, sicer se listener registrira ob vsaki menjavi */
   useEffect(() => {
     const handler = (e) => {
       if (e.key === "ArrowRight") next();
@@ -92,7 +91,7 @@ export default function AboutPage() {
     return () => window.removeEventListener("keydown", handler);
   }, [next, prev]);
 
-  // Touch swipe za mobilne naprave
+  /* poteg s prstom */
   const touchStart = useRef(null);
   const handleTouchStart = useCallback((e) => {
     touchStart.current = e.touches[0].clientX;
@@ -110,7 +109,7 @@ export default function AboutPage() {
     <main className="site-shell selection:bg-blood selection:text-black">
       <SiteBackdrop />
 
-      {/* ── HEADER ── */}
+      {/* glava */}
       <section className="relative z-20 pt-32 text-center px-6">
         <h1
           className="font-display uppercase text-[14vw] md:text-[7.5vw] leading-[0.82] tracking-[-0.02em] text-bone animate-[riseIn_0.9s_cubic-bezier(0.16,1,0.3,1)_both]"
@@ -123,7 +122,7 @@ export default function AboutPage() {
         </p>
       </section>
 
-      {/* ── WHO WE ARE ── */}
+      {/* kdo smo */}
       <section className="relative z-20 max-w-4xl mx-auto px-6 mt-24 pb-24">
         <Divider label="Who We Are" />
         <div className="relative border border-silver/15 bg-panel/40 backdrop-blur-sm p-8 md:p-12 overflow-hidden">
@@ -141,7 +140,7 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* ── RESIDENTS ── */}
+      {/* rezidenti */}
       <section className="relative z-20 px-6 pb-32">
         <div className="max-w-md mx-auto">
           <Divider label="Residents" />
@@ -149,7 +148,7 @@ export default function AboutPage() {
 
         <div className="max-w-5xl mx-auto">
 
-          {/* Navigacija */}
+          {/* navigacija */}
           <div className="flex items-center justify-between mb-4 px-1">
             <NavButton dir="prev" onClick={prev} />
 
@@ -192,7 +191,7 @@ export default function AboutPage() {
             <NavButton dir="next" onClick={next} />
           </div>
 
-          {/* Glavna kartica + swipe podpora */}
+          {/* glavna kartica s potegom */}
           <div
             className="grid md:grid-cols-2 border border-blood/25 relative overflow-hidden"
             onTouchStart={handleTouchStart}
@@ -205,9 +204,8 @@ export default function AboutPage() {
               <span style={{ bottom: 0, right: 0, borderBottomWidth: 1, borderRightWidth: 1, borderColor: "rgba(200,30,30,0.5)" }} />
             </div>
 
-            {/* Leva - slika. The hover used to sit on the <img> itself, but the
-                gradient overlays below cover it and swallowed the pointer, so it
-                never fired — hence `group` here and pointer-events-none there. */}
+            {/* leva stran, slika
+                hover je bil na sami sliki, prekrivna gradienta sta prestregla kazalec */}
             {/* md:h-auto lets the grid stretch this column to the row height.
                 A fixed height left a gap under the photo whenever the text
                 column ran taller, which it does for the longer bios. */}
@@ -224,14 +222,14 @@ export default function AboutPage() {
               <div className="pointer-events-none absolute inset-0 bg-gradient-to-r from-transparent via-transparent to-panel/70 hidden md:block" aria-hidden="true" />
               <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-panel/90 via-panel/20 to-transparent md:hidden" aria-hidden="true" />
 
-              {/* Scan sweep */}
+              {/* potujoca crta */}
               {!glitch && (
                 <div className="absolute inset-0 overflow-hidden pointer-events-none" aria-hidden="true">
                   <div className="absolute left-0 right-0 h-8 bg-gradient-to-b from-transparent via-bone/6 to-transparent animate-[scanSweep_4s_linear_infinite]" />
                 </div>
               )}
 
-              {/* Glitch overlay */}
+              {/* glitch ob menjavi */}
               {glitch && (
                 <div aria-hidden="true">
                   <div
@@ -255,15 +253,15 @@ export default function AboutPage() {
                 </div>
               )}
 
-              {/* Resident tag */}
+              {/* oznaka rezidenta */}
               <div className="absolute top-4 left-4 flex items-center gap-2 font-mono text-[9px] tracking-[0.3em] text-blood uppercase bg-void/60 backdrop-blur-sm px-3 py-1.5 border border-blood/20">
                 <span className="w-1.5 h-1.5 rounded-full bg-blood animate-pulse" aria-hidden="true" />
                 RESIDENT_{String(index + 1).padStart(3, "0")}
               </div>
             </div>
 
-            {/* Desna - info */}
-            {/* key={index} sproži fadeUp animacijo ob vsaki menjavi */}
+            {/* desna stran, podatki */}
+            {/* key sprozi fadeUp ob vsaki menjavi */}
             <div key={index} className="relative flex flex-col justify-between p-8 md:p-10 bg-panel/70 backdrop-blur-sm">
               <div className="absolute -left-16 top-1/2 -translate-y-1/2 w-32 h-64 bg-blood/6 blur-3xl pointer-events-none" aria-hidden="true" />
 
@@ -326,15 +324,13 @@ export default function AboutPage() {
             </div>
           </div>
 
-          {/* Thumbnail strip */}
+          {/* trak slicic */}
           <div
             className="mt-3 grid gap-1.5"
             style={{ gridTemplateColumns: `repeat(${COUNT}, minmax(0, 1fr))` }}
           >
             {residents.map((r, i) => (
-              // Everything below is class-driven, not inline style: an inline
-              // `filter` beats any hover: rule on specificity, which is why the
-              // thumbnails used to have no hover response at all.
+              /* vse prek razredov, inline filter bi premagal hover po specificnosti */
               <button
                 key={r.id}
                 type="button"
@@ -351,10 +347,7 @@ export default function AboutPage() {
                   src={r.image}
                   alt={r.name}
                   fill
-                  // The strip sits in a max-w-5xl container, so each of the few
-                  // columns is ~340px wide regardless of viewport. The old
-                  // "10vw" resolved to 192px and Next served a 256px file into
-                  // a 337px slot, which is why these looked soft.
+                  /* stolpec je vedno okoli 340px, prej je 10vw dal premajhno sliko */
                   sizes="(max-width: 767px) 33vw, 360px"
                   className={`object-cover transition-all duration-500 ${
                     i === index

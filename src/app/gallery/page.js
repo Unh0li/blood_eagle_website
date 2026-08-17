@@ -12,13 +12,10 @@ function GalleryInner() {
   const router = useRouter();
   const [lightboxIndex, setLightboxIndex] = useState(null);
 
-  // Only events with photos appear in the overview; the rest stay hidden
-  // until someone fills in their `photos` array.
+  /* v pregledu so samo dogodki s fotografijami */
   const visibleEvents = events.filter((ev) => ev.photos.length > 0);
 
-  // Read straight from the URL rather than mirroring it into state via an
-  // effect — the effect version meant a deep link server-rendered the overview
-  // and only swapped to the event after hydration.
+  /* beremo naravnost iz naslova, prek effecta je deep link izrisal pregled */
   const requestedId = searchParams.get("event");
   const activeEvent = events.some((e) => e.id === requestedId) ? requestedId : null;
 
@@ -138,7 +135,7 @@ function GalleryInner() {
           <div key={ev.id}>
             <div className="flex items-center justify-between mb-6 flex-wrap gap-4">
 
-              {/* popravek */}
+              {/* podatki o dogodku */}
               <div className="flex flex-col gap-y-4">
                 <p className="eyebrow text-[10px]">{ev.date}</p>
                 <h2 className="font-display uppercase text-3xl md:text-4xl tracking-[0.08em] text-bone leading-none m-0 p-0">

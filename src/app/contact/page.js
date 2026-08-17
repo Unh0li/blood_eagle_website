@@ -1,11 +1,34 @@
 import SiteBackdrop from "@/components/SiteBackdrop";
 import Link from "next/link";
 
-// Set this to the real address once info@bloodeagle.si can actually receive
-// mail (mailbox or forwarding at the registrar). While it is null the whole
-// "General Questions" block is hidden — a mailto: pointing at a mailbox that
-// does not exist looks like it works, but silently swallows what visitors send.
-const GENERAL_EMAIL = null;
+/* nastavi na null, ce predal kdaj ne bi delal, blok se takrat skrije */
+const GENERAL_EMAIL = "info@bloodeagle.si";
+const BOOKING_EMAIL = "terror.industrial29@gmail.com";
+
+/* dolgi naslovi, zato tekoca velikost, da gredo povsod v eno vrstico */
+const EMAIL_CLASS =
+  "font-display uppercase text-[clamp(0.6rem,3.2vw,1.625rem)] tracking-[0.06em] text-bone hover:text-blood transition-colors duration-300 whitespace-nowrap";
+
+function ContactRow({ label, email }) {
+  return (
+    <div className="flex flex-col items-center gap-2">
+      <p className="eyebrow text-[10px] tracking-[0.3em] text-silver/60">{label}</p>
+      <a href={`mailto:${email}`} className={EMAIL_CLASS}>
+        {email}
+      </a>
+    </div>
+  );
+}
+
+/* enaka locilna crta med vsemi bloki */
+function Rule() {
+  return (
+    <div
+      className="mx-auto h-px w-full max-w-[260px] bg-gradient-to-r from-transparent via-silver/20 to-transparent"
+      aria-hidden="true"
+    />
+  );
+}
 
 export default function Contact() {
     return (
@@ -34,59 +57,36 @@ export default function Contact() {
                     />
                 </div>
 
-                <div className="group relative border border-silver/15 bg-panel/40 backdrop-blur-sm p-10 md:p-16 transition-all duration-500 hover:border-blood/50">
-    <div className="corner-ticks">
-        <span style={{ top: 0, left: 0, borderTopWidth: 1, borderLeftWidth: 1 }} />
-        <span style={{ top: 0, right: 0, borderTopWidth: 1, borderRightWidth: 1 }} />
-        <span style={{ bottom: 0, left: 0, borderBottomWidth: 1, borderLeftWidth: 1 }} />
-        <span style={{ bottom: 0, right: 0, borderBottomWidth: 1, borderRightWidth: 1 }} />
-    </div>
+                {/* na telefonu manjsi rob, sicer dolg naslov nima kam */}
+                <div className="group relative border border-silver/15 bg-panel/40 backdrop-blur-sm p-6 sm:p-10 md:p-14 transition-all duration-500 hover:border-blood/50">
+                    <div className="corner-ticks">
+                        <span style={{ top: 0, left: 0, borderTopWidth: 1, borderLeftWidth: 1 }} />
+                        <span style={{ top: 0, right: 0, borderTopWidth: 1, borderRightWidth: 1 }} />
+                        <span style={{ bottom: 0, left: 0, borderBottomWidth: 1, borderLeftWidth: 1 }} />
+                        <span style={{ bottom: 0, right: 0, borderBottomWidth: 1, borderRightWidth: 1 }} />
+                    </div>
 
-    {/* za kontakt */}
-    <div className="flex flex-col gap-y-12">
+                    {/* enakomeren ritem, vsak blok loci ista crta */}
+                    <div className="flex flex-col gap-y-7 sm:gap-y-9">
+                        {GENERAL_EMAIL && (
+                            <>
+                                <ContactRow label="General Questions" email={GENERAL_EMAIL} />
+                                <Rule />
+                            </>
+                        )}
 
-        {/* splošni kontakt — skrit, dokler naslov ne obstaja. Glej GENERAL_EMAIL zgoraj. */}
-        {GENERAL_EMAIL && (
-            <>
-                <div className="flex flex-col items-center">
-                    <p className="eyebrow text-[10px] mb-3 tracking-[0.3em] text-silver/50 uppercase">General Questions</p>
-                    <a
-                        href={`mailto:${GENERAL_EMAIL}`}
-                        className="font-display uppercase text-2xl md:text-3xl tracking-[0.06em] text-bone hover:text-blood transition-colors duration-300 break-all"
-                    >
-                        {GENERAL_EMAIL}
-                    </a>
+                        <ContactRow label="Booking Agent" email={BOOKING_EMAIL} />
+
+                        <Rule />
+
+                        <div className="flex flex-col items-center gap-2">
+                            <p className="eyebrow text-[10px] tracking-[0.3em] text-silver/60">Location</p>
+                            <p className="font-mono text-sm text-silver uppercase tracking-[0.2em]">
+                                Ljubljana <span className="text-blood mx-1">/</span> Slovenia
+                            </p>
+                        </div>
+                    </div>
                 </div>
-
-                {/* line med maili */}
-                <div className="mx-auto h-px w-12 bg-blood/30" />
-            </>
-        )}
-
-        {/* booking agent */}
-        <div className="flex flex-col items-center">
-            <p className="eyebrow text-[10px] mb-3 tracking-[0.3em] text-silver/50 uppercase">Booking Agent</p>
-            <a
-                href="mailto:terror.industrial29@gmail.com"
-                className="font-display uppercase text-xl sm:text-2xl md:text-3xl lg:text-3xl tracking-[0.06em] text-bone hover:text-blood transition-colors duration-300 break-all"
-            >
-                terror.industrial29@gmail.com
-            </a>
-        </div>
-
-        {/* locilna linija*/}
-        <div className="mx-auto h-px w-full max-w-[240px] bg-gradient-to-r from-transparent via-silver/20 to-transparent my-2" />
-
-        {/* lokacija */}
-        <div className="flex flex-col items-center">
-            <p className="eyebrow text-[10px] mb-3 tracking-[0.3em] text-silver/50 uppercase">Location</p>
-            <p className="font-mono text-sm text-silver uppercase tracking-[0.2em] leading-7">
-                Ljubljana <span className="text-blood mx-1">/</span> Slovenia
-            </p>
-        </div>
-        
-    </div>
-</div>
 
                 <div className="mt-20 flex items-center justify-center gap-4 max-w-xs mx-auto mb-10">
                     <span className="divider-line" />

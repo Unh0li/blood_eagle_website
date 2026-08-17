@@ -5,9 +5,8 @@ import Countdown from "@/components/home/Countdown";
 import SiteBackdrop from "@/components/SiteBackdrop";
 
 export default async function Events() {
-  // Without this the upcoming/past split is evaluated once during the build and
-  // then frozen into the prerendered shell, so a finished event never moves to
-  // "past". connection() defers this render to request time.
+  /* brez tega se delitev na prihajajoce in pretekle zamrzne ob buildu,
+     connection() prestavi izris na cas zahtevka */
   await connection();
   const now = new Date();
 
@@ -68,8 +67,7 @@ export default async function Events() {
                         </p>
                       </div>
 
-                      {/* length check, not just truthiness — an empty array is
-                          truthy and would render a blank spaced-out paragraph. */}
+                      {/* prazno polje je resnicno, zato preverjamo dolzino */}
                       {ev.lineup?.length > 0 && (
                         <p className="mt-5 font-mono text-[11px] text-blood/80 uppercase tracking-[0.2em]">
                           {ev.lineup.join("  /  ")}

@@ -1,8 +1,6 @@
 @import "tailwindcss";
 
-/* =========================================================
-   ROOT / THEME
-   ========================================================= */
+/* koren in tema */
 
 :root {
   --color-void: #020202;
@@ -14,8 +12,7 @@
   --background: var(--color-void);
   --foreground: var(--color-bone);
 
-  /* Navbar height. Must track Navbar.jsx's h-16 / sm:h-[72px], which the
-     fixed rune and drip layers offset themselves against. */
+  /* visina navbara, mora slediti h-16 in sm:h-[72px] iz Navbar.jsx */
   --nav-h: 64px;
 
   color-scheme: dark;
@@ -43,9 +40,7 @@
 }
 
 
-/* =========================================================
-   BASE
-   ========================================================= */
+/* osnova */
 
 html {
   background: var(--color-void);
@@ -57,8 +52,7 @@ body {
   margin: 0;
   background: var(--color-void);
   color: var(--color-bone);
-  /* No sans webfont is loaded — everything visible uses font-mono/display/horror.
-     This is only the fallback for unstyled text. */
+  /* sans pisava ni nalozena, vse vidno uporablja mono, display ali horror */
   font-family: Arial, Helvetica, sans-serif;
   -webkit-font-smoothing: antialiased;
   overflow-x: hidden;
@@ -70,9 +64,7 @@ body {
 }
 
 
-/* =========================================================
-   SITE SHELL
-   ========================================================= */
+/* ovoj strani */
 
 .site-shell {
   position: relative;
@@ -82,13 +74,10 @@ body {
 }
 
 
-/* =========================================================
-   HEAVY GRAIN
-   ========================================================= */
+/* zrnatost */
 
-/* A fixed, full-viewport mix-blend-mode layer has to be recomposited against
-   everything beneath it on every scroll. Barely visible on a phone, so it is
-   desktop-only. Same reasoning for the slash and grid layers below. */
+/* fiksna plast z mix-blend-mode se prerisuje ob vsakem drsenju,
+   na telefonu komaj vidna in draga, zato samo namizje */
 @media (min-width: 768px) {
   .site-shell::before {
     content: "";
@@ -105,9 +94,7 @@ body {
 }
 
 
-/* =========================================================
-   SCANLINES
-   ========================================================= */
+/* skenirne crte */
 
 .site-shell::after {
   content: "";
@@ -128,9 +115,7 @@ body {
 }
 
 
-/* =========================================================
-   AMBIENT
-   ========================================================= */
+/* ambient */
 
 .site-shell__ambient {
   position: fixed;
@@ -199,9 +184,7 @@ body {
 }
 
 
-/* =========================================================
-   GRID
-   ========================================================= */
+/* mreza */
 
 .site-shell__grid {
   display: none;
@@ -262,8 +245,7 @@ body {
   animation: gridFlicker 8s ease-in-out 4s infinite;
 }
 
-/* Opacity is compositable, so this is cheap in isolation — but it repaints the
-   full viewport behind the navbar's backdrop-blur. Kept, at a slower cadence. */
+/* opacity je poceni, a prerisuje cel zaslon pod backdrop-blur navbara */
 @keyframes gridFlicker {
   0%,
   100% {
@@ -284,9 +266,7 @@ body {
 }
 
 
-/* =========================================================
-   VIGNETTE
-   ========================================================= */
+/* vinjeta */
 
 .site-shell__vignette {
   position: fixed;
@@ -303,9 +283,7 @@ body {
 }
 
 
-/* =========================================================
-   SLASH / DIAGONAL
-   ========================================================= */
+/* diagonalne crte */
 
 .site-shell__slash {
   display: none;
@@ -333,16 +311,16 @@ body {
 }
 
 
-/* =========================================================
-   BLOOD DRIPS
-   ========================================================= */
+/* krvave kaplje */
 
+/* z-index 3 in ne 98, kaplje so ozadje
+   nad vinjeto (2), pod runskimi stolpci (15) in pod vsebino (20) */
 .site-shell__drip {
   position: fixed;
   inset: 0;
   top: var(--nav-h);
 
-  z-index: 98;
+  z-index: 3;
 
   pointer-events: none;
   overflow: visible;
@@ -365,8 +343,7 @@ body {
     transparent 100%
   );
 
-  /* mix-blend-mode here forced the whole fixed drip layer out of the
-     compositor on every frame; the gradient already reads as translucent. */
+  /* mix-blend-mode je vlekel celo plast iz kompozitorja */
   animation-timing-function: linear;
   animation-iteration-count: infinite;
 }
@@ -491,9 +468,7 @@ body {
 }
 
 
-/* =========================================================
-   UTILITY
-   ========================================================= */
+/* pripomocki */
 
 .eyebrow {
   color: var(--color-blood);
@@ -536,21 +511,19 @@ body {
 }
 
 
-/* =========================================================
-   GENERAL ANIMATIONS
-   ========================================================= */
+/* splosne animacije */
 
+/* brez letter-spacing, to je layout lastnost in na velikem naslovu
+   prelomi besedilo ob vsakem okvirju */
 @keyframes riseIn {
   from {
     opacity: 0;
     transform: translateY(40px);
-    letter-spacing: 0.05em;
   }
 
   to {
     opacity: 1;
     transform: translateY(0);
-    letter-spacing: 0.12em;
   }
 }
 
@@ -599,9 +572,7 @@ body {
 }
 
 
-/* =========================================================
-   3D TITLE
-   ========================================================= */
+/* 3d naslov */
 
 .title-3d {
   display: inline-block;
@@ -621,30 +592,29 @@ body {
     8px 10px 16px rgba(0, 0, 0, 0.97);
 
   animation:
-    riseIn 1.5s cubic-bezier(0.16, 1, 0.3, 1) both,
-    titleBreath 6s ease-in-out 1.5s infinite;
+    riseIn 0.7s cubic-bezier(0.16, 1, 0.3, 1) both,
+    titleBreath 6s ease-in-out 0.7s infinite;
 }
 
-/* Was animating text-shadow, -webkit-text-stroke and color together, which
-   forces a text re-layout and repaint every frame on a 10vw heading. Only
-   transform and filter remain — both composite without touching layout. */
+/* prej je animiral text-shadow in text-stroke, kar prerisuje ob vsakem okvirju,
+   ostaneta samo transform in filter */
+/* drop-shadow mora biti v obeh korakih, sicer ga brightness prepise
+   in senca za naslovom izgine, ko se animacija zazene */
 @keyframes titleBreath {
   0%,
   100% {
     transform: scale(1);
-    filter: brightness(1);
+    filter: drop-shadow(0 15px 25px rgba(0, 0, 0, 0.9)) brightness(1);
   }
 
   50% {
     transform: scale(1.012);
-    filter: brightness(1.2) saturate(1.15);
+    filter: drop-shadow(0 15px 25px rgba(0, 0, 0, 0.9)) brightness(1.2) saturate(1.15);
   }
 }
 
 
-/* =========================================================
-   EKG
-   ========================================================= */
+/* ekg */
 
 .ekg-line polyline {
   stroke-dasharray: 140;
@@ -690,12 +660,9 @@ body {
 }
 
 
-/* =========================================================
-   RUNE COLUMNS
-   ========================================================= */
+/* runski stolpci */
 
-/* Hidden below lg: two 48px columns ate a quarter of a 390px phone screen and
-   sat directly under the content and its tap targets. */
+/* skrito pod lg, dva stolpca po 48px sta pojedla cetrtino telefona */
 .rune-col {
   display: none;
 
@@ -801,10 +768,8 @@ body {
   animation: runeUp 34s linear infinite;
 }
 
-/* The glow used to be an infinite animation on text-shadow + filter, per glyph.
-   Neither property can be composited, so every glyph repainted every frame —
-   measured at 14fps on a throttled phone. It is now a static shadow; the only
-   thing still moving is the track's transform, which is GPU-cheap. */
+/* prej neskoncna animacija text-shadow in filter na vsaki runi,
+   nobena se ne kompozitira, zato je bilo 14fps */
 .rune-glyph {
   display: block;
 
@@ -824,7 +789,7 @@ body {
     0 0 24px rgba(255, 255, 255, 0.14);
 }
 
-/* Static variation, so the column still reads as irregular rather than uniform. */
+/* staticna razlika, da stolpec ni enolicen */
 .rune-glyph:nth-child(5n) {
   color: #fff;
 }
@@ -837,10 +802,7 @@ body {
   transform: scale(1.08);
 }
 
-/* Breathing, on a minority of glyphs and via opacity only. Opacity composites,
-   so this stays off the paint path; the old runeFlicker animated filter and
-   text-shadow on all of them, which is what cost 4x the frame budget. Three
-   offset periods keep it from reading as a synchronised pulse. */
+/* dihanje samo na delu run in samo prek opacity, ki se kompozitira */
 .rune-glyph:nth-child(4n) {
   animation: runeBreathe 6.5s ease-in-out infinite;
 }
@@ -865,7 +827,7 @@ body {
   }
 }
 
-/* Travelling highlight — a single translating gradient per column. */
+/* potujoc odsev, en sam element na stolpec */
 .rune-col__sweep {
   position: absolute;
   left: 0;
@@ -916,8 +878,7 @@ body {
   }
 }
 
-/* Slow drifting haze behind the glyphs. A soft gradient translating, rather
-   than the blur(35px) layer this replaces — same softness, no filter pass. */
+/* pocasna meglica, mehak preliv namesto blur filtra */
 .rune-col::before {
   content: "";
 
@@ -968,9 +929,7 @@ body {
   }
 }
 
-/* =========================================================
-   ACCESSIBILITY / REDUCED MOTION
-   ========================================================= */
+/* dostopnost in zmanjsano gibanje */
 
 @media (prefers-reduced-motion: reduce) {
   *,

@@ -35,16 +35,16 @@ export function AudioProvider({ children }) {
 
   const [playing, setPlaying] = useState(false);
   const [volume, setVolume] = useState(0.25);
-  // The widget is bound once on mount, so its READY handler would otherwise
-  // close over the volume as it was at mount and never see a later change.
+  /* widget se veze samo ob mountu, zato bi READY videl staro glasnost */
   const volumeRef = useRef(0.25);
   const [ready, setReady] = useState(false);
   const [trackIndex, setTrackIndex] = useState(0);
   const [progress, setProgress] = useState(0);
   const [duration, setDuration] = useState(0);
   const [pending, setPending] = useState(false);
+  const [failed, setFailed] = useState(false);
 
-  // widget samo enkrat
+  /* widget samo enkrat */
   useEffect(() => {
     if (!iframeRef.current) return;
     let cancelled = false;
@@ -77,8 +77,16 @@ export function AudioProvider({ children }) {
         setTrackIndex((i) => (i + 1) % TRACKS.length);
       });
 
-      // Fires many times a second. The UI only shows whole seconds, so throttle
-      // to that — otherwise every tick re-renders the whole navbar and tracklist.
+      /* brez tega bi ob neuspesnem nalaganju obticali v pending za vedno
+         in gumb bi ostal onemogocen brez pojasnila */
+      widget.bind(window.SC.Widget.Events.ERROR, () => {
+        if (cancelled) return;
+        setPending(false);
+        setPlaying(false);
+        setFailed(true);
+      });
+
+      /* prozi veckrat na sekundo, UI kaze cele sekunde, zato dusimo */
       widget.bind(window.SC.Widget.Events.PLAY_PROGRESS, (data) => {
         if (cancelled) return;
         setProgress((prev) =>
@@ -116,7 +124,7 @@ export function AudioProvider({ children }) {
     };
   }, []);
 
-  //widget load
+  /* menjava skladbe */
   useEffect(() => {
     if (isFirstTrack.current) {
       isFirstTrack.current = false;
@@ -131,14 +139,13 @@ export function AudioProvider({ children }) {
     setPending(false);
     setProgress(0);
     setDuration(0);
+    setFailed(false);
 
     widgetRef.current.load(TRACKS[trackIndex].url, {
       auto_play: true,
       callback: () => {
         if (loadTokenRef.current !== token) return;
-        // load() resets the widget's own volume to its default, while React
-        // still holds the user's setting — the slider kept showing the old
-        // value while the audio jumped back to full. Push it back down.
+        /* load() ponastavi glasnost widgeta, React pa drzi uporabnikovo, zato jo vrnemo */
         widgetRef.current.setVolume(volumeRef.current * 100);
         setReady(true);
         widgetRef.current.getDuration((ms) => {
@@ -174,7 +181,7 @@ export function AudioProvider({ children }) {
 
   const currentTrack = TRACKS[trackIndex];
 
-  // fiksen src
+  /* fiksen src, samo za prvi mount */
   const initialSrc = `https://w.soundcloud.com/player/?url=${encodeURIComponent(
     TRACKS[0].url
   )}&auto_play=false&hide_related=true&show_comments=false&show_user=false&show_reposts=false&visual=false`;
@@ -195,6 +202,7 @@ export function AudioProvider({ children }) {
         currentTrack,
         selectTrack,
         ready,
+        failed,
       }}
     >
       <iframe

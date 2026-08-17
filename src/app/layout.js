@@ -11,13 +11,11 @@ import CreatorMark from "@/components/CreatorMark";
 const DESCRIPTION =
   "Blood Eagle is an industrial techno collective based in Ljubljana, Slovenia.";
 
-// Link previews on Instagram/TikTok need an absolute URL. Until bloodeagle.si
-// is registered and attached, set NEXT_PUBLIC_SITE_URL in the Vercel project
-// to the *.vercel.app address; delete the variable once the domain is live.
+/* predogledi povezav rabijo absoluten naslov
+   dokler domena ne dela, nastavi NEXT_PUBLIC_SITE_URL v Vercelu */
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://bloodeagle.si";
 
-// icon.png and opengraph-image.png sit alongside this file; Next picks them up
-// by convention, so the link/meta tags don't need declaring here.
+/* icon.png in opengraph-image.png sta poleg te datoteke, Next ju najde sam */
 export const metadata = {
   metadataBase: new URL(SITE_URL),
   title: "Blood Eagle",

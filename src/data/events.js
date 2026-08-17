@@ -3,7 +3,7 @@ const berzerkPhotos = Array.from(
   (_, i) => `/images/berzerk/b-${i + 1}.webp`
 );
 
-// Event dates are authored as "11 JULY 2026"; Date can't parse that order.
+/* datumi so zapisani kot "11 JULY 2026", Date tega vrstnega reda ne razume */
 export function parseEventDate(str) {
   return new Date(str.replace(/(\d+)\s+(\w+)\s+(\d+)/, "$2 $1 $3"));
 }
@@ -13,8 +13,7 @@ export const events = [
         id: "berzerk-2026",
         title: "BERZERK",
         date: "11 JULY 2026",
-        // Doors time, edited by hand per event. Drives the countdown on both
-        // the home page and /events. Omit it and no countdown is shown.
+        /* ura odprtja, rocno na vsak dogodek, poganja odstevanje na home in /events */
         countdownDate: "2026-07-11T20:00:00",
         venue: "PUBLIKA BARKLUB, LJUBLJANA",
         genre: "Bochka",

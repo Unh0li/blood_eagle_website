@@ -1,14 +1,8 @@
 import Image from "next/image";
 import BloodDrips from "@/components/BloodDrips";
 
-/**
- * The fixed decorative layers behind every page: ambient glows, grid, slash,
- * vignette, blood drips and the centred logo watermark. This markup was
- * copy-pasted verbatim into all six pages.
- *
- * The grid and slash layers hide themselves below md in globals.css — they are
- * near-invisible on a phone and were among the most expensive things on it.
- */
+/* okrasne plasti za vsemi stranmi
+   mreza in poseva se pod md skrijeta, na telefonu sta drago in komaj vidno */
 export default function SiteBackdrop({ watermark = true }) {
   return (
     <>
@@ -27,9 +21,7 @@ export default function SiteBackdrop({ watermark = true }) {
           className="fixed top-24 left-1/2 -translate-x-1/2 pointer-events-none select-none z-0 w-full max-w-5xl px-6 pt-35 flex items-center justify-center"
           aria-hidden="true"
         >
-          {/* scale-[1.6] made the mark 547px wide inside a 390px phone, so it
-              was cropped on both sides. 1.1 is the most that still fits the
-              container's px-6 gutters. Home animates to the same two values. */}
+          {/* 1.1 je najvec kar se se prilega robovom posode, home anima na isti vrednosti */}
           <div className="opacity-5 mix-blend-screen scale-110 md:scale-[2.2] w-full h-full flex items-center justify-center">
             <Image
               src="/images/logo/logo_white.png"

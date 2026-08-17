@@ -5,8 +5,8 @@ import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState, useCallback } from "react";
 import { useAudio } from "@/context/AudioContext";
 
-// /events must stay lit on /events/berzerk-2026 too, but "/" would prefix-match
-// every route, so the root is the one that has to match exactly.
+/* /events mora ostati prizgan tudi na /events/berzerk-2026,
+   koren se mora ujemati natancno, sicer bi se ujemal povsod */
 const isActiveRoute = (pathname, href) =>
   href === "/" ? pathname === "/" : pathname.startsWith(href);
 
@@ -38,14 +38,17 @@ export default function Navbar() {
     playing, toggle, pending, ready,
     volume, changeVolume,
     seekTo, progress, duration,
-    tracks = [], trackIndex, currentTrack, selectTrack,
+    tracks = [], trackIndex, currentTrack, selectTrack, failed,
   } = useAudio();
 
-  /* useCallback — stabilne reference, ne povzročajo re-renderov otrok */
+  /* skladba je nalozena, ko poznamo njeno dolzino */
+  const trackLoaded = ready && duration > 0;
+
+  /* stabilne reference, otroci se ne izrisujejo znova */
   const closePicker = useCallback(() => setPickerOpen(false), []);
   const closeMobile = useCallback(() => setMobileOpen(false), []);
 
-  /* En sam effect za vse globalne listenerje */
+  /* en effect za vse globalne poslusalce */
   useEffect(() => {
     const onDown = (e) => {
       if (pickerRef.current && !pickerRef.current.contains(e.target))
@@ -71,16 +74,16 @@ export default function Navbar() {
   return (
     <nav className="fixed top-0 left-0 z-[100] w-full font-mono text-[10px] uppercase tracking-[0.28em] text-silver bg-void/80 backdrop-blur-xl border-b border-silver/10 shadow-[0_10px_40px_rgba(0,0,0,0.45)]">
 
-      {/* ── GLAVNA VRSTICA ── */}
+      {/* glavna vrstica */}
       <div className="relative flex items-center justify-between h-16 sm:h-[72px] px-4 sm:px-6">
 
-        {/* zgornja rdeča linija */}
+        {/* zgornja rdeca crta */}
         <span
           className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-blood/50 to-transparent"
           aria-hidden="true"
         />
 
-        {/* ── LOGO ── */}
+        {/* logotip */}
         <Link
           href="/"
           onMouseEnter={() => setLogoSrc(LOGO_GIF)}
@@ -91,9 +94,8 @@ export default function Navbar() {
           <div className="relative flex items-center justify-center w-9 h-9 sm:w-11 sm:h-11 overflow-hidden border border-silver/10 bg-black/20 transition-all duration-500 group-hover:border-blood/40 group-hover:bg-blood/5">
             <span className="absolute top-0 left-0 w-2 h-2 border-t border-l border-silver/30 group-hover:border-blood/70 transition-colors" aria-hidden="true" />
             <span className="absolute bottom-0 right-0 w-2 h-2 border-b border-r border-silver/30 group-hover:border-blood/70 transition-colors" aria-hidden="true" />
-            {/* Deliberate plain <img>: both sources are already hand-encoded to
-                144px webp for this 36-44px slot, and the hover variant is an
-                animated webp that next/image would flatten to a still frame. */}
+            {/* namenoma navaden img, oba vira sta ze stisnjena na 144px,
+                hover razlicica je animiran webp, ki bi ga next/image splostil */}
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               src={logoSrc}
@@ -107,12 +109,11 @@ export default function Navbar() {
           </div>
         </Link>
 
-        {/* ── DESKTOP NAV — 5 enakih stolpcev, HOME vedno centriran ── */}
+        {/* namizna navigacija, pet enakih stolpcev */}
         <div className="hidden lg:grid absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 grid-cols-5 w-[520px] xl:w-[560px] h-10 border border-silver/10 bg-black/20">
           {NAV_ITEMS.map((item, i) => {
-            // isHome is purely the centre column's visual weight; isActive is
-            // which page you are actually on. These used to be the same flag,
-            // so HOME looked selected on every route.
+            /* isHome je samo teza sredinskega stolpca, isActive pa kje si res,
+               prej je bila to ista zastavica in HOME je izgledal izbran povsod */
             const isHome = i === 2;
             const isActive = isActiveRoute(pathname, item.href);
             return (
@@ -140,8 +141,7 @@ export default function Navbar() {
                       ? "text-blood"
                       : "text-silver/65 group-hover:text-bone group-hover:tracking-[0.32em]",
                   ].join(" ")}
-                  // letter-spacing doda trailing space ki vizualno premakne tekst levo.
-                  // marginRight: -0.32em "odstrani" to trailing space iz layout-a → videz centriran
+                  /* letter-spacing doda presledek na koncu, negativni marginRight ga odstrani */
                   style={isHome ? { letterSpacing: "0.32em", marginRight: "-0.32em" } : undefined}
                 >
                   {item.label}
@@ -160,11 +160,16 @@ export default function Navbar() {
           })}
         </div>
 
-        {/* ── DESNE KONTROLE ── */}
+        {/* desne kontrole */}
         <div ref={pickerRef} className="relative z-20 flex items-center gap-1.5 sm:gap-2">
 
-          {/* Volume */}
-          <div className={`hidden sm:flex items-center gap-2 mr-1 transition-opacity duration-300 ${playing ? "opacity-100" : "opacity-0 pointer-events-none"}`}>
+          {/* glasnost, vidna dokler je skladba nalozena
+              inert, sicer bi bil neviden drsnik se vedno v zaporedju tabulatorja */}
+          <div
+            className={`hidden sm:flex items-center gap-2 mr-1 transition-opacity duration-300 ${trackLoaded ? "opacity-100" : "opacity-0 pointer-events-none"}`}
+            aria-hidden={!trackLoaded}
+            inert={!trackLoaded}
+          >
             <svg width="9" height="9" viewBox="0 0 10 10" className="text-silver/30 shrink-0" aria-hidden="true">
               <polygon points="1,3 4,3 7,1 7,9 4,7 1,7" fill="currentColor" />
             </svg>
@@ -180,7 +185,7 @@ export default function Navbar() {
             </svg>
           </div>
 
-          {/* Track picker */}
+          {/* izbira skladbe */}
           <div className="relative">
             <button
               type="button"
@@ -192,7 +197,7 @@ export default function Navbar() {
             >
               <span className="absolute bottom-0 left-0 h-px w-0 bg-blood group-hover:w-full transition-all duration-500" aria-hidden="true" />
               <span className="relative max-w-[80px] sm:max-w-[100px] truncate text-[7px] sm:text-[8px] tracking-[0.15em] text-silver/60 group-hover:text-bone transition-colors normal-case">
-                {/* Bug fix: currentTrack je null dokler se audio ne naloži */}
+                {/* currentTrack je null dokler se avdio ne nalozi */}
                 {currentTrack?.title ?? "—"}
               </span>
               <span className={`relative text-[6px] text-silver/30 transition-transform duration-300 ${pickerOpen ? "rotate-180" : ""}`} aria-hidden="true">
@@ -204,9 +209,8 @@ export default function Navbar() {
               <div
                 role="listbox"
                 aria-label="Tracklist"
-                // On phones this is pinned to the viewport, not to the button:
-                // the button sits mid-cluster (play and menu are to its right),
-                // so right-0 pushed the 288px panel 35px off the left edge.
+                /* na telefonu pripeto na zaslon, ne na gumb
+                   gumb je sredi skupine, zato je right-0 potisnil seznam cez levi rob */
                 className="fixed left-4 right-4 top-[calc(var(--nav-h)+0.5rem)] w-auto max-w-none sm:absolute sm:left-auto sm:right-0 sm:top-full sm:mt-2 sm:w-72 sm:max-w-72 border border-silver/10 bg-[#050505]/95 backdrop-blur-xl shadow-[0_20px_60px_rgba(0,0,0,0.8)] overflow-hidden z-50"
               >
                 <div className="flex items-center justify-between px-4 py-3 border-b border-silver/10">
@@ -242,7 +246,7 @@ export default function Navbar() {
             )}
           </div>
 
-          {/* Play / Pause */}
+          {/* predvajaj in ustavi */}
           <button
             type="button"
             onClick={toggle}
@@ -265,13 +269,13 @@ export default function Navbar() {
             </svg>
             <span
               className="text-[7px] sm:text-[8px] tracking-[0.2em]"
-              style={{ color: playing ? "#c81e1e" : "rgba(138,138,138,0.4)" }}
+              style={{ color: playing || failed ? "#c81e1e" : "rgba(138,138,138,0.4)" }}
             >
-              {pending ? "···" : playing ? "LIVE" : "OFF"}
+              {failed ? "ERR" : pending ? "···" : playing ? "LIVE" : "OFF"}
             </span>
           </button>
 
-          {/* Mobile menu toggle */}
+          {/* gumb mobilnega menija */}
           <button
             type="button"
             onClick={() => setMobileOpen((o) => !o)}
@@ -281,7 +285,8 @@ export default function Navbar() {
             className="lg:hidden group relative flex items-center justify-center w-9 h-9 border border-silver/10 hover:border-blood/35 hover:bg-blood/[0.025] transition-all duration-300"
           >
             <span className="absolute top-0 left-0 w-2 h-2 border-t border-l border-silver/30 group-hover:border-blood/60 transition-colors" aria-hidden="true" />
-            {/* Bug fix: oba spana rabita translate da se pravilno srečata v X */}
+            <span className="absolute bottom-0 right-0 w-2 h-2 border-b border-r border-silver/30 group-hover:border-blood/60 transition-colors" aria-hidden="true" />
+            {/* oba spana rabita translate, da se srecata v X */}
             <span className="flex flex-col gap-1.5 w-4" aria-hidden="true">
               <span className={`block h-px bg-silver/60 transition-all duration-300 ${mobileOpen ? "translate-y-[3px] rotate-45" : ""}`} />
               <span className={`block h-px bg-silver/60 transition-all duration-300 ${mobileOpen ? "-translate-y-[3px] -rotate-45" : ""}`} />
@@ -291,7 +296,7 @@ export default function Navbar() {
         </div>
       </div>
 
-      {/* ── MOBILNA NAVIGACIJA ── */}
+      {/* mobilna navigacija */}
       <div
         id="mobile-nav"
         className={`lg:hidden overflow-hidden border-t border-silver/5 bg-[#040404]/95 backdrop-blur-xl transition-all duration-500 ${mobileOpen ? "max-h-[400px] opacity-100" : "max-h-0 opacity-0"}`}
@@ -311,8 +316,7 @@ export default function Navbar() {
                     isActive ? "bg-blood/[0.07] text-blood" : "bg-[#050505] text-bone/85"
                   }`}
                 >
-                  {/* Solid bar on the leading edge — colour alone is easy to miss
-                      on a phone in daylight. */}
+                  {/* crta na levem robu, sama barva se na soncu slabo vidi */}
                   <span
                     className={`absolute left-0 top-0 bottom-0 w-[3px] transition-colors duration-300 ${
                       isActive ? "bg-blood" : "bg-transparent"
@@ -331,13 +335,15 @@ export default function Navbar() {
         </div>
       </div>
 
-      {/* ── PROGRESS BAR ── */}
+      {/* vrstica napredka samo med predvajanjem
+          inert, sicer bi bil sesedeni drsnik se vedno dosegljiv s tipkovnico */}
       <div
         className={`overflow-hidden bg-black/30 transition-all duration-500 ${playing && duration > 0 ? "h-7 opacity-100 border-t border-silver/5" : "h-0 opacity-0"}`}
         aria-hidden={!playing}
+        inert={!playing}
       >
         <div className="flex items-center gap-2 sm:gap-3 h-full px-4 sm:px-6">
-          <span className="w-7 sm:w-8 shrink-0 text-[7px] text-silver/30 tabular-nums">
+          <span className="w-7 sm:w-8 shrink-0 text-[7px] text-silver/50 tabular-nums">
             {formatTime(progress)}
           </span>
           <input
@@ -346,7 +352,7 @@ export default function Navbar() {
             aria-label="Track progress"
             className="flex-1 h-px min-w-0 cursor-pointer accent-blood opacity-40 hover:opacity-100 transition-opacity"
           />
-          <span className="w-7 sm:w-8 shrink-0 text-right text-[7px] text-silver/30 tabular-nums">
+          <span className="w-7 sm:w-8 shrink-0 text-right text-[7px] text-silver/50 tabular-nums">
             {formatTime(duration)}
           </span>
         </div>

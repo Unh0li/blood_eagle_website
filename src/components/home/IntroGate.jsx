@@ -3,19 +3,12 @@
 import { useEffect, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 
-// Expo-out, the same curve the hero title's riseIn uses.
+/* expo-out, ista krivulja kot riseIn pri naslovu */
 const EASE = [0.16, 1, 0.3, 1];
 const DOOR_DURATION = 1.15;
 
-// AnimatePresence only runs exit animations on its *direct* children. The gate
-// used to hand it a plain <div>, so React unmounted the whole subtree instantly
-// and the doors never animated. The wrapper is now a motion component, and the
-// named variants below propagate down to every motion child automatically.
-// The opacity keyframes hold at 1 — they animate nothing visually. They exist
-// because a variant carrying only a `transition` resolves as instantly complete,
-// which fires onExitComplete on frame one and unmounts the gate before the
-// doors move. Giving the wrapper a real, full-length property keeps the whole
-// subtree present until the doors have finished.
+/* AnimatePresence anima samo neposredne otroke, zato je ovoj motion
+   opacity drzi pri 1, varianta samo s transition bi se koncala takoj */
 const gateVariants = {
   visible: { opacity: 1 },
   exit: {
@@ -24,8 +17,7 @@ const gateVariants = {
   },
 };
 
-// Doors translate rather than scaleX: sliding keeps the lit inner edge crisp,
-// where scaling would squash it into the seam. Pure transform either way.
+/* vrata drsijo, scaleX bi zmecal osvetljen rob v siv */
 const doorLeft = {
   visible: { x: "0%" },
   exit: { x: "-101%", transition: { duration: DOOR_DURATION, ease: EASE } },
@@ -36,7 +28,7 @@ const doorRight = {
   exit: { x: "101%", transition: { duration: DOOR_DURATION, ease: EASE } },
 };
 
-// The seam flares as the doors part, then dies with them.
+/* siv zazari ko se vrata razmaknejo, nato ugasne */
 const seamVariants = {
   visible: { opacity: 0, scaleY: 0.3 },
   exit: {
@@ -46,15 +38,13 @@ const seamVariants = {
   },
 };
 
-// Two short glowing segments rather than one continuous line. The clear gap
-// spans 32-74%, which brackets the content block (measured at 37-68% of the
-// viewport: logo from 37%, button ending at 68%) with margin on both sides.
+/* dva kratka odseka namesto ene crte, vrzel je tam kjer je vsebina */
 const EDGE_LINE = {
   background:
-    "linear-gradient(to bottom, transparent 0%, rgba(200,30,30,0.45) 14%, transparent 32%, transparent 74%, rgba(200,30,30,0.45) 88%, transparent 100%)",
+    "linear-gradient(to bottom, transparent 0%, rgba(200,30,30,0.26) 12%, transparent 28%, transparent 76%, rgba(200,30,30,0.26) 90%, transparent 100%)",
 };
 
-// Content leaves slightly ahead of the doors so it reads as receding behind them.
+/* vsebina odide malo pred vrati */
 const contentVariants = {
   visible: { opacity: 1, scale: 1 },
   exit: {
@@ -92,7 +82,7 @@ export default function IntroGate({ onEnter, onDone }) {
           variants={gateVariants}
           className="fixed inset-0 z-[500] pointer-events-none"
         >
-          {/* SEAM — sits under the doors, revealed as they part */}
+          {/* siv, lezi pod vrati */}
           <div className="absolute inset-0 flex items-center justify-center">
             <motion.div
               variants={seamVariants}
@@ -106,22 +96,19 @@ export default function IntroGate({ onEnter, onDone }) {
             />
           </div>
 
-          {/* LEFT DOOR */}
+          {/* leva vrata */}
           <motion.div
             variants={doorLeft}
             style={{ willChange: "transform" }}
             className="absolute inset-y-0 left-0 w-1/2 bg-void pointer-events-auto"
             aria-hidden="true"
           >
-            {/* Lit inner edge. The glow is deliberately absent through the
-                middle third: a full-height line cut straight across the logo
-                and the button, which is what made the seam look drawn on
-                rather than like light between two doors. */}
+            {/* osvetljen notranji rob */}
             <span className="absolute inset-y-0 right-0 w-px" style={EDGE_LINE} />
             <span className="absolute inset-y-0 right-0 w-10 bg-gradient-to-l from-blood/[0.05] to-transparent" />
           </motion.div>
 
-          {/* RIGHT DOOR */}
+          {/* desna vrata */}
           <motion.div
             variants={doorRight}
             style={{ willChange: "transform" }}
@@ -132,13 +119,13 @@ export default function IntroGate({ onEnter, onDone }) {
             <span className="absolute inset-y-0 left-0 w-10 bg-gradient-to-r from-blood/[0.05] to-transparent" />
           </motion.div>
 
-          {/* FRONT UI LAYER — above the doors */}
+          {/* sprednja plast, nad vrati */}
           <motion.div
             variants={contentVariants}
             style={{ willChange: "transform, opacity" }}
             className="absolute inset-0 flex flex-col items-center justify-center"
           >
-            {/* NOISE */}
+            {/* sum */}
             <div
               aria-hidden="true"
               className="pointer-events-none absolute inset-0 opacity-[0.05] mix-blend-overlay"
@@ -148,7 +135,7 @@ export default function IntroGate({ onEnter, onDone }) {
               }}
             />
 
-            {/* SCANLINES */}
+            {/* skenirne crte */}
             <div
               aria-hidden="true"
               className="pointer-events-none absolute inset-0 opacity-[0.07]"
@@ -158,22 +145,21 @@ export default function IntroGate({ onEnter, onDone }) {
               }}
             />
 
-            {/* AMBIENT PULSE */}
+            {/* utrip v ozadju */}
             <div
               aria-hidden="true"
               className="pointer-events-none absolute h-[70vw] w-[70vw] max-h-[900px] max-w-[900px] rounded-full bg-[radial-gradient(circle,rgba(200,30,30,0.14)_0%,transparent_65%)] animate-[gatePulse_5s_ease-in-out_infinite]"
             />
 
-            {/* VIGNETTE */}
+            {/* vinjeta */}
             <div
               aria-hidden="true"
               className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_35%,rgba(0,0,0,0.88)_100%)]"
             />
 
-            {/* CONTENT */}
+            {/* vsebina */}
             <div className="relative z-10 flex flex-col items-center px-6 pointer-events-auto">
-              {/* Spacer for the logo, which page.js renders above this layer
-                  so it can morph into the background watermark on exit. */}
+              {/* prostor za logotip, ki ga izrise page.js */}
               <div className="h-48 w-48 md:h-56 md:w-56" aria-hidden="true" />
 
               <button
@@ -183,14 +169,13 @@ export default function IntroGate({ onEnter, onDone }) {
                 aria-label="Enter Valhalla"
                 className="group relative mt-12 overflow-hidden border border-blood px-16 py-5 font-mono text-xs uppercase tracking-[0.4em] text-bone transition-transform duration-200 active:scale-95 disabled:pointer-events-none"
               >
-                {/* HOVER FILL — grows out of the button's centre, which is where
-                    the door seam crosses it, so the two edges travel apart. */}
+                {/* polnilo ob hoverju, raste iz sredine navzven */}
                 <span
                   aria-hidden="true"
                   className="absolute inset-0 origin-center scale-x-0 bg-blood transition-transform duration-500 ease-[cubic-bezier(0.4,0,0.2,1)] group-hover:scale-x-100"
                 />
 
-                {/* CORNER TICKS */}
+                {/* kotne oznake */}
                 <span aria-hidden="true" className="corner-ticks">
                   <span
                     className="!border-blood/50"

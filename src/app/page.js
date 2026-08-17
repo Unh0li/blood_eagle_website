@@ -17,7 +17,7 @@ const SOCIAL_LINKS = [
   { name: "TikTok",     url: "https://www.tiktok.com/@blood.eagle.inc"  },
 ];
 
-// ── SHARED SUB-KOMPONENTE ────────────────────────────────────────
+/* skupne pod komponente */
 
 function Divider({ label, muted = false, className = "mb-10" }) {
   return (
@@ -49,7 +49,7 @@ function CornerTicks({ red = false }) {
   );
 }
 
-// ── EVENT KARTICE ────────────────────────────────────────────────
+/* kartice dogodkov */
 
 function UpcomingCard({ event }) {
   return (
@@ -159,7 +159,7 @@ function LatestCard({ event }) {
       <CornerTicks />
 
       <div className="flex flex-col md:flex-row">
-        {/* Slika */}
+        {/* slika */}
         {event.photos?.length > 0 ? (
           <Link href="/gallery" className="relative shrink-0 overflow-hidden md:w-[45%]">
             <div className="relative h-52 overflow-hidden md:h-full md:min-h-[280px]">
@@ -182,7 +182,7 @@ function LatestCard({ event }) {
                 </div>
               )}
 
-              {/* Thumbnail kolona — samo desktop */}
+              {/* stolpec slicic, samo namizje */}
               {event.photos.length > 1 && (
                 <div className="absolute bottom-0 right-0 hidden w-14 flex-col gap-px md:flex">
                   {event.photos.slice(1, 4).map((src, i) => (
@@ -214,14 +214,11 @@ function LatestCard({ event }) {
           </div>
         )}
 
-        {/* Info */}
+        {/* podatki */}
         <div className="flex flex-1 flex-col justify-between p-7 md:p-10">
           <div>
-            {/* No "Archive" tag here — the section divider above already reads
-                "Last Event" and the link below reads "Event Archive". */}
-            {/* This card is meant to read as "archived" and sit quieter than the
-                upcoming one, but the old 22-45% opacities were unreadable on a
-                phone outdoors. Still muted, now above the legibility floor. */}
+            {/* brez oznake arhiva, ločnica zgoraj in povezava spodaj to ze povesta */}
+            {/* kartica je tisja od prihajajocega dogodka, a nad mejo berljivosti */}
             <p className="eyebrow mb-2 text-[9px]" style={{ color: "rgba(138,138,138,0.85)" }}>
               {event.date}
             </p>
@@ -269,21 +266,20 @@ function LatestCard({ event }) {
   );
 }
 
-// ── GLAVNA KOMPONENTA ────────────────────────────────────────────
+/* glavna komponenta */
 
-// sessionStorage is browser-only, so the server can't know whether this visitor
-// already passed the gate. Reading it in an effect meant the gate rendered open
-// and then snapped shut — a full-screen black flash on every return to home.
-// useSyncExternalStore lets React settle the difference during hydration instead.
+/* sessionStorage obstaja samo v brskalniku
+   branje prek effecta je pokazalo gate in ga takoj zaprlo, kar je utripnilo */
 const NO_SUBSCRIBE = () => () => {};
 const hasEntered = () => sessionStorage.getItem("be-entered") === "true";
 const assumeFirstVisit = () => false;
 
-// The resting watermark has to end up the same size as the one SiteBackdrop
-// renders on every other page — but framer needs a number, so the md: breakpoint
-// can't come from a class here. Keep these two in step with SiteBackdrop.
+/* mirujoc watermark mora biti enak tistemu iz SiteBackdrop
+   framer rabi stevilko, zato md: ne pride v postev, drzi obe vrednosti skupaj */
 const DESKTOP_QUERY = "(min-width: 768px)";
 const WATERMARK_SCALE = { mobile: 1.1, desktop: 2.2 };
+/* logotip v gate, na telefonu vecji ker je zaslon ozji */
+const GATE_SCALE = { mobile: 0.32, desktop: 0.22 };
 
 const subscribeToBreakpoint = (onChange) => {
   const mql = window.matchMedia(DESKTOP_QUERY);
@@ -297,6 +293,7 @@ export default function Home() {
   const skipGate = useSyncExternalStore(NO_SUBSCRIBE, hasEntered, assumeFirstVisit);
   const desktop = useSyncExternalStore(subscribeToBreakpoint, isDesktop, assumeDesktop);
   const restScale = desktop ? WATERMARK_SCALE.desktop : WATERMARK_SCALE.mobile;
+  const gateScale = desktop ? GATE_SCALE.desktop : GATE_SCALE.mobile;
   const [justEntered, setJustEntered] = useState(false);
   const [gateFinished, setGateFinished] = useState(false);
 
@@ -315,9 +312,8 @@ export default function Home() {
       .filter((e) => parseEventDate(e.date) < now)
       .sort((a, b) => parseEventDate(b.date) - parseEventDate(a.date))[0] ?? null;
 
-  // The flag is written only once the doors have finished. Writing it on click
-  // made hasEntered() return true on the very next render, which flipped
-  // skipGate, unmounted IntroGate mid-click and killed the door animation.
+  /* zastavico zapisemo sele ko se vrata zaprejo
+     zapis ob kliku je odklopil gate sredi animacije */
   const handleGateDone = () => {
     sessionStorage.setItem("be-entered", "true");
     setGateFinished(true);
@@ -330,13 +326,11 @@ export default function Home() {
       )}
 
       <main className="site-shell relative selection:bg-blood selection:text-black">
-        {/* No watermark here — the animated logo below plays that role. */}
+        {/* brez watermarka, to vlogo ima animiran logotip spodaj */}
         <SiteBackdrop watermark={false} />
 
-        {/* Logo morph. The two branches share a layoutId, and framer only links
-            them if they sit in the same LayoutGroup — scoped here rather than
-            wrapping the whole app in layout.js. The resting state is the same
-            logo_white watermark every other page shows via SiteBackdrop. */}
+        {/* morph logotipa, obe veji delita layoutId
+            LayoutGroup ju poveze, brez njega logotip poskoci */}
         <LayoutGroup>
           {entered ? (
             <motion.div
@@ -373,7 +367,7 @@ export default function Home() {
             >
               <motion.div
                 initial={false}
-                animate={{ scale: 0.22, opacity: 0.9, y: 0 }}
+                animate={{ scale: gateScale, opacity: 0.9, y: 0 }}
                 exit={{ scale: 0.15, opacity: 0 }}
                 transition={LOGO_TRANSITION}
                 className="h-[1000px] w-[1000px]"
@@ -392,16 +386,15 @@ export default function Home() {
           )}
         </LayoutGroup>
 
-        {/* ── HERO ── */}
-        {/* min-h-[100svh] namesto min-h-screen — na mobilnih browserjih
-            100svh upošteva address bar, screen pa ne */}
+        {/* hero */}
+        {/* 100svh namesto 100vh, upostevati je treba naslovno vrstico na telefonu */}
         <section className="relative flex min-h-[100svh] items-center justify-center overflow-hidden px-6">
           <div className="relative z-10 mx-auto flex w-full max-w-5xl flex-col items-center text-center">
             <p className="mb-16 font-mono text-xs uppercase tracking-[0.5em] text-silver animate-[fadeUp_0.9s_ease_both] md:text-sm">
               Ljubljana · Slovenia
             </p>
 
-            <h1 className="title-3d relative z-10 font-horror text-[10vw] uppercase leading-[0.9] tracking-[0.08em] drop-shadow-[0_15px_25px_rgba(0,0,0,0.9)] md:text-[7.5vw]">
+            <h1 className="title-3d relative z-10 font-horror text-[10vw] uppercase leading-[0.9] tracking-[0.12em] drop-shadow-[0_15px_25px_rgba(0,0,0,0.9)] md:text-[7.5vw]">
               BLOOD EAGLE
             </h1>
 
@@ -426,7 +419,7 @@ export default function Home() {
           </div>
         </section>
 
-        {/* ── WHO WE ARE ── */}
+        {/* kdo smo */}
         <section className="relative z-20 mx-auto flex max-w-4xl flex-col items-center px-6 py-24 text-center">
           <Divider label="Who We Are" className="mb-8 w-full max-w-xs" />
 
@@ -451,13 +444,13 @@ export default function Home() {
           </Link>
         </section>
 
-        {/* ── UPCOMING EVENT ── */}
+        {/* prihajajoci dogodek */}
         <section className="relative z-20 mx-auto max-w-5xl px-6 pb-8">
           <Divider label="Next Event" />
           {upcomingEvent ? <UpcomingCard event={upcomingEvent} /> : <TBACard />}
         </section>
 
-        {/* ── LATEST EVENT ── */}
+        {/* zadnji dogodek */}
         {latestEvent && (
           <section className="relative z-20 mx-auto mt-6 max-w-5xl px-6 pb-24">
             <Divider label="Last Event" muted />
@@ -465,7 +458,7 @@ export default function Home() {
           </section>
         )}
 
-        {/* ── SOCIALS ── */}
+        {/* druzbena omrezja */}
         <section className="relative z-20 flex flex-col items-center py-24 text-center">
           <Divider label="Follow Blood Eagle" className="mb-10 w-full max-w-xs" />
 
