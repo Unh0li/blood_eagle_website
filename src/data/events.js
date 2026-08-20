@@ -3,6 +3,11 @@ const berzerkPhotos = Array.from(
   (_, i) => `/images/berzerk/b-${i + 1}.webp`
 );
 
+const reactor4Photos = Array.from(
+  { length: 72 },
+  (_, i) => `/images/reactor4/rc4-${i + 1}.webp`
+);
+
 /* datumi so zapisani kot "11 JULY 2026", Date tega vrstnega reda ne razume */
 export function parseEventDate(str) {
   return new Date(str.replace(/(\d+)\s+(\w+)\s+(\d+)/, "$2 $1 $3"));
@@ -43,7 +48,7 @@ export const events = [
             { time: "04:00 - END", act: "PLAZ" },
 
         ],
-        photos: [],
+        photos: reactor4Photos,
         ticketUrl: "",
     },
     {
