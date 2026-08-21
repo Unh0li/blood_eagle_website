@@ -109,8 +109,10 @@ export default function Navbar() {
           </div>
         </Link>
 
-        {/* namizna navigacija, pet enakih stolpcev */}
-        <div className="hidden lg:grid absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 grid-cols-5 w-[520px] xl:w-[560px] h-10 border border-silver/10 bg-black/20">
+        {/* namizna navigacija, pet enakih stolpcev
+            sirina raste z zaslonom, pri 1024px je 520px prekrivalo desne kontrole
+            in Contact je izginil pod drsnikom glasnosti */}
+        <div className="hidden lg:grid absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 grid-cols-5 w-[460px] xl:w-[500px] 2xl:w-[560px] h-10 border border-silver/10 bg-black/20">
           {NAV_ITEMS.map((item, i) => {
             /* isHome je samo teza sredinskega stolpca, isActive pa kje si res,
                prej je bila to ista zastavica in HOME je izgledal izbran povsod */
@@ -164,9 +166,10 @@ export default function Navbar() {
         <div ref={pickerRef} className="relative z-20 flex items-center gap-1.5 sm:gap-2">
 
           {/* glasnost, vidna dokler je skladba nalozena
+              sele od xl naprej, na tablici je zmanjkalo prostora za navigacijo
               inert, sicer bi bil neviden drsnik se vedno v zaporedju tabulatorja */}
           <div
-            className={`hidden sm:flex items-center gap-2 mr-1 transition-opacity duration-300 ${trackLoaded ? "opacity-100" : "opacity-0 pointer-events-none"}`}
+            className={`hidden xl:flex items-center gap-2 mr-1 transition-opacity duration-300 ${trackLoaded ? "opacity-100" : "opacity-0 pointer-events-none"}`}
             aria-hidden={!trackLoaded}
             inert={!trackLoaded}
           >
@@ -267,8 +270,10 @@ export default function Navbar() {
                 <line x1="0" y1="6" x2="28" y2="6" stroke="rgba(138,138,138,0.25)" strokeWidth="1" />
               )}
             </svg>
+            {/* stalna sirina, LIVE je sirsi od OFF in je ob predvajanju
+                razsiril gumb ter premaknil celotno vrstico */}
             <span
-              className="text-[7px] sm:text-[8px] tracking-[0.2em]"
+              className="inline-block w-[23px] sm:w-[26px] text-center text-[7px] sm:text-[8px] tracking-[0.2em]"
               style={{ color: playing || failed ? "#c81e1e" : "rgba(138,138,138,0.4)" }}
             >
               {failed ? "ERR" : pending ? "···" : playing ? "LIVE" : "OFF"}

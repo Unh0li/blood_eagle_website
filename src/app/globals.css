@@ -159,10 +159,20 @@ html {
 
 /* translateZ(0) potisne plast v svoj sloj kompozitorja
    brez tega mobilni brskalnik med hitrim drsenjem odlozi izris fiksne plasti
-   in preliv za hip utripne, nato izgine */
+   in preliv za hip utripne, nato izgine
+
+   visina je 100lvh in ne inset 0
+   pri inset 0 se je plast raztegnila in skrcila skupaj z naslovno vrstico
+   brskalnika, spodnji rob se je premaknil za njeno visino in preliv je med
+   hitrim drsenjem zdrsnil z zaslona */
 .site-shell__ambient {
   position: fixed;
-  inset: 0;
+  top: 0;
+  left: 0;
+  right: 0;
+  /* vh je rezerva za brskalnike brez lvh, brez nje bi plast ostala brez visine */
+  height: 100vh;
+  height: 100lvh;
   z-index: 0;
   pointer-events: none;
 
@@ -181,11 +191,16 @@ html {
   transform: translateX(-50%);
   border-radius: 9999px;
 
+  /* vec vmesnih postaj, na telefonu ni zrnate plasti,
+     ki bi razbila pasove med dvema oddaljenima postajama */
   background: radial-gradient(
     ellipse at center,
     rgba(160, 10, 10, 0.28) 0%,
-    rgba(100, 5, 5, 0.12) 40%,
-    transparent 68%
+    rgba(140, 8, 8, 0.19) 22%,
+    rgba(110, 6, 6, 0.12) 40%,
+    rgba(70, 4, 4, 0.05) 58%,
+    rgba(40, 2, 2, 0.02) 70%,
+    transparent 80%
   );
 
   animation: drift 28s ease-in-out infinite;

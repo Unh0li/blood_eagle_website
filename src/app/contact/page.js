@@ -1,4 +1,5 @@
 import SiteBackdrop from "@/components/SiteBackdrop";
+import SocialLinks from "@/components/SocialLinks";
 import Link from "next/link";
 
 /* nastavi na null, ce predal kdaj ne bi delal, blok se takrat skrije */
@@ -97,27 +98,7 @@ export default function Contact() {
                     />
                 </div>
 
-                {/* trije enako siroki stolpci, da srednji element pade na sredino
-                    pri flex bi ga razlicni sirini imen potisnili s sredine
-                    pl pobere presledek, ki ga tracking doda za zadnjo crko */}
-                <div className="grid w-full max-w-xl mx-auto grid-cols-3 items-center px-6 font-mono text-xs uppercase tracking-[0.25em]">
-                    {[
-                        { name: "Instagram", url: "https://www.instagram.com/blood.eagle.inc/" },
-                        { name: "SoundCloud", url: "https://soundcloud.com/blood-eagle24" },
-                        { name: "TikTok", url: "https://www.tiktok.com/@blood.eagle.inc" },
-                    ].map((social) => (
-                        <a
-                            key={social.name}
-                            href={social.url}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="group relative mx-auto py-1 pl-[0.25em] text-silver hover:text-blood transition-colors duration-300"
-                        >
-                            {social.name}
-                            <span className="absolute bottom-0 left-0 w-0 h-px bg-blood group-hover:w-full transition-all duration-300" />
-                        </a>
-                    ))}
-                </div>
+                <SocialLinks />
 
                 <Link
                     href="/"

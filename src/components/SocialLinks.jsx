@@ -1,4 +1,4 @@
-const SOCIAL_LINKS = [
+export const SOCIAL_LINKS = [
   { name: "Instagram", url: "https://www.instagram.com/blood.eagle.inc/" },
   { name: "SoundCloud", url: "https://soundcloud.com/blood-eagle24" },
   { name: "TikTok", url: "https://www.tiktok.com/@blood.eagle.inc" },
@@ -9,10 +9,12 @@ const SOCIAL_LINKS = [
    pri treh enako sirokih stolpcih so bili razmaki neenaki in na telefonu
    sta se Instagram in SoundCloud dotikala
    velikost je tekoca, da gre vse v eno vrstico tudi na 320px zaslonu
+   odmik od roba da odsek, dva px-6 en v drugem sta stolpca sesedla na
+   min-content in srednji element ni bil vec na sredini
    pl pobere presledek, ki ga tracking doda za zadnjo crko */
 export default function SocialLinks() {
   return (
-    <div className="grid w-full max-w-xl mx-auto grid-cols-[1fr_auto_1fr] items-center gap-x-3 px-6 font-mono text-[clamp(0.625rem,2.9vw,0.75rem)] uppercase tracking-[0.2em] sm:gap-x-6 sm:tracking-[0.25em]">
+    <div className="grid w-full max-w-xl mx-auto grid-cols-[1fr_auto_1fr] items-center gap-x-3 font-mono text-[clamp(0.625rem,2.9vw,0.75rem)] uppercase tracking-[0.2em] sm:gap-x-6 sm:tracking-[0.25em]">
       {SOCIAL_LINKS.map(({ name, url }, i) => (
         <a
           key={name}

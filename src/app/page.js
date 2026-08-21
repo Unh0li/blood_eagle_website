@@ -5,17 +5,12 @@ import Link from "next/link";
 import Image from "next/image";
 import Countdown from "@/components/home/Countdown";
 import SiteBackdrop from "@/components/SiteBackdrop";
+import SocialLinks, { SOCIAL_LINKS } from "@/components/SocialLinks";
 import IntroGate from "@/components/home/IntroGate";
 import { events, parseEventDate } from "@/data/events";
 import { motion, LayoutGroup } from "framer-motion";
 
 const LOGO_TRANSITION = { duration: 1.25, ease: [0.22, 1, 0.36, 1] };
-
-const SOCIAL_LINKS = [
-  { name: "Instagram", url: "https://www.instagram.com/blood.eagle.inc/" },
-  { name: "SoundCloud", url: "https://soundcloud.com/blood-eagle24" },
-  { name: "TikTok",     url: "https://www.tiktok.com/@blood.eagle.inc"  },
-];
 
 /* skupne pod komponente */
 
@@ -458,25 +453,10 @@ export default function Home() {
         )}
 
         {/* druzbena omrezja */}
-        <section className="relative z-20 flex flex-col items-center py-24 text-center">
+        <section className="relative z-20 flex flex-col items-center px-6 py-24 text-center">
           <Divider label="Follow Blood Eagle" className="mb-10 w-full max-w-xs" />
 
-          {/* enako kot na kontaktu, trije enako siroki stolpci
-              da srednji element pade tocno na sredino */}
-          <div className="grid w-full max-w-xl grid-cols-3 items-center px-6 font-mono text-xs uppercase tracking-[0.25em]">
-            {SOCIAL_LINKS.map(({ name, url }) => (
-              <a
-                key={name}
-                href={url}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="group relative mx-auto py-1 pl-[0.25em] text-silver transition-colors duration-300 hover:text-blood"
-              >
-                {name}
-                <span className="absolute bottom-0 left-0 h-px w-0 bg-blood transition-all duration-300 group-hover:w-full" />
-              </a>
-            ))}
-          </div>
+          <SocialLinks />
         </section>
       </main>
     </>
