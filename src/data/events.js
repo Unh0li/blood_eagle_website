@@ -14,6 +14,22 @@ export function parseEventDate(str) {
 }
 
 export const events = [
+
+    {
+        id: "corruption-2026",
+        title: "CORRUPTION",
+        date: "12 SEPTEMBER 2026",
+        /* ura odprtja, rocno na vsak dogodek, poganja odstevanje na home in /events */
+        countdownDate: "2026-09-12T20:00:00",
+        venue: "PUBLIKA BARKLUB, LJUBLJANA",
+        genre: "Industrial",
+        lineup: ["P4TCH"],
+        timetable: [,
+
+        ],
+        photos: [],
+        ticketUrl: "https://www.entrio.si/event/blood-eagle-corruption-34214",
+    },
     {
         id: "berzerk-2026",
         title: "BERZERK",

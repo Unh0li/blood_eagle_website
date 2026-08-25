@@ -4,6 +4,28 @@ import { events, parseEventDate } from "@/data/events";
 import Countdown from "@/components/home/Countdown";
 import SiteBackdrop from "@/components/SiteBackdrop";
 
+
+function cardTitleSize(title) {
+  const len = title.length;
+  if (len <= 6)  return "clamp(1.75rem, 6vw, 3.75rem)";
+  if (len <= 9)  return "clamp(1.5rem, 5vw, 3rem)";
+  if (len <= 13) return "clamp(1.25rem, 4vw, 2.5rem)";
+  return "clamp(1.1rem, 3.2vw, 2rem)";
+}
+
+function Divider({ label }) {
+  return (
+    <div className="flex items-center gap-4 mb-12">
+      <span className="divider-line" />
+      <p className="eyebrow whitespace-nowrap">{label}</p>
+      <span
+        className="divider-line"
+        style={{ background: "linear-gradient(to left, transparent, rgba(138,138,138,0.4))" }}
+      />
+    </div>
+  );
+}
+
 export default async function Events() {
   /* brez tega se delitev na prihajajoce in pretekle zamrzne ob buildu,
      connection() prestavi izris na cas zahtevka */
@@ -33,91 +55,89 @@ export default async function Events() {
 
         {upcoming.length > 0 && (
           <div className="mb-24">
-            <div className="flex items-center gap-4 mb-12">
-              <span className="divider-line" />
-              <p className="eyebrow whitespace-nowrap">Upcoming</p>
-              <span className="divider-line" style={{ background: "linear-gradient(to left, transparent, rgba(138,138,138,0.4))" }} />
-            </div>
+            <Divider label="Upcoming" />
 
             <div className="flex flex-col gap-6">
-              {upcoming.map((ev) => (
-                <div
-                  key={ev.id}
-                  className="group relative border border-blood/30 bg-panel/40 backdrop-blur-sm p-8 md:p-12 transition-all duration-500 hover:border-blood/70 hover:bg-panel/60 overflow-hidden"
-                >
-                  <div className="corner-ticks">
-                    <span style={{ top: 0, left: 0, borderTopWidth: 1, borderLeftWidth: 1, borderColor: "rgba(200,30,30,0.5)" }} />
-                    <span style={{ bottom: 0, right: 0, borderBottomWidth: 1, borderRightWidth: 1, borderColor: "rgba(200,30,30,0.5)" }} />
-                  </div>
+              {upcoming.map((ev) => {
+                const lineup = ev.lineup?.filter(Boolean) ?? [];
 
-                  <div className="absolute -right-10 -top-10 w-64 h-64 bg-blood/5 rounded-full blur-3xl pointer-events-none" />
+                return (
+                  <div
+                    key={ev.id}
+                    className="group relative border border-blood/30 bg-panel/40 backdrop-blur-sm p-8 md:p-12 transition-all duration-500 hover:border-blood/70 hover:bg-panel/60 overflow-hidden"
+                  >
+                    <div className="corner-ticks" aria-hidden="true">
+                      <span style={{ top: 0, left: 0, borderTopWidth: 1, borderLeftWidth: 1, borderColor: "rgba(200,30,30,0.5)" }} />
+                      <span style={{ bottom: 0, right: 0, borderBottomWidth: 1, borderRightWidth: 1, borderColor: "rgba(200,30,30,0.5)" }} />
+                    </div>
 
-                  <div className="relative flex flex-col lg:flex-row lg:items-center justify-between gap-10">
-                    <Link href={`/events/${ev.id}`} className="flex-1 min-w-0">
-                      <p className="eyebrow text-[10px] mb-4">{ev.date}</p>
+                    <div className="absolute -right-10 -top-10 w-64 h-64 bg-blood/5 rounded-full blur-3xl pointer-events-none" aria-hidden="true" />
 
-                      <h2 className="font-display uppercase text-4xl md:text-6xl tracking-[0.05em] text-bone leading-[0.95] group-hover:text-blood transition-colors duration-500">
-                        {ev.title}
-                      </h2>
+                    <div className="relative flex flex-col lg:flex-row lg:items-center justify-between gap-10">
+                      <Link href={`/events/${ev.id}`} className="flex-1 min-w-0">
+                        <p className="eyebrow text-[10px] mb-4">{ev.date}</p>
 
-                      <div className="mt-4 flex items-center gap-3">
-                        <span className="w-6 h-px bg-silver/40" />
-                        <p className="font-mono text-[11px] text-silver uppercase tracking-[0.25em]">
-                          {ev.venue}
-                        </p>
-                      </div>
+                       
+                        <h2
+                          className="font-display uppercase tracking-[0.05em] text-bone leading-[0.95] group-hover:text-blood transition-colors duration-500 break-words"
+                          style={{ fontSize: cardTitleSize(ev.title) }}
+                        >
+                          {ev.title}
+                        </h2>
 
-                      {/* prazno polje je resnicno, zato preverjamo dolzino */}
-                      {ev.lineup?.length > 0 && (
-                        <p className="mt-5 font-mono text-[11px] text-blood/80 uppercase tracking-[0.2em]">
-                          {ev.lineup.join("  /  ")}
-                        </p>
+                        <div className="mt-4 flex items-center gap-3">
+                          <span className="w-6 h-px bg-silver/40" />
+                          <p className="font-mono text-[11px] text-silver uppercase tracking-[0.25em]">
+                            {ev.venue}
+                          </p>
+                        </div>
+
+                        {lineup.length > 0 && (
+                          <p className="mt-5 font-mono text-[11px] text-blood/80 uppercase tracking-[0.2em] break-words">
+                            {lineup.join("  /  ")}
+                          </p>
+                        )}
+                      </Link>
+
+                      {ev.countdownDate && (
+                        <div className="shrink-0 lg:pl-10 lg:border-l lg:border-silver/10">
+                          <Countdown targetDate={ev.countdownDate} />
+                        </div>
                       )}
-                    </Link>
+                    </div>
 
-                    {ev.countdownDate && (
-                      <div className="shrink-0 lg:pl-10 lg:border-l lg:border-silver/10">
-                        <Countdown targetDate={ev.countdownDate} />
-                      </div>
-                    )}
-                  </div>
-
-                  <div className="relative mt-10 pt-8 border-t border-silver/10 flex items-center justify-between">
-                    <Link
-                      href={`/events/${ev.id}`}
-                      className="font-mono text-[10px] uppercase tracking-[0.25em] text-silver/50 hover:text-blood transition-colors duration-300"
-                    >
-                      Event details &rsaquo;
-                    </Link>
-
-                    {ev.ticketUrl ? (
-                      <a
-                        href={ev.ticketUrl}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="relative inline-block border border-blood px-10 py-3.5 font-mono text-[11px] uppercase tracking-[0.3em] text-bone hover:bg-blood hover:text-black transition-all duration-300"
+                    <div className="relative mt-10 pt-8 border-t border-silver/10 flex items-center justify-between">
+                      <Link
+                        href={`/events/${ev.id}`}
+                        className="font-mono text-[10px] uppercase tracking-[0.25em] text-silver/50 hover:text-blood transition-colors duration-300"
                       >
-                        Get Tickets
-                      </a>
-                    ) : (
-                      <span className="font-mono text-[11px] uppercase tracking-[0.3em] text-silver/40 border border-silver/15 px-10 py-3.5">
-                        TBA
-                      </span>
-                    )}
+                        Event details &rsaquo;
+                      </Link>
+
+                      {ev.ticketUrl ? (
+                        <a
+                          href={ev.ticketUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="relative inline-block border border-blood px-10 py-3.5 font-mono text-[11px] uppercase tracking-[0.3em] text-bone hover:bg-blood hover:text-black transition-all duration-300"
+                        >
+                          Get Tickets
+                        </a>
+                      ) : (
+                        <span className="font-mono text-[11px] uppercase tracking-[0.3em] text-silver/40 border border-silver/15 px-10 py-3.5">
+                          TBA
+                        </span>
+                      )}
+                    </div>
                   </div>
-                </div>
-              ))}
+                );
+              })}
             </div>
           </div>
         )}
 
-        {upcoming.length > 0 && past.length > 0 && (
-          <div className="flex items-center gap-4 mb-12">
-            <span className="divider-line" />
-            <p className="eyebrow whitespace-nowrap">Past</p>
-            <span className="divider-line" style={{ background: "linear-gradient(to left, transparent, rgba(138,138,138,0.4))" }} />
-          </div>
-        )}
+        
+        {past.length > 0 && <Divider label="Past" />}
 
         {past.length > 0 && (
           <div className="flex flex-col gap-0">
@@ -160,11 +180,20 @@ export default async function Events() {
                   </div>
                 </div>
 
-                {idx < past.length - 1 && (
-                  <div className="h-px bg-silver/8" />
-                )}
+                {idx < past.length - 1 && <div className="h-px bg-silver/8" />}
               </div>
             ))}
+          </div>
+        )}
+
+        {upcoming.length === 0 && past.length === 0 && (
+          <div className="flex flex-col items-center gap-3 py-24 text-center">
+            <p className="font-mono text-sm uppercase tracking-[0.25em] text-silver/40">
+              No events on the calendar yet
+            </p>
+            <p className="font-mono text-[11px] uppercase tracking-[0.25em] text-silver/25">
+              Follow us for updates
+            </p>
           </div>
         )}
       </div>

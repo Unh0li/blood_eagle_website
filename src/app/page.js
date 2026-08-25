@@ -12,6 +12,15 @@ import { motion, LayoutGroup } from "framer-motion";
 
 const LOGO_TRANSITION = { duration: 1.25, ease: [0.22, 1, 0.36, 1] };
 
+
+function heroCardTitleSize(title) {
+  const len = title.length;
+  if (len <= 9)  return undefined;
+  if (len <= 13) return "clamp(2rem, 8vw, 4.5rem)";
+  if (len <= 18) return "clamp(1.5rem, 6vw, 3.5rem)";
+  return "clamp(1.25rem, 5vw, 2.75rem)";
+}
+
 /* skupne pod komponente */
 
 function Divider({ label, muted = false, className = "mb-10" }) {
@@ -47,6 +56,9 @@ function CornerTicks({ red = false }) {
 /* kartice dogodkov */
 
 function UpcomingCard({ event }) {
+  const sizeOverride = heroCardTitleSize(event.title);
+  const lineup = event.lineup?.filter(Boolean) ?? [];
+
   return (
     <div className="group relative overflow-hidden border border-blood/30 bg-panel/40 p-8 transition-all duration-500 hover:border-blood/60 sm:p-10 md:p-14">
       <CornerTicks red />
@@ -58,7 +70,10 @@ function UpcomingCard({ event }) {
       <div className="relative flex flex-col items-center text-center">
         <p className="eyebrow text-[10px]">{event.date}</p>
 
-        <h2 className="mt-4 font-display text-4xl uppercase leading-none tracking-[0.08em] text-bone transition-colors duration-500 group-hover:text-blood sm:text-5xl md:text-7xl">
+        <h2
+          className="mt-4 font-display uppercase leading-none tracking-[0.08em] text-bone transition-colors duration-500 group-hover:text-blood break-words text-4xl sm:text-5xl md:text-7xl"
+          style={sizeOverride ? { fontSize: sizeOverride } : undefined}
+        >
           {event.title}
         </h2>
 
@@ -70,9 +85,22 @@ function UpcomingCard({ event }) {
           <span className="h-px w-5 bg-silver/40" />
         </div>
 
-        {event.lineup?.length > 0 && (
-          <p className="mt-3 font-mono text-[10px] uppercase tracking-[0.2em] text-blood/80">
-            {event.lineup.join(" / ")}
+        {lineup.length >= 2 ? (
+          <p className="mt-5 font-display text-lg uppercase tracking-[0.1em] text-blood/90 md:text-xl break-words">
+            {lineup.join("  /  ")}
+          </p>
+        ) : lineup.length === 1 ? (
+          <div className="mt-5">
+            <p className="font-display text-xl uppercase tracking-[0.1em] text-blood md:text-2xl break-words">
+              {lineup[0]}
+            </p>
+            <p className="mt-1.5 font-mono text-[9px] uppercase tracking-[0.3em] text-silver/50">
+              More artists to be announced
+            </p>
+          </div>
+        ) : (
+          <p className="mt-5 font-mono text-[10px] uppercase tracking-[0.3em] text-silver/50">
+            Lineup coming soon
           </p>
         )}
 
@@ -84,7 +112,7 @@ function UpcomingCard({ event }) {
 
         <div className="mt-10 flex flex-wrap justify-center gap-4">
           <Link
-            href="/events"
+            href={`/events/${event.id}`}
             className="border border-silver/20 px-8 py-3 font-mono text-[10px] uppercase tracking-[0.28em] text-bone transition-all duration-300 hover:border-blood hover:bg-blood hover:text-black"
           >
             Event Details
@@ -105,7 +133,9 @@ function UpcomingCard({ event }) {
   );
 }
 
-const TBA_SOCIALS = SOCIAL_LINKS.slice(0, 2);
+const TBA_SOCIALS = SOCIAL_LINKS.filter((s) =>
+  ["Instagram", "TikTok"].includes(s.name)
+);
 
 function TBACard() {
   return (
@@ -156,7 +186,8 @@ function LatestCard({ event }) {
       <div className="flex flex-col md:flex-row">
         {/* slika */}
         {event.photos?.length > 0 ? (
-          <Link href="/gallery" className="relative shrink-0 overflow-hidden md:w-[45%]">
+         
+          <Link href={`/gallery?event=${event.id}`} className="relative shrink-0 overflow-hidden md:w-[45%]">
             <div className="relative h-52 overflow-hidden md:h-full md:min-h-[280px]">
               <Image
                 src={event.photos[0]}
@@ -218,7 +249,7 @@ function LatestCard({ event }) {
               {event.date}
             </p>
 
-            <h3 className="font-display text-2xl uppercase leading-none tracking-[0.06em] text-bone/85 transition-colors duration-700 group-hover:text-bone md:text-3xl">
+            <h3 className="font-display text-2xl uppercase leading-none tracking-[0.06em] text-bone/85 transition-colors duration-700 group-hover:text-bone md:text-3xl break-words">
               {event.title}
             </h3>
 
@@ -227,7 +258,7 @@ function LatestCard({ event }) {
             </p>
 
             {event.lineup?.length > 0 && (
-              <p className="mt-1.5 font-mono text-[9px] uppercase tracking-[0.15em] text-blood/90">
+              <p className="mt-1.5 font-mono text-[9px] uppercase tracking-[0.15em] text-blood/90 break-words">
                 {event.lineup.join(" / ")}
               </p>
             )}
@@ -235,7 +266,7 @@ function LatestCard({ event }) {
 
           <div className="mt-8 flex items-center justify-between border-t border-silver/20 pt-5">
             <Link
-              href="/events"
+              href={`/events/${event.id}`}
               className="group/link relative py-1 font-mono text-[9px] uppercase tracking-[0.22em] text-silver/80 transition-colors duration-300 hover:text-bone"
             >
               Event Archive
@@ -244,7 +275,7 @@ function LatestCard({ event }) {
 
             {event.photos?.length > 0 && (
               <Link
-                href="/gallery"
+                href={`/gallery?event=${event.id}`}
                 className="group/link flex items-center gap-1.5 font-mono text-[9px] uppercase tracking-[0.22em] text-silver/80 transition-colors duration-300 hover:text-bone"
               >
                 <span className="relative py-1">
