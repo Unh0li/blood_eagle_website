@@ -14,27 +14,31 @@ export function parseEventDate(str) {
 }
 
 export const events = [
+   
 
     {
         id: "corruption-2026",
         title: "CORRUPTION",
         date: "12 SEPTEMBER 2026",
-        /* ura odprtja, rocno na vsak dogodek, poganja odstevanje na home in /events */
         countdownDate: "2026-09-12T20:00:00",
         venue: "PUBLIKA BARKLUB, LJUBLJANA",
         genre: "Industrial",
-        lineup: ["P4TCH"],
-        timetable: [,
+        lineup: ["P4TCH", "BUVE", "R|N|T-13", "VXLR", "TERROR"],
+        timetable:  [{ },
+            { time: "22:00 - 23:30", act: "TERROR" },
+            { time: "23:30 - 01:00", act: "VXLR" },
+            { time: "01:00 - 02:30", act: "BUVE" },
+            { time: "02:30 - 04:00", act: "P4TCH" },
+             { time: "04:00 - END", act: "R|N|T-13" },
 
         ],
         photos: [],
-        ticketUrl: "https://www.entrio.si/event/blood-eagle-corruption-34214",
+        ticketUrl: "",
     },
     {
         id: "berzerk-2026",
-        title: "BERZERK",
+        title: "BERZERK",   
         date: "11 JULY 2026",
-        /* ura odprtja, rocno na vsak dogodek, poganja odstevanje na home in /events */
         countdownDate: "2026-07-11T20:00:00",
         venue: "PUBLIKA BARKLUB, LJUBLJANA",
         genre: "Bochka",
@@ -47,7 +51,7 @@ export const events = [
 
         ],
         photos: berzerkPhotos,
-        ticketUrl: "https://www.entrio.si/en/event/blood-eagle-berzerk-33006",
+        ticketUrl: "",
     },
     {
         id: "reactor4-2026",

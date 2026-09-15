@@ -11,11 +11,14 @@ const isActiveRoute = (pathname, href) =>
   href === "/" ? pathname === "/" : pathname.startsWith(href);
 
 const NAV_ITEMS = [
+    { label: "Merch", href: "/merch" },
   { label: "About", href: "/about" },
   { label: "Events", href: "/events" },
   { label: "HOME", href: "/" },
   { label: "Gallery", href: "/gallery" },
   { label: "Contact", href: "/contact" },
+  { label: "Submit", href: "/submit" },
+
 ];
 
 const LOGO_STATIC = "/images/logo/chrome_static.webp";
@@ -112,54 +115,53 @@ export default function Navbar() {
         {/* namizna navigacija, pet enakih stolpcev
             sirina raste z zaslonom, pri 1024px je 520px prekrivalo desne kontrole
             in Contact je izginil pod drsnikom glasnosti */}
-        <div className="hidden lg:grid absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 grid-cols-5 w-[460px] xl:w-[500px] 2xl:w-[560px] h-10 border border-silver/10 bg-black/20">
-          {NAV_ITEMS.map((item, i) => {
-            /* isHome je samo teza sredinskega stolpca, isActive pa kje si res,
-               prej je bila to ista zastavica in HOME je izgledal izbran povsod */
-            const isHome = i === 2;
-            const isActive = isActiveRoute(pathname, item.href);
-            return (
-              <Link
-                key={item.href}
-                href={item.href}
-                aria-current={isActive ? "page" : undefined}
+<div className="hidden lg:grid absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 grid-cols-7 w-[630px] xl:w-[690px] 2xl:w-[770px] h-10 border border-silver/10 bg-black/20">         {NAV_ITEMS.map((item, i) => {
+          /* isHome je samo teza sredinskega stolpca, isActive pa kje si res,
+             prej je bila to ista zastavica in HOME je izgledal izbran povsod */
+          const isHome = i === 3;
+          const isActive = isActiveRoute(pathname, item.href);
+          return (
+            <Link
+              key={item.href}
+              href={item.href}
+              aria-current={isActive ? "page" : undefined}
+              className={[
+                "group relative flex items-center justify-center overflow-hidden transition-all duration-300",
+                i < NAV_ITEMS.length - 1 ? "border-r border-silver/10" : "",
+                isActive ? "bg-blood/[0.06]" : "hover:bg-blood/[0.035]",
+              ].join(" ")}
+            >
+              <span
+                className="absolute inset-0 bg-gradient-to-r from-blood/10 to-transparent -translate-x-full group-hover:translate-x-0 transition-transform duration-500"
+                aria-hidden="true"
+              />
+              <span
                 className={[
-                  "group relative flex items-center justify-center overflow-hidden transition-all duration-300",
-                  i < NAV_ITEMS.length - 1 ? "border-r border-silver/10" : "",
-                  isActive ? "bg-blood/[0.06]" : "hover:bg-blood/[0.035]",
+                  "relative z-10 transition-all duration-300",
+                  isHome
+                    ? "text-[12px] font-bold tracking-[0.32em]"
+                    : "text-[9px] tracking-[0.26em]",
+                  isActive
+                    ? "text-blood"
+                    : "text-silver/65 group-hover:text-bone group-hover:tracking-[0.32em]",
                 ].join(" ")}
+                /* letter-spacing doda presledek na koncu, negativni marginRight ga odstrani */
+                style={isHome ? { letterSpacing: "0.32em", marginRight: "-0.32em" } : undefined}
               >
-                <span
-                  className="absolute inset-0 bg-gradient-to-r from-blood/10 to-transparent -translate-x-full group-hover:translate-x-0 transition-transform duration-500"
-                  aria-hidden="true"
-                />
-                <span
-                  className={[
-                    "relative z-10 transition-all duration-300",
-                    isHome
-                      ? "text-[12px] font-bold tracking-[0.32em]"
-                      : "text-[9px] tracking-[0.26em]",
-                    isActive
-                      ? "text-blood"
-                      : "text-silver/65 group-hover:text-bone group-hover:tracking-[0.32em]",
-                  ].join(" ")}
-                  /* letter-spacing doda presledek na koncu, negativni marginRight ga odstrani */
-                  style={isHome ? { letterSpacing: "0.32em", marginRight: "-0.32em" } : undefined}
-                >
-                  {item.label}
-                </span>
-                <span
-                  className={[
-                    "absolute bottom-0 left-1/2 -translate-x-1/2 h-px bg-blood transition-all duration-300",
-                    isActive
-                      ? "w-full shadow-[0_0_10px_rgba(200,30,30,0.6)]"
-                      : "w-0 group-hover:w-1/2",
-                  ].join(" ")}
-                  aria-hidden="true"
-                />
-              </Link>
-            );
-          })}
+                {item.label}
+              </span>
+              <span
+                className={[
+                  "absolute bottom-0 left-1/2 -translate-x-1/2 h-px bg-blood transition-all duration-300",
+                  isActive
+                    ? "w-full shadow-[0_0_10px_rgba(200,30,30,0.6)]"
+                    : "w-0 group-hover:w-1/2",
+                ].join(" ")}
+                aria-hidden="true"
+              />
+            </Link>
+          );
+        })}
         </div>
 
         {/* desne kontrole */}
@@ -309,7 +311,7 @@ export default function Navbar() {
         <div className="p-3">
           <div className="grid grid-cols-1 gap-px border border-silver/10 bg-silver/5">
             {NAV_ITEMS.map((item, i) => {
-              const isHome = i === 2;
+              const isHome = i === 3;
               const isActive = isActiveRoute(pathname, item.href);
               return (
                 <Link
@@ -317,15 +319,13 @@ export default function Navbar() {
                   href={item.href}
                   onClick={closeMobile}
                   aria-current={isActive ? "page" : undefined}
-                  className={`group relative flex items-center justify-between min-h-[48px] px-4 transition-all duration-300 hover:bg-blood/[0.04] ${
-                    isActive ? "bg-blood/[0.07] text-blood" : "bg-[#050505] text-bone/85"
-                  }`}
+                  className={`group relative flex items-center justify-between min-h-[48px] px-4 transition-all duration-300 hover:bg-blood/[0.04] ${isActive ? "bg-blood/[0.07] text-blood" : "bg-[#050505] text-bone/85"
+                    }`}
                 >
                   {/* crta na levem robu, sama barva se na soncu slabo vidi */}
                   <span
-                    className={`absolute left-0 top-0 bottom-0 w-[3px] transition-colors duration-300 ${
-                      isActive ? "bg-blood" : "bg-transparent"
-                    }`}
+                    className={`absolute left-0 top-0 bottom-0 w-[3px] transition-colors duration-300 ${isActive ? "bg-blood" : "bg-transparent"
+                      }`}
                     aria-hidden="true"
                   />
                   <span className={`text-[9px] tracking-[0.3em] transition-all duration-300 group-hover:tracking-[0.38em] ${isHome ? "font-bold text-[11px]" : ""}`}>

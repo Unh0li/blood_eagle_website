@@ -2,33 +2,32 @@ import SiteBackdrop from "@/components/SiteBackdrop";
 import SocialLinks from "@/components/SocialLinks";
 import Link from "next/link";
 
-/* nastavi na null, ce predal kdaj ne bi delal, blok se takrat skrije */
-const GENERAL_EMAIL = "info@bloodeagle.si";
+
+const GENERAL_EMAIL = "contact@bloodeagle.si";
 const BOOKING_EMAIL = "terror.industrial29@gmail.com";
 
-/* dolgi naslovi, zato tekoca velikost, da gredo povsod v eno vrstico */
 const EMAIL_CLASS =
-  "font-display uppercase text-[clamp(0.6rem,3.2vw,1.625rem)] tracking-[0.06em] text-bone hover:text-blood transition-colors duration-300 whitespace-nowrap";
+    "font-display uppercase text-[clamp(0.6rem,3.2vw,1.625rem)] tracking-[0.06em] text-bone hover:text-blood transition-colors duration-300 whitespace-nowrap";
 
 function ContactRow({ label, email }) {
-  return (
-    <div className="flex flex-col items-center gap-2">
-      <p className="eyebrow text-[10px] tracking-[0.3em] text-silver/60">{label}</p>
-      <a href={`mailto:${email}`} className={EMAIL_CLASS}>
-        {email}
-      </a>
-    </div>
-  );
+    return (
+        <div className="flex flex-col items-center gap-2">
+            <p className="eyebrow text-[10px] tracking-[0.3em] text-silver/60">{label}</p>
+            <a href={`mailto:${email}`} className={EMAIL_CLASS}>
+                {email}
+            </a>
+        </div>
+    );
 }
 
 /* enaka locilna crta med vsemi bloki */
 function Rule() {
-  return (
-    <div
-      className="mx-auto h-px w-full max-w-[260px] bg-gradient-to-r from-transparent via-silver/20 to-transparent"
-      aria-hidden="true"
-    />
-  );
+    return (
+        <div
+            className="mx-auto h-px w-full max-w-[260px] bg-gradient-to-r from-transparent via-silver/20 to-transparent"
+            aria-hidden="true"
+        />
+    );
 }
 
 export default function Contact() {
@@ -59,7 +58,7 @@ export default function Contact() {
                 </div>
 
                 {/* na telefonu manjsi rob, sicer dolg naslov nima kam */}
-                <div className="group relative border border-silver/15 bg-panel/40 backdrop-blur-sm p-6 sm:p-10 md:p-14 transition-all duration-500 hover:border-blood/50">
+                <div className="relative border border-silver/15 bg-panel/40 backdrop-blur-sm p-6 sm:p-10 md:p-14">
                     <div className="corner-ticks">
                         <span style={{ top: 0, left: 0, borderTopWidth: 1, borderLeftWidth: 1 }} />
                         <span style={{ top: 0, right: 0, borderTopWidth: 1, borderRightWidth: 1 }} />

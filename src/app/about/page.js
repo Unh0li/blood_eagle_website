@@ -50,7 +50,7 @@ function NavButton({ dir, onClick }) {
 /* glavna komponenta */
 
 export default function AboutPage() {
-  const [index,  setIndex]  = useState(0);
+  const [index, setIndex] = useState(0);
   const [glitch, setGlitch] = useState(false);
 
   /* timer v ref, da hitro klikanje ne pusca odprtih casovnikov */
@@ -85,7 +85,7 @@ export default function AboutPage() {
   useEffect(() => {
     const handler = (e) => {
       if (e.key === "ArrowRight") next();
-      if (e.key === "ArrowLeft")  prev();
+      if (e.key === "ArrowLeft") prev();
     };
     window.addEventListener("keydown", handler);
     return () => window.removeEventListener("keydown", handler);
@@ -127,9 +127,9 @@ export default function AboutPage() {
         <Divider label="Who We Are" />
         <div className="relative border border-silver/15 bg-panel/40 backdrop-blur-sm p-8 md:p-12 overflow-hidden">
           <div className="corner-ticks" aria-hidden="true">
-            <span style={{ top: 0,    left:  0, borderTopWidth:    1, borderLeftWidth:  1 }} />
-            <span style={{ top: 0,    right: 0, borderTopWidth:    1, borderRightWidth: 1 }} />
-            <span style={{ bottom: 0, left:  0, borderBottomWidth: 1, borderLeftWidth:  1 }} />
+            <span style={{ top: 0, left: 0, borderTopWidth: 1, borderLeftWidth: 1 }} />
+            <span style={{ top: 0, right: 0, borderTopWidth: 1, borderRightWidth: 1 }} />
+            <span style={{ bottom: 0, left: 0, borderBottomWidth: 1, borderLeftWidth: 1 }} />
             <span style={{ bottom: 0, right: 0, borderBottomWidth: 1, borderRightWidth: 1 }} />
           </div>
           <div className="absolute -right-20 top-0 w-72 h-72 rounded-full bg-blood/5 blur-3xl pointer-events-none" aria-hidden="true" />
@@ -198,17 +198,13 @@ export default function AboutPage() {
             onTouchEnd={handleTouchEnd}
           >
             <div className="corner-ticks" aria-hidden="true">
-              <span style={{ top: 0,    left:  0, borderTopWidth:    1, borderLeftWidth:  1, borderColor: "rgba(200,30,30,0.5)" }} />
-              <span style={{ top: 0,    right: 0, borderTopWidth:    1, borderRightWidth: 1, borderColor: "rgba(200,30,30,0.5)" }} />
-              <span style={{ bottom: 0, left:  0, borderBottomWidth: 1, borderLeftWidth:  1, borderColor: "rgba(200,30,30,0.5)" }} />
+              <span style={{ top: 0, left: 0, borderTopWidth: 1, borderLeftWidth: 1, borderColor: "rgba(200,30,30,0.5)" }} />
+              <span style={{ top: 0, right: 0, borderTopWidth: 1, borderRightWidth: 1, borderColor: "rgba(200,30,30,0.5)" }} />
+              <span style={{ bottom: 0, left: 0, borderBottomWidth: 1, borderLeftWidth: 1, borderColor: "rgba(200,30,30,0.5)" }} />
               <span style={{ bottom: 0, right: 0, borderBottomWidth: 1, borderRightWidth: 1, borderColor: "rgba(200,30,30,0.5)" }} />
             </div>
 
-            {/* leva stran, slika
-                hover je bil na sami sliki, prekrivna gradienta sta prestregla kazalec */}
-            {/* md:h-auto lets the grid stretch this column to the row height.
-                A fixed height left a gap under the photo whenever the text
-                column ran taller, which it does for the longer bios. */}
+          
             <div className="group relative h-[300px] sm:h-[380px] md:h-auto md:min-h-[480px] overflow-hidden">
               <Image
                 key={res.id}
@@ -262,7 +258,7 @@ export default function AboutPage() {
 
             {/* desna stran, podatki */}
             {/* key sprozi fadeUp ob vsaki menjavi */}
-            <div key={index} className="relative flex flex-col justify-between p-8 md:p-10 bg-panel/70 backdrop-blur-sm">
+            <div key={index} className="relative flex flex-col justify-between p-8 md:p-10 bg-panel/40 backdrop-blur-sm">
               <div className="absolute -left-16 top-1/2 -translate-y-1/2 w-32 h-64 bg-blood/6 blur-3xl pointer-events-none" aria-hidden="true" />
 
               <div className="flex items-center justify-between mb-8">
@@ -337,11 +333,10 @@ export default function AboutPage() {
                 onClick={() => goTo(i)}
                 aria-label={`View ${r.name}`}
                 aria-pressed={i === index}
-                className={`group relative aspect-[3/2] overflow-hidden border-b transition-colors duration-300 focus-visible:outline focus-visible:outline-2 focus-visible:outline-blood ${
-                  i === index
+                className={`group relative aspect-[3/2] overflow-hidden border-b transition-colors duration-300 focus-visible:outline focus-visible:outline-2 focus-visible:outline-blood ${i === index
                     ? "border-blood/60"
                     : "border-silver/10 hover:border-blood/35"
-                }`}
+                  }`}
               >
                 <Image
                   src={r.image}
@@ -349,22 +344,19 @@ export default function AboutPage() {
                   fill
                   /* stolpec je vedno okoli 340px, prej je 10vw dal premajhno sliko */
                   sizes="(max-width: 767px) 33vw, 360px"
-                  className={`object-cover transition-all duration-500 ${
-                    i === index
+                  className={`object-cover transition-all duration-500 ${i === index
                       ? "grayscale-0 brightness-85"
                       : "grayscale brightness-30 group-hover:grayscale-0 group-hover:brightness-75 group-hover:scale-105"
-                  }`}
+                    }`}
                 />
                 <div
-                  className={`absolute inset-0 bg-gradient-to-t from-void/70 to-transparent to-60% transition-opacity duration-300 ${
-                    i === index ? "opacity-100" : "opacity-50 group-hover:opacity-75"
-                  }`}
+                  className={`absolute inset-0 bg-gradient-to-t from-void/70 to-transparent to-60% transition-opacity duration-300 ${i === index ? "opacity-100" : "opacity-50 group-hover:opacity-75"
+                    }`}
                   aria-hidden="true"
                 />
                 <span
-                  className={`absolute bottom-1.5 left-0 right-0 truncate px-1 text-center font-mono text-[8px] uppercase tracking-[0.15em] transition-colors duration-300 ${
-                    i === index ? "text-blood" : "text-silver/35 group-hover:text-bone"
-                  }`}
+                  className={`absolute bottom-1.5 left-0 right-0 truncate px-1 text-center font-mono text-[8px] uppercase tracking-[0.15em] transition-colors duration-300 ${i === index ? "text-blood" : "text-silver/35 group-hover:text-bone"
+                    }`}
                 >
                   {r.name}
                 </span>

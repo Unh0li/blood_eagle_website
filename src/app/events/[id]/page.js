@@ -17,8 +17,8 @@ const COMING_SOON = "font-mono text-[11px] uppercase tracking-[0.25em] text-silv
 
 function heroTitleSize(title) {
     const len = title.length;
-    if (len <= 6)  return "clamp(2.25rem, 12vw, 8rem)";
-    if (len <= 9)  return "clamp(2rem, 10vw, 6.5rem)";
+    if (len <= 6) return "clamp(2.25rem, 12vw, 8rem)";
+    if (len <= 9) return "clamp(2rem, 10vw, 6.5rem)";
     if (len <= 13) return "clamp(1.75rem, 8vw, 5rem)";
     if (len <= 18) return "clamp(1.5rem, 6.5vw, 3.75rem)";
     return "clamp(1.25rem, 5.5vw, 3rem)";
@@ -69,7 +69,7 @@ export default function EventDetail({ params }) {
         );
     }
 
-    
+
     const lineupEmptyText = isPast ? "Lineup unavailable" : "Artists to be announced";
     const moreArtistsText = isPast ? "Full lineup unavailable" : "More artists to be announced";
     const timetableEmptyText = isPast ? "Timetable unavailable" : "Timetable coming soon";
@@ -110,7 +110,7 @@ export default function EventDetail({ params }) {
                     )}
                 </div>
 
-             
+
                 <div className="mb-16 animate-[fadeUp_0.9s_ease_0.5s_both]">
                     <Divider label="Lineup" />
                     {lineup.length > 0 ? (
@@ -139,82 +139,89 @@ export default function EventDetail({ params }) {
                 <div className="mb-20 animate-[fadeUp_0.9s_ease_0.6s_both]">
                     <Divider label="Timetable" />
                     {timetable.length > 0 ? (
-                        <div className="max-w-2xl mx-auto border border-silver/10 bg-panel/25 backdrop-blur-sm overflow-hidden">
+                        <div className="relative max-w-2xl mx-auto border border-silver/10 bg-panel/40 backdrop-blur-sm overflow-hidden">
+                            <div className="corner-ticks" aria-hidden="true">
+                                <span style={{ top: 0, left: 0, borderTopWidth: 1, borderLeftWidth: 1, borderColor: "rgba(138,138,138,0.35)" }} />
+                                <span style={{ top: 0, right: 0, borderTopWidth: 1, borderRightWidth: 1, borderColor: "rgba(138,138,138,0.35)" }} />
+                                <span style={{ bottom: 0, left: 0, borderBottomWidth: 1, borderLeftWidth: 1, borderColor: "rgba(138,138,138,0.35)" }} />
+                                <span style={{ bottom: 0, right: 0, borderBottomWidth: 1, borderRightWidth: 1, borderColor: "rgba(138,138,138,0.35)" }} />
+                            </div>
+
                             {timetable.map((slot, i) => {
-                                const pts = PULSE_VARIANTS[i % PULSE_VARIANTS.length];
-                                return (
-                                    <div
-                                        key={`${slot.act}-${slot.time}`}
-                                        className="group flex items-baseline justify-between gap-4 px-5 py-5 border-b border-silver/10 last:border-b-0 hover:bg-blood/5 transition-all duration-300 md:grid md:grid-cols-[140px_1fr_140px] md:items-center md:gap-8 md:px-8 md:py-6"
+                            const pts = PULSE_VARIANTS[i % PULSE_VARIANTS.length];
+                            return (
+                                <div
+                                    key={`${slot.act}-${slot.time}`}
+                                    className="group flex items-baseline justify-between gap-4 px-5 py-5 border-b border-silver/10 last:border-b-0 hover:bg-blood/5 transition-all duration-300 md:grid md:grid-cols-[140px_1fr_140px] md:items-center md:gap-8 md:px-8 md:py-6"
+                                >
+                                    <span className="font-display uppercase tracking-[0.12em] text-sm text-bone group-hover:text-blood transition-colors truncate">
+                                        {slot.act}
+                                    </span>
+
+                                    <svg
+                                        viewBox="0 0 70 20"
+                                        preserveAspectRatio="none"
+                                        className="hidden w-full h-7 ekg-line md:block"
+                                        aria-hidden="true"
                                     >
-                                        <span className="font-display uppercase tracking-[0.12em] text-lg text-bone group-hover:text-blood transition-colors truncate">
-                                            {slot.act}
-                                        </span>
+                                        <defs>
+                                            <linearGradient id={`ekgFade-${i}`} x1="0" y1="0" x2="1" y2="0">
+                                                <stop offset="0%" stopColor="var(--color-blood)" stopOpacity="0" />
+                                                <stop offset="20%" stopColor="var(--color-blood)" stopOpacity="1" />
+                                                <stop offset="80%" stopColor="var(--color-blood)" stopOpacity="1" />
+                                                <stop offset="100%" stopColor="var(--color-blood)" stopOpacity="0" />
+                                            </linearGradient>
+                                        </defs>
+                                        <polyline
+                                            points={pts}
+                                            fill="none"
+                                            stroke={`url(#ekgFade-${i})`}
+                                            strokeWidth="1.4"
+                                            strokeLinejoin="round"
+                                            strokeLinecap="round"
+                                        />
+                                    </svg>
 
-                                        <svg
-                                            viewBox="0 0 70 20"
-                                            preserveAspectRatio="none"
-                                            className="hidden w-full h-7 ekg-line md:block"
-                                            aria-hidden="true"
-                                        >
-                                            <defs>
-                                                <linearGradient id={`ekgFade-${i}`} x1="0" y1="0" x2="1" y2="0">
-                                                    <stop offset="0%" stopColor="var(--color-blood)" stopOpacity="0" />
-                                                    <stop offset="20%" stopColor="var(--color-blood)" stopOpacity="1" />
-                                                    <stop offset="80%" stopColor="var(--color-blood)" stopOpacity="1" />
-                                                    <stop offset="100%" stopColor="var(--color-blood)" stopOpacity="0" />
-                                                </linearGradient>
-                                            </defs>
-                                            <polyline
-                                                points={pts}
-                                                fill="none"
-                                                stroke={`url(#ekgFade-${i})`}
-                                                strokeWidth="1.4"
-                                                strokeLinejoin="round"
-                                                strokeLinecap="round"
-                                            />
-                                        </svg>
-
-                                        <span className="shrink-0 text-right font-mono text-xs sm:text-sm tracking-[0.18em] sm:tracking-[0.22em] text-blood whitespace-nowrap group-hover:text-[#ff5555] transition-colors">
-                                            {slot.time}
-                                        </span>
-                                    </div>
-                                );
-                            })}
-                        </div>
-                    ) : (
-                        <p className={`text-center ${COMING_SOON}`}>{timetableEmptyText}</p>
-                    )}
+                                    <span className="shrink-0 text-right font-mono text-xs sm:text-sm tracking-[0.18em] sm:tracking-[0.22em] text-blood whitespace-nowrap group-hover:text-[#ff5555] transition-colors">
+                                        {slot.time}
+                                    </span>
+                                </div>
+                            );
+                        })}
                 </div>
-
-                <div className="flex flex-col items-center gap-6 animate-[fadeUp_0.9s_ease_0.7s_both]">
-                    {ev.ticketUrl ? (
-                        <a
-                            href={ev.ticketUrl}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="relative inline-block border border-blood px-10 py-4 font-mono text-xs uppercase tracking-[0.3em] text-bone hover:bg-blood hover:text-black transition-all duration-300"
-                        >
-                            Get Tickets
-                        </a>
-                    ) : (
-                        <span className="font-mono text-xs uppercase tracking-[0.3em] text-silver/50 border border-silver/20 px-10 py-4">
-                            TICKETS UNAVAILABLE
-                        </span>
+                ) : (
+                <p className={`text-center ${COMING_SOON}`}>{timetableEmptyText}</p>
                     )}
+            </div>
 
-                    {ev.photos?.length > 0 ? (
-                        <Link
-                            href={`/gallery?event=${ev.id}`}
-                            className="font-mono text-[11px] uppercase tracking-[0.25em] text-blood/70 hover:text-blood transition-colors duration-300 border-b border-blood/20 hover:border-blood/60 pb-0.5 pl-[0.25em]"
-                        >
-                            View {ev.photos.length} photos
-                        </Link>
-                    ) : (
-                        isPast && <span className={COMING_SOON}>Photos coming soon</span>
-                    )}
-                </div>
-            </section>
-        </main>
+            <div className="flex flex-col items-center gap-6 animate-[fadeUp_0.9s_ease_0.7s_both]">
+                {ev.ticketUrl ? (
+                    <a
+                        href={ev.ticketUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="relative inline-block border border-blood px-10 py-4 font-mono text-xs uppercase tracking-[0.3em] text-bone hover:bg-blood hover:text-black transition-all duration-300"
+                    >
+                        Get Tickets
+                    </a>
+                ) : (
+                    <span className="font-mono text-xs uppercase tracking-[0.3em] text-silver/50 border border-silver/20 px-10 py-4">
+                        TICKETS UNAVAILABLE
+                    </span>
+                )}
+
+                {ev.photos?.length > 0 ? (
+                    <Link
+                        href={`/gallery?event=${ev.id}`}
+                        className="font-mono text-[11px] uppercase tracking-[0.25em] text-blood/70 hover:text-blood transition-colors duration-300 border-b border-blood/20 hover:border-blood/60 pb-0.5 pl-[0.25em]"
+                    >
+                        View {ev.photos.length} photos
+                    </Link>
+                ) : (
+                    isPast && <span className={COMING_SOON}>Photos coming soon</span>
+                )}
+            </div>
+        </section>
+        </main >
     );
 }

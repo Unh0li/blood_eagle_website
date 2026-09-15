@@ -15,7 +15,7 @@ const LOGO_TRANSITION = { duration: 1.25, ease: [0.22, 1, 0.36, 1] };
 
 function heroCardTitleSize(title) {
   const len = title.length;
-  if (len <= 9)  return undefined;
+  if (len <= 9) return undefined;
   if (len <= 13) return "clamp(2rem, 8vw, 4.5rem)";
   if (len <= 18) return "clamp(1.5rem, 6vw, 3.5rem)";
   return "clamp(1.25rem, 5vw, 2.75rem)";
@@ -45,22 +45,22 @@ function CornerTicks({ red = false }) {
   const c = red ? "rgba(200,30,30,0.5)" : "rgba(138,138,138,0.35)";
   return (
     <div className="corner-ticks" aria-hidden="true">
-      <span style={{ top:    0, left:  0, borderTopWidth:    1, borderLeftWidth:  1, borderColor: c }} />
-      <span style={{ top:    0, right: 0, borderTopWidth:    1, borderRightWidth: 1, borderColor: c }} />
-      <span style={{ bottom: 0, left:  0, borderBottomWidth: 1, borderLeftWidth:  1, borderColor: c }} />
+      <span style={{ top: 0, left: 0, borderTopWidth: 1, borderLeftWidth: 1, borderColor: c }} />
+      <span style={{ top: 0, right: 0, borderTopWidth: 1, borderRightWidth: 1, borderColor: c }} />
+      <span style={{ bottom: 0, left: 0, borderBottomWidth: 1, borderLeftWidth: 1, borderColor: c }} />
       <span style={{ bottom: 0, right: 0, borderBottomWidth: 1, borderRightWidth: 1, borderColor: c }} />
     </div>
   );
 }
 
 /* kartice dogodkov */
-
 function UpcomingCard({ event }) {
   const sizeOverride = heroCardTitleSize(event.title);
   const lineup = event.lineup?.filter(Boolean) ?? [];
 
   return (
-    <div className="group relative overflow-hidden border border-blood/30 bg-panel/40 p-8 transition-all duration-500 hover:border-blood/60 sm:p-10 md:p-14">
+    // UpcomingCard
+    <div className="group relative overflow-hidden border border-blood/30 bg-panel/40 backdrop-blur-sm p-8 transition-all duration-500 hover:border-blood/60 sm:p-10 md:p-14">
       <CornerTicks red />
       <div
         className="pointer-events-none absolute -right-10 -top-10 h-64 w-64 rounded-full bg-blood/5 blur-3xl"
@@ -69,7 +69,6 @@ function UpcomingCard({ event }) {
 
       <div className="relative flex flex-col items-center text-center">
         <p className="eyebrow text-[10px]">{event.date}</p>
-
         <h2
           className="mt-4 font-display uppercase leading-none tracking-[0.08em] text-bone transition-colors duration-500 group-hover:text-blood break-words text-4xl sm:text-5xl md:text-7xl"
           style={sizeOverride ? { fontSize: sizeOverride } : undefined}
@@ -85,22 +84,35 @@ function UpcomingCard({ event }) {
           <span className="h-px w-5 bg-silver/40" />
         </div>
 
-        {lineup.length >= 2 ? (
-          <p className="mt-5 font-display text-lg uppercase tracking-[0.1em] text-blood/90 md:text-xl break-words">
-            {lineup.join("  /  ")}
-          </p>
-        ) : lineup.length === 1 ? (
-          <div className="mt-5">
-            <p className="font-display text-xl uppercase tracking-[0.1em] text-blood md:text-2xl break-words">
-              {lineup[0]}
-            </p>
-            <p className="mt-1.5 font-mono text-[9px] uppercase tracking-[0.3em] text-silver/50">
-              More artists to be announced
-            </p>
+        {/* Matches the events/[id] page treatment: vertical stack, headliner
+            (first name) larger and in blood, rest smaller and dimmed —
+            sized down a notch from the detail page since this card already
+            carries a large hero title, countdown, and CTAs below it. */}
+        <div className="mt-6 h-px w-10 bg-silver/15" aria-hidden="true" />
+
+        {lineup.length > 0 ? (
+          <div className="mt-5 flex flex-col items-center gap-3">
+            {lineup.map((name, i) => (
+              <span
+                key={name}
+                className={
+                  i === 0
+                    ? "font-display uppercase text-2xl tracking-[0.06em] text-blood text-center break-words md:text-3xl"
+                    : "font-display uppercase text-base tracking-[0.06em] text-bone/70 text-center break-words md:text-lg"
+                }
+              >
+                {name}
+              </span>
+            ))}
+            {lineup.length === 1 && (
+              <p className="mt-1 font-mono text-[9px] uppercase tracking-[0.3em] text-silver/50">
+                More artists to be announced
+              </p>
+            )}
           </div>
         ) : (
           <p className="mt-5 font-mono text-[10px] uppercase tracking-[0.3em] text-silver/50">
-            Lineup coming soon
+            Lineup to be announced
           </p>
         )}
 
@@ -113,7 +125,7 @@ function UpcomingCard({ event }) {
         <div className="mt-10 flex flex-wrap justify-center gap-4">
           <Link
             href={`/events/${event.id}`}
-            className="border border-silver/20 px-8 py-3 font-mono text-[10px] uppercase tracking-[0.28em] text-bone transition-all duration-300 hover:border-blood hover:bg-blood hover:text-black"
+            className="border border-silver/20 px-10 py-3.5 font-mono text-[11px] uppercase tracking-[0.3em] text-bone transition-all duration-300 hover:border-blood hover:bg-blood hover:text-black"
           >
             Event Details
           </Link>
@@ -122,7 +134,7 @@ function UpcomingCard({ event }) {
               href={event.ticketUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="border border-blood px-8 py-3 font-mono text-[10px] uppercase tracking-[0.28em] text-bone transition-all duration-300 hover:bg-blood hover:text-black"
+              className="border border-blood px-10 py-3.5 font-mono text-[11px] uppercase tracking-[0.3em] text-bone transition-all duration-300 hover:bg-blood hover:text-black"
             >
               Get Tickets
             </a>
@@ -132,14 +144,13 @@ function UpcomingCard({ event }) {
     </div>
   );
 }
-
 const TBA_SOCIALS = SOCIAL_LINKS.filter((s) =>
   ["Instagram", "TikTok"].includes(s.name)
 );
 
 function TBACard() {
   return (
-    <div className="relative flex flex-col items-center justify-center overflow-hidden border border-silver/10 bg-panel/20 p-14 text-center">
+    <div className="relative flex flex-col items-center justify-center overflow-hidden border border-silver/10 bg-panel/20 backdrop-blur-sm p-14 text-center">
       <CornerTicks />
       <div className="relative mb-8 flex h-20 w-20 items-center justify-center">
         <div className="absolute inset-0 rounded-full border border-blood/10 animate-[gatePulse_5s_ease-in-out_infinite]" aria-hidden="true" />
@@ -149,7 +160,10 @@ function TBACard() {
         </span>
       </div>
 
-      <h3 className="font-display text-xl uppercase tracking-[0.2em] text-silver/70">
+      <h3
+        className="relative z-10 font-display text-xl uppercase tracking-[0.2em] text-bone sm:text-2xl"
+        style={{ WebkitTextStroke: "0.5px rgba(232,232,232,0.2)" }}
+      >
         The Next Ritual
       </h3>
 
@@ -186,7 +200,7 @@ function LatestCard({ event }) {
       <div className="flex flex-col md:flex-row">
         {/* slika */}
         {event.photos?.length > 0 ? (
-         
+
           <Link href={`/gallery?event=${event.id}`} className="relative shrink-0 overflow-hidden md:w-[45%]">
             <div className="relative h-52 overflow-hidden md:h-full md:min-h-[280px]">
               <Image
@@ -296,7 +310,7 @@ function LatestCard({ event }) {
 
 /* sessionStorage obstaja samo v brskalniku
    branje prek effecta je pokazalo gate in ga takoj zaprlo, kar je utripnilo */
-const NO_SUBSCRIBE = () => () => {};
+const NO_SUBSCRIBE = () => () => { };
 const hasEntered = () => sessionStorage.getItem("be-entered") === "true";
 const assumeFirstVisit = () => false;
 
@@ -436,7 +450,7 @@ export default function Home() {
                 className="group relative inline-block overflow-hidden border border-blood px-10 py-4 font-mono text-xs uppercase tracking-[0.3em] text-bone transition-colors duration-300 hover:bg-blood hover:text-black"
               >
                 <div className="corner-ticks" aria-hidden="true">
-                  <span className="!border-blood/40" style={{ top: 0,    left:  0, borderTopWidth:    1, borderLeftWidth:  1, width: 6, height: 6 }} />
+                  <span className="!border-blood/40" style={{ top: 0, left: 0, borderTopWidth: 1, borderLeftWidth: 1, width: 6, height: 6 }} />
                   <span className="!border-blood/40" style={{ bottom: 0, right: 0, borderBottomWidth: 1, borderRightWidth: 1, width: 6, height: 6 }} />
                 </div>
                 View Events

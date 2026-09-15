@@ -3,12 +3,13 @@
 import { useEffect, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 
+
+
 /* expo-out, ista krivulja kot riseIn pri naslovu */
 const EASE = [0.16, 1, 0.3, 1];
 const DOOR_DURATION = 1.15;
 
-/* AnimatePresence anima samo neposredne otroke, zato je ovoj motion
-   opacity drzi pri 1, varianta samo s transition bi se koncala takoj */
+
 const gateVariants = {
   visible: { opacity: 1 },
   exit: {
@@ -28,7 +29,7 @@ const doorRight = {
   exit: { x: "101%", transition: { duration: DOOR_DURATION, ease: EASE } },
 };
 
-/* siv zazari ko se vrata razmaknejo, nato ugasne */
+/* siv zazari ko se vrata razmaknejo, pol ugasne */
 const seamVariants = {
   visible: { opacity: 0, scaleY: 0.3 },
   exit: {
@@ -56,14 +57,16 @@ const contentVariants = {
 
 export default function IntroGate({ onEnter, onDone }) {
   const [leaving, setLeaving] = useState(false);
-
   useEffect(() => {
-    const previousOverflow = document.body.style.overflow;
-    document.body.style.overflow = "hidden";
-    return () => {
-      document.body.style.overflow = previousOverflow;
-    };
-  }, []);
+  const previousOverflow = document.body.style.overflow;
+  document.body.style.overflow = "hidden";
+  document.documentElement.setAttribute("data-gate-active", "true");
+
+  return () => {
+    document.body.style.overflow = previousOverflow;
+    document.documentElement.removeAttribute("data-gate-active");
+  };
+}, []);
 
   const handleEnter = () => {
     if (leaving) return;

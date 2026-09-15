@@ -7,17 +7,23 @@ import SiteBackdrop from "@/components/SiteBackdrop";
 
 function cardTitleSize(title) {
   const len = title.length;
-  if (len <= 6)  return "clamp(1.75rem, 6vw, 3.75rem)";
-  if (len <= 9)  return "clamp(1.5rem, 5vw, 3rem)";
+  if (len <= 6) return "clamp(1.75rem, 6vw, 3.75rem)";
+  if (len <= 9) return "clamp(1.5rem, 5vw, 3rem)";
   if (len <= 13) return "clamp(1.25rem, 4vw, 2.5rem)";
   return "clamp(1.1rem, 3.2vw, 2rem)";
 }
 
-function Divider({ label }) {
+// app/events/page.js
+function Divider({ label, muted = false }) {
   return (
     <div className="flex items-center gap-4 mb-12">
       <span className="divider-line" />
-      <p className="eyebrow whitespace-nowrap">{label}</p>
+      <p
+        className="eyebrow whitespace-nowrap"
+        style={muted ? { color: "rgba(138,138,138,0.45)" } : undefined}
+      >
+        {label}
+      </p>
       <span
         className="divider-line"
         style={{ background: "linear-gradient(to left, transparent, rgba(138,138,138,0.4))" }}
@@ -25,7 +31,6 @@ function Divider({ label }) {
     </div>
   );
 }
-
 export default async function Events() {
   /* brez tega se delitev na prihajajoce in pretekle zamrzne ob buildu,
      connection() prestavi izris na cas zahtevka */
@@ -77,7 +82,7 @@ export default async function Events() {
                       <Link href={`/events/${ev.id}`} className="flex-1 min-w-0">
                         <p className="eyebrow text-[10px] mb-4">{ev.date}</p>
 
-                       
+
                         <h2
                           className="font-display uppercase tracking-[0.05em] text-bone leading-[0.95] group-hover:text-blood transition-colors duration-500 break-words"
                           style={{ fontSize: cardTitleSize(ev.title) }}
@@ -106,7 +111,7 @@ export default async function Events() {
                       )}
                     </div>
 
-                    <div className="relative mt-10 pt-8 border-t border-silver/10 flex items-center justify-between">
+                    <div className="relative mt-10 pt-8 border-t border-silver/10 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
                       <Link
                         href={`/events/${ev.id}`}
                         className="font-mono text-[10px] uppercase tracking-[0.25em] text-silver/50 hover:text-blood transition-colors duration-300"
@@ -119,12 +124,12 @@ export default async function Events() {
                           href={ev.ticketUrl}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="relative inline-block border border-blood px-10 py-3.5 font-mono text-[11px] uppercase tracking-[0.3em] text-bone hover:bg-blood hover:text-black transition-all duration-300"
+                          className="relative inline-block text-center border border-blood px-10 py-3.5 font-mono text-[11px] uppercase tracking-[0.3em] text-bone hover:bg-blood hover:text-black transition-all duration-300"
                         >
                           Get Tickets
                         </a>
                       ) : (
-                        <span className="font-mono text-[11px] uppercase tracking-[0.3em] text-silver/40 border border-silver/15 px-10 py-3.5">
+                        <span className="font-mono text-[11px] uppercase tracking-[0.3em] text-silver/40 border border-silver/15 px-10 py-3.5 text-center">
                           TBA
                         </span>
                       )}
@@ -136,9 +141,8 @@ export default async function Events() {
           </div>
         )}
 
-        
-        {past.length > 0 && <Divider label="Past" />}
 
+        {past.length > 0 && <Divider label="Past" muted />}
         {past.length > 0 && (
           <div className="flex flex-col gap-0">
             {past.map((ev, idx) => (
@@ -197,6 +201,6 @@ export default async function Events() {
           </div>
         )}
       </div>
-    </main>
+    </main >
   );
 }

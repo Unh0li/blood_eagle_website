@@ -66,6 +66,8 @@ body {
 
 /* drsnik */
 
+/* drsnik */
+
 html {
   scrollbar-width: thin;
   scrollbar-color: rgba(200, 30, 30, 0.55) transparent;
@@ -103,6 +105,24 @@ html {
   background: #050505;
 }
 
+/* gate skrije scroll ves cas prek body.overflow, a firefox in nekateri
+   webkit brskalniki med tranzicijo vseeno na kratko pokazejo custom drsnik
+   ta atribut ga med gate fazo povrne na sistemski privzeti izgled */
+html[data-gate-active="true"] {
+  scrollbar-width: none;
+}
+
+html[data-gate-active="true"]::-webkit-scrollbar {
+  display: none;
+}
+
+body[data-gate-active="true"]::-webkit-scrollbar-track,
+body[data-gate-active="true"]::-webkit-scrollbar-thumb,
+body[data-gate-active="true"]::-webkit-scrollbar-corner {
+  background: initial;
+  border: initial;
+  border-radius: initial;
+}
 
 /* ovoj strani */
 

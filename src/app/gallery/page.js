@@ -45,7 +45,9 @@ function GalleryInner() {
             onClick={closeEvent}
             className="group flex items-center gap-2 font-mono text-[11px] uppercase tracking-[0.3em] text-silver hover:text-blood transition-colors duration-300 mb-12 animate-[fadeUp_0.9s_ease_both]"
           >
-            <span className="group-hover:-translate-x-1 transition-transform duration-300">&lsaquo;</span>
+            <span className="group-hover:-translate-x-1 transition-transform duration-300" aria-hidden="true">
+              &lsaquo;
+            </span>
             Back to gallery
           </button>
 
@@ -91,7 +93,13 @@ function GalleryInner() {
               ))}
             </div>
           ) : (
-            <div className="flex flex-col items-center justify-center py-24 border border-silver/10 bg-panel/30">
+            <div className="relative flex flex-col items-center justify-center py-24 border border-silver/10 bg-panel/40 backdrop-blur-sm">
+              <div className="corner-ticks" aria-hidden="true">
+                <span style={{ top: 0, left: 0, borderTopWidth: 1, borderLeftWidth: 1 }} />
+                <span style={{ top: 0, right: 0, borderTopWidth: 1, borderRightWidth: 1 }} />
+                <span style={{ bottom: 0, left: 0, borderBottomWidth: 1, borderLeftWidth: 1 }} />
+                <span style={{ bottom: 0, right: 0, borderBottomWidth: 1, borderRightWidth: 1 }} />
+              </div>
               <p className="font-display uppercase text-3xl md:text-4xl tracking-[0.08em] text-silver/40">
                 Coming soon
               </p>

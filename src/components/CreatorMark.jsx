@@ -6,7 +6,7 @@ export default function CreatorMark() {
       aria-hidden="true"
     >
       <span className="font-mono text-[8px] uppercase tracking-[0.65em] text-silver/[0.085]">
-        RALTSS
+        UNHOLIX
       </span>
     </div>
   );
