@@ -8,6 +8,16 @@ const reactor4Photos = Array.from(
   (_, i) => `/images/reactor4/rc4-${i + 1}.webp`
 );
 
+const corruptionPhotos = Array.from(
+  { length: 71 },
+  (_, i) => `/images/corruption/c (${i + 1}).jpg`
+);
+
+const atdPhotos = Array.from(
+  { length: 92 },
+  (_, i) => `/images/atd/atd (${i + 1}).jpg`
+);
+
 /* datumi so zapisani kot "11 JULY 2026", Date tega vrstnega reda ne razume */
 export function parseEventDate(str) {
   return new Date(str.replace(/(\d+)\s+(\w+)\s+(\d+)/, "$2 $1 $3"));
@@ -15,6 +25,26 @@ export function parseEventDate(str) {
 
 export const events = [
    
+
+     {
+        id: "atd-2026",
+        title: "ARMY OF THE DEAD",
+        date: "24 OCTOBER 2026",
+        countdownDate: "2026-10-24T20:00:00",
+        venue: "PUBLIKA BARKLUB, LJUBLJANA",
+        genre: "Industrial",
+        lineup: ["SVOX", "URKE", "LINDEX", "NAKOVV", "TERROR"],
+        timetable:  [{ },
+            { time: "22:00 - 00:00", act: "SVOX" },
+            { time: "00:00 - 01:30", act: "URKE" },
+            { time: "01:30 - 02:30", act: "LINDEX" },
+            { time: "01:30 - 03:00", act: "TERROR" },
+             { time: "03:00 - END", act: "NAKOVV" },
+
+        ],
+        photos: atdPhotos,
+        ticketUrl: "",
+    },
 
     {
         id: "corruption-2026",
@@ -32,7 +62,7 @@ export const events = [
              { time: "04:00 - END", act: "R|N|T-13" },
 
         ],
-        photos: [],
+        photos: corruptionPhotos,
         ticketUrl: "",
     },
     {
